@@ -1,6 +1,6 @@
 # Interchain Simulation Tests
 
-This repository contains a test suite for interchain staking between a provider chain (Gaia) and a consumer chain (Neutron). The test simulates the process of creating a consumer chain and linking it to the provider chain, enabling cross-chain staking.
+This repository contains a test suite for interchain staking between a provider chain (Gaia) and a consumer chain (Neutron). The test simulates the process of creating a consumer chain and the validator key-assignment feature.
 
 It bootstraps a local provider testnet with 3 validators, proposes a `consumer-addition-proposal`, tests the `key-assignment` feature and launches the `consumer-chain`
 
