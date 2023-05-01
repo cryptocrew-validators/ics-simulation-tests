@@ -15,8 +15,8 @@ It bootstraps a local provider testnet with 3 validators, proposes a `consumer-a
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/your-repo/interchain-staking-test.git
-cd interchain-staking-test
+git clone https://github.com/clemensgg/ics-simulation-tests
+cd ics-simulation-tests
 ```
 
 ## Configuration
