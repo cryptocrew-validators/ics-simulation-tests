@@ -91,9 +91,6 @@ function startProviderChain() {
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   fi
 
-  # Wait for the first validator to collect gentxs
-  while ! vagrant ssh provider-chain-validator1 -- sudo test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
-
   # Distribute genesis file from the first validator to validators 2 and 3
   echo "Distributing genesis file from provider-chain-validator1 to provider-chain-validator2 and provider-chain-validator3"
   vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json genesis.json
@@ -102,9 +99,8 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- "[ ! -f /home/vagrant/icstest.log ] && touch /home/vagrant/icstest.log && chmod 666 /home/vagrant/icstest.log"
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start > /home/vagrant/icstest.log 2>&1 &"
-    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /home/vagrant/icstest.log"
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/provider_chain.log 2>&1 &"
+    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/provider_chain.log"
   done
 }
 
@@ -216,9 +212,8 @@ function assignKey() {
 function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh consumer-chain-validator${i} -- "[ ! -f /home/vagrant/icstest.log ] && touch /home/vagrant/icstest.log && chmod 666 /home/vagrant/icstest.log"
-    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start > /home/vagrant/icstest.log 2>&1 &"
-    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /home/vagrant/icstest.log"
+    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/consumer_chain.log 2>&1 &"
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer_chain.log"
   done
 }
 
