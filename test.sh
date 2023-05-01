@@ -87,9 +87,9 @@ function startProviderChain() {
 
   # Distribute genesis file from the first validator to validators 2 and 3
   echo "Distributing genesis file from provider-chain-validator1 to provider-chain-validator2 and provider-chain-validator3"
-  vagrant scp provider-chain-validator1:$PROVIDER_APP/config/genesis.json genesis.json
-  vagrant scp genesis.json provider-chain-validator2:$PROVIDER_APP/config/genesis.json
-  vagrant scp genesis.json provider-chain-validator3:$PROVIDER_APP/config/genesis.json 
+  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json genesis.json
+  vagrant scp genesis.json provider-chain-validator2:$PROVIDER_HOME/config/genesis.json
+  vagrant scp genesis.json provider-chain-validator3:$PROVIDER_HOME/config/genesis.json 
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
