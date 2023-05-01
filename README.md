@@ -31,7 +31,7 @@ Modify the `.env` file to set up the required environment variables. These varia
 ./test.sh
 ```
 
-_node provision with vagrant takes about 15mins_
+_-> please note node provision with vagrant takes about 15mins_
 
 The script will perform the following steps:
 
@@ -45,13 +45,13 @@ The script will perform the following steps:
 8. Create IBC paths between provider and consumer chain.
 9. Start a persistent IBC relayer.
 10. Test key assignment post consumer chain launch.
-11. Upon successful completion, you should see the message "All tests passed!".
+**11. Upon successful completion, you should see the message "All tests passed!".**
 
 Watch node output on each validator: 
 ```sh
 tail -f/var/log/chain.log
 ```
-Watch relayer output on each provider-chain-validator1: 
+Watch relayer output on `provider-chain-validator1`: 
 ```sh
 tail -f/var/log/relayer.log
 ```
