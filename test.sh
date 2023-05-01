@@ -102,8 +102,8 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    $(get_terminal_command) "vagrant ssh provider-chain-validator${i} -- sudo tail -f /var/log/icstest.log" &
-sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/icstest.log 2>&1
+    vagrant ssh provider-chain-validator${i} -- sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/icstest.log 2>&1
+    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/icstest.log"
   done
 }
 
@@ -197,19 +197,11 @@ function prepareConsumerChain() {
   rm "ccv.json"
 }
 
-function startConsumerChain() {
-  for i in {1..3} ; do 
-    $(get_terminal_command) "vagrant ssh consumer-chain-validator${i} -- sudo tail -f /var/log/icstest.log" &
-sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/icstest.log 2>&1
-  done
-}
-
-function assignKeyPreLaunch() {
-  echo "Assigning keys pre-launch..."
-  
+function assignKey() {
   echo "Generating new key on provider-chain-validator1"
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp
   vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key.json
+  vagrant ssh provider-chain-validator1 -- suro rm -rf /home/vagrant/tmp
 
   NEW_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key.json | jq -r '.pub_key.value')'"}'
   echo PubKey: $NEW_PUBKEY
@@ -218,13 +210,23 @@ function assignKeyPreLaunch() {
 
   echo "Assining new key on provider-chain-validator1"
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain $NEW_PUBKEY --from provider-chain-validator1 $PROVIDER_FLAGS
-  # TODO
+}
+
+function startConsumerChain() {
+  for i in {1..3} ; do 
+    vagrant ssh consumer-chain-validator${i} -- sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/icstest.log 2>&1
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/icstest.log"
+  done
+}
+
+function assignKeyPreLaunch() {
+  echo "Assigning keys pre-launch..."
+  assignKey
 }
 
 function assignKeyPostLaunch() {
   echo "Assigning keys post-launch..."
-  
-  # TODO
+  assignKey
 }
 
 function main() {
@@ -234,9 +236,9 @@ function main() {
   proposeConsumerAdditionProposal
   voteConsumerAdditionProposal
   prepareConsumerChain
+  assignKeyPreLaunch
   startConsumerChain
-  # assignKeyPreLaunch
-  # assignKeyPostLaunch
+  assignKeyPostLaunch
 }
 
 main
