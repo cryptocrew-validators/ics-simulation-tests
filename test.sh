@@ -98,20 +98,11 @@ function proposeConsumerAdditionProposal() {
   "deposit": "1icsstake"
 } 
 EOT
-<<<<<<< HEAD
   vagrant scp prop.json provider-chain-validator1:/home/root/prop.json
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
   RES=$(vagrant ssh "provider-chain-validator1" "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/root/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS")
-=======
-  scp prop.json provider-chain-validator1:/home/vagrant/prop.json
-  rm prop.json
-
-  # Create and submit the consumer addition proposal
-  echo "Submitting consumer addition proposal from provider validator 1..."
-  RES=$(ssh "provider-chain-validator1" "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/vagrant/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS")
->>>>>>> e6cf8d3b0f6979cc935b538b97e1dae79f81bb48
   if [ -z "$RES" ]; then
     echo "Error submitting consumer addition proposal"
     exit 1
@@ -157,13 +148,8 @@ function prepareConsumerChain() {
   CONSUMER_CCV_STATE=$(vagrant ssh "provider-chain-validator1" "$PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
   for i in {1..3} ; do 
-<<<<<<< HEAD
     vagrant scp "ccv.json" "consumer-chain-validator${i}:/home/root/ccv.json"
     vagrant ssh "consumer-chain-validator${i}" "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/raw_genesis.json /home/root/ccv.json > $CONSUMER_HOME/config/genesis.json"
-=======
-    scp "ccv.json" "consumer-chain-validator${i}:/home/vagrant/ccv.json"
-    ssh "consumer-chain-validator${i}" "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/raw_genesis.json /home/vagrant/ccv.json > $CONSUMER_HOME/config/genesis.json"
->>>>>>> e6cf8d3b0f6979cc935b538b97e1dae79f81bb48
   done
   rm "ccv.json"
 }
