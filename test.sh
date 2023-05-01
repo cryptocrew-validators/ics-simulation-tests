@@ -48,11 +48,9 @@ function configPeers() {
   echo "[provider] persistent_peers = $PERSISTENT_PEERS_PROVIDER"
   echo "[consumer] persistent_peers = $PERSISTENT_PEERS_CONSUMER"
 
-  # start provider chain
-  echo ">> STARTING PROVIDER CHAIN"
-  for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start 2>&1 | sudo tee /home/vagrant/icstest.log"
-    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /home/vagrant/icstest.log"
+  for i in {1..3}; do
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sudo sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sudo sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
   done
 }
 
@@ -215,7 +213,6 @@ function assignKey() {
 }
 
 function startConsumerChain() {
-  # start consumer chain
   echo ">> STARTING CONSUMER CHAIN"
   for i in {1..3} ; do 
     vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start 2>&1 | sudo tee /home/vagrant/icstest.log"
