@@ -64,6 +64,7 @@ function startProviderChain() {
   echo "Getting peerlists, editing configs..."
   configPeers
 
+  ######################################## TODO: move this to setup.sh
   echo "Updating permissions..."
   for i in {1..3}; do
     vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 777 $PROVIDER_HOME"
@@ -161,7 +162,8 @@ EOT
 
 # Vote yes on the consumer addition proposal from all provider validators
 function voteConsumerAdditionProposal() {
-  echo "Voting on consumer addition proposal..."
+  echo "Waiting for consumer addition proposal to go live..."
+  sleep 7
 
   for i in {1..3} ; do 
     echo "Voting 'yes' from provider-chain-validator${i}..."
@@ -189,29 +191,33 @@ function prepareConsumerChain() {
   done
   echo "Consumer addition proposal passed"
 
+  echo "Waiting a block for everything to be propagated..."
+  sleep 7
+
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
+  wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+  jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
   for i in {1..3} ; do 
-    vagrant scp ccv.json consumer-chain-validator${i}:/home/vagrant/ccv.json
-    vagrant ssh consumer-chain-validator${i} "sudo jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/raw_genesis.json /home/vagrant/ccv.json > $CONSUMER_HOME/config/genesis.json"
+    vagrant scp final_genesis.json consumer-chain-validator${i}:/home/vagrant/genesis.json
   done
   rm "ccv.json"
 }
 
 function assignKey() {
   echo "Generating new key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp
+  vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 777 /home/vagrant/tmp"
   vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key.json
-  vagrant ssh provider-chain-validator1 -- suro rm -rf /home/vagrant/tmp
+  vagrant ssh provider-chain-validator1 -- sudo rm -rf /home/vagrant/tmp
 
   NEW_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key.json | jq -r '.pub_key.value')'"}'
-  echo PubKey: $NEW_PUBKEY
+  echo "New PubKey: $NEW_PUBKEY"
   echo "Copying new key to consumer-chain-validator1"
   vagrant scp priv_validator_key.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
 
-  echo "Assining new key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain $NEW_PUBKEY --from provider-chain-validator1 $PROVIDER_FLAGS
+  echo "Assigning new key on provider-chain-validator1"
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain "'"$NEW_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
 }
 
 function startConsumerChain() {
@@ -222,6 +228,9 @@ function startConsumerChain() {
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer_chain.log"
   done
 }
+
+################################### TODO: setup hermes, add ccv channel, check if consumer panicks
+
 
 function assignKeyPreLaunch() {
   echo "Assigning keys pre-launch..."
