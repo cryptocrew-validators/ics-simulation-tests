@@ -76,7 +76,7 @@ function startProviderChain() {
   vagrant scp provider-chain-validator2:$PROVIDER_HOME/config/gentx/$GENTX2_FILENAME gentx2.json
   vagrant scp gentx2.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
   vagrant scp provider-chain-validator3:$PROVIDER_HOME/config/gentx/$GENTX3_FILENAME gentx3.json
-  vagrant scp gentx3.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
+  vagrant scp gentx3.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
 
   VAL_ACCOUNT2=$(cat gentx2.json | jq -r '.body.messages[0].delegator_address')
   VAL_ACCOUNT3=$(cat gentx3.json | jq -r '.body.messages[0].delegator_address')
