@@ -154,7 +154,7 @@ function proposeConsumerAdditionProposal() {
 EOT
   cat > relayer_balance_consumer.json <<EOT
 {
-  "address": "$CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
+  "address": "$(echo $CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
   "coins": [
     {
       "denom": "$CONSUMER_FEE_DENOM",
@@ -163,6 +163,8 @@ EOT
   ]
 }
 EOT
+  cat relayer_account_consumer.json
+  cat relayer_balance_consumer.json
   jq '.app_state.auth.accounts += [input]' raw_genesis.json relayer_account_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   jq '.app_state.bank.balances += [input]' raw_genesis.json relayer_balance_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   rm relayer_account_consumer.json relayer_balance_consumer.json
@@ -233,8 +235,8 @@ function prepareConsumerChain() {
   done
   echo "Consumer addition proposal passed"
 
-  echo "Waiting a block for everything to be propagated..."
-  sleep 7
+  echo "Waiting 20s for everything to be propagated..."
+  sleep 20
 
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
