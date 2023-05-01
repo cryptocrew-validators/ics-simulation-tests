@@ -4,7 +4,7 @@
 
 set -e
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test"
+PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
 
 # Load environment variables from .env file
 function loadEnv {
