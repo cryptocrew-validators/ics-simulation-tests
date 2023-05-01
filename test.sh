@@ -114,12 +114,12 @@ function startProviderChain() {
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr 0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
 }
 
-# Wait for the provider to finalize a block
+# Wait for provider to finalize a block
 function waitForProviderChain() {
   echo "Waiting for Provider Chain to finalize a block..."
   PROVIDER_LATEST_HEIGHT=""
@@ -277,7 +277,7 @@ function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
   for i in {1..3} ; do 
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr 0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
