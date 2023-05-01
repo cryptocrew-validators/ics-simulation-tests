@@ -135,7 +135,7 @@ function proposeConsumerAdditionProposal() {
 
   ############## Dirty Neutron Supply Fix ##############                    ############# TODO: find a better solution
   echo "Applying dirty Neutron supply fix"
-  sed -i 's/840000000000000untrn/840000150000000untrn/g' raw_genesis.json
+  sed -i 's/90000000000000/89999850000000/g' raw_genesis.json
 
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
@@ -239,9 +239,10 @@ function prepareConsumerChain() {
   done
   echo "Consumer addition proposal passed"
 
-  echo "Waiting 20s for everything to be propagated..."
-  sleep 20
+  echo "Waiting 1 block for everything to be propagated..."
+  sleep 6
 
+  # TODO - erroring here in script, not in bash...
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
@@ -265,7 +266,7 @@ function assignKey() {
   vagrant scp priv_validator_key.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
 
   echo "Assigning new key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain "'"$NEW_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$NEW_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
 }
 
 function assignKeyPreLaunch() {
