@@ -55,6 +55,7 @@ function installGo() {
   export GOROOT=/usr/local/go
   export GOPATH=/home/vagrant/go
   export GO111MODULE=on
+  export PATH=$PATH:$GOROOT/bin
 }
 
 function installNode() {
@@ -67,7 +68,7 @@ function installNode() {
   cd $LOCAL_REPO
   git checkout $DAEMON_VERSION
   make install
-  sudo mv ~/go/bin/$DAEMON_NAME /usr/local/bin
+  sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
   cd ..
   rm -rf $LOCAL_REPO
 }
