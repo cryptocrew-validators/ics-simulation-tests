@@ -133,6 +133,10 @@ function proposeConsumerAdditionProposal() {
   echo "Downloading consumer genesis file"
   wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
 
+  ############## Dirty Neutron Supply Fix ##############                    ############# TODO: find a better solution
+  echo "Applying dirty Neutron supply fix"
+  sed -i 's/840000000000000untrn/840000150000000untrn/g' raw_genesis.json
+
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
   
