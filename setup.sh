@@ -2,16 +2,16 @@
 
 # Update and install required packages, set timezone to UTC
 sudo apt-get update
-sudo apt-get install -yy git build-essential curl jq unzip
+sudo apt-get install -yy git build-essential curl jq unzip moreutils net-tools
 sudo timedatectl set-timezone UTC
 
 function loadEnv {
-  if test -f .env ; then 
-      ENV=$(realpath .env)
+  ENV=/home/vagrant/.env
+  if test -f $ENV ; then 
       export $(grep "^[^#;]" $ENV | xargs)
       echo "loaded configuration from ENV file: $ENV"
   else
-      echo "ENV file not found at .env"
+      echo "ENV file not found at $ENV"
       exit 1
   fi
 }
@@ -48,12 +48,14 @@ function setNodeVars() {
 
 function installGo() {
   wget -4 $DAEMON_GO_SOURCE -O $(basename $DAEMON_GO_SOURCE)
-  sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf $(basename $DAEMON_GO_SOURCE)
+  sudo rm -rf /usr/local/go
+  sudo tar -C /usr/local -xvzf $(basename $DAEMON_GO_SOURCE)
   rm $(basename $DAEMON_GO_SOURCE)
-  mkdir -p ~/go/bin
+  mkdir -p /home/vagrant/go/bin
   export GOROOT=/usr/local/go
-  export GOPATH=$HOME/go
+  export GOPATH=/home/vagrant/go
   export GO111MODULE=on
+  export PATH=$PATH:$GOROOT/bin
 }
 
 function installNode() {
@@ -66,14 +68,14 @@ function installNode() {
   cd $LOCAL_REPO
   git checkout $DAEMON_VERSION
   make install
-  sudo mv ~/go/bin/$DAEMON_NAME /usr/local/bin
+  sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
   cd ..
   rm -rf $LOCAL_REPO
 }
 
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
-  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID"
+  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
 }
 
 function manipulateGenesis() {

@@ -8,6 +8,7 @@ Vagrant.configure("2") do |config|
         v.memory = 4096
         v.cpus = 4
       end
+      node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env" # Add this line
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
     end
   end
@@ -21,6 +22,7 @@ Vagrant.configure("2") do |config|
         v.memory = 4096
         v.cpus = 4
       end
+      node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env" # Add this line
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
     end
   end
