@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# node logs piped to /var/log/icstest.log
+# node logs piped to /home/vagrant/icstest.log
 
 set -e
 
@@ -102,8 +102,8 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/icstest.log 2>&1
-    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/icstest.log"
+    vagrant ssh provider-chain-validator${i} -- sudo $PROVIDER_APP --home $PROVIDER_HOME start > /home/vagrant/icstest.log 2>&1
+    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /home/vagrant/icstest.log"
   done
 }
 
@@ -214,8 +214,8 @@ function assignKey() {
 
 function startConsumerChain() {
   for i in {1..3} ; do 
-    vagrant ssh consumer-chain-validator${i} -- sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/icstest.log 2>&1
-    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/icstest.log"
+    vagrant ssh consumer-chain-validator${i} -- sudo $CONSUMER_APP --home $CONSUMER_HOME start > /home/vagrant/icstest.log 2>&1
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /home/vagrant/icstest.log"
   done
 }
 
