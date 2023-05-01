@@ -56,6 +56,11 @@ The script will perform the following steps:
 8. Test key assignment post consumer chain launch.
 7. Upon successful completion, you should see the message "All tests passed!".
 
+Watch node output on each validator: 
+```sh
+tail -f/var/log/icstest.log
+```
+
 ## License
 
 This project is licensed under the Apache License 2.0.
