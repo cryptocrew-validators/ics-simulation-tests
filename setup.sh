@@ -105,6 +105,11 @@ function genTx() {
   fi
 }
 
+function updatePermissions() {
+  echo "Updating permissions..."
+  sudo chmod -R 777 $DAEMON_HOME
+}
+
 main() {
   loadEnv
   setNodeVars
@@ -113,6 +118,7 @@ main() {
   initNode
   manipulateGenesis
   genTx
+  updatePermissions
 }
 
 main && echo "SUCCESS >> node provisioned"
