@@ -139,8 +139,15 @@ function proposeConsumerAdditionProposal() {
   "genesis_hash": "$CONSUMER_BINARY_SHA256",
   "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
   "spawn_time": "$SPAWN_TIME",
-  "deposit": "1icsstake"
+  "consumer_redistribution_fraction": "0.75",
+  "blocks_per_distribution_transmission": 150,
+  "historical_entries": 10,
+  "ccv_timeout_period": 2419200,
+  "transfer_timeout_period": 600,
+  "unbonding_period": 1728000, 
+  "deposit": "10000000icsstake"
 } 
+
 EOT
   cat prop.json
   vagrant scp prop.json provider-chain-validator1:/home/vagrant/prop.json
