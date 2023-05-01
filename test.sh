@@ -49,8 +49,8 @@ function configPeers() {
   echo "[consumer] persistent_peers = $PERSISTENT_PEERS_CONSUMER"
 
   for i in {1..3}; do
-    vagrant ssh provider-chain-validator${i} -- sudo sed -i "s#persistent_peers =.*#persistent_peers = \"$PERSISTENT_PEERS_PROVIDER\"/g" $PROVIDER_HOME/config/config.toml
-    vagrant ssh consumer-chain-validator${i} -- sudo sed -i "s#persistent_peers =.*#persistent_peers = \"$PERSISTENT_PEERS_CONSUMER\"/g" $CONSUMER_HOME/config/config.toml
+    vagrant ssh provider-chain-validator${i} -- sudo sed -i "s#persistent_peers =.*#persistent_peers = \"$PERSISTENT_PEERS_PROVIDER\"#g" $PROVIDER_HOME/config/config.toml
+    vagrant ssh consumer-chain-validator${i} -- sudo sed -i "s#persistent_peers =.*#persistent_peers = \"$PERSISTENT_PEERS_CONSUMER\"#g" $CONSUMER_HOME/config/config.toml
   done
 }
 
