@@ -6,6 +6,8 @@ It bootstraps a local provider testnet with 3 validators, proposes a `consumer-a
 
 ## Requirements
 
+- min 12 core CPU, 64GB RAM
+
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [jq](https://stedolan.github.io/jq/download/)
@@ -21,28 +23,15 @@ cd ics-simulation-tests
 
 ## Configuration
 
-Modify the .env file to set up the required environment variables. These variables determine the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources:
-
-```ini
-PROVIDER_REPO=https://github.com/cosmos/gaia
-PROVIDER_VERSION=v9.0.3
-PROVIDER_APP=gaiad
-PROVIDER_HOME=/home/root/.gaia
-PROVIDER_GO_SOURCE=https://go.dev/dl/go1.18.10.linux-amd64.tar.gz
-
-CONSUMER_REPO=https://github.com/neutron-org/neutron
-CONSUMER_VERSION=v1.0.0-rc1
-CONSUMER_APP=neutrond
-CONSUMER_HOME=/home/root/.neutron
-CONSUMER_GO_SOURCE=https://go.dev/dl/go1.20.3.linux-amd64.tar.gz
-CONSUMER_GENESIS_SOURCE=https://cloudflare-ipfs.com/ipfs/QmQZFY51F2nJYk8FixjR4MtWkmpGw5mGFUZrCQCyg64r76
-```
+Modify the `.env` file to set up the required environment variables. These variables determine the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources
 
 ## Running the Test
 
 ```bash
 ./test.sh
 ```
+
+_node provision with vagrant takes about 15mins_
 
 The script will perform the following steps:
 
@@ -53,12 +42,18 @@ The script will perform the following steps:
 5. Prepare the consumer chain by copying private validator keys and finalizing the genesis.
 6. Test key assignment pre consumer chain launch.
 7. Start the consumer chain.
-8. Test key assignment post consumer chain launch.
-7. Upon successful completion, you should see the message "All tests passed!".
+8. Create IBC paths between provider and consumer chain.
+9. Start a persistent IBC relayer.
+10. Test key assignment post consumer chain launch.
+11. Upon successful completion, you should see the message "All tests passed!".
 
 Watch node output on each validator: 
 ```sh
-tail -f/var/log/icstest.log
+tail -f/var/log/chain.log
+```
+Watch relayer output on each provider-chain-validator1: 
+```sh
+tail -f/var/log/relayer.log
 ```
 
 ## License
