@@ -77,10 +77,16 @@ function startProviderChain() {
   vagrant scp gentx2.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
   vagrant scp provider-chain-validator3:$PROVIDER_HOME/config/gentx/$GENTX3_FILENAME gentx3.json
   vagrant scp gentx3.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
+
+  VAL_ACCOUNT2=$(cat gentx2.json | jq -r '.body.messages[0].delegator_address')
+  VAL_ACCOUNT3=$(cat gentx3.json | jq -r '.body.messages[0].delegator_address')
+
   rm gentx2.json gentx3.json
 
   echo "Collecting gentxs on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs --keyring-backend test
   
   # Wait for the first validator to collect gentxs
   while ! vagrant ssh provider-chain-validator1 -- sudo test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
@@ -198,6 +204,17 @@ $CONSUMER_APP --home $CONSUMER_HOME start &> /var/log/icstest.log &
 function assignKeyPreLaunch() {
   echo "Assigning keys pre-launch..."
   
+  echo "Generating new key on provider-chain-validator1"
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp
+  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key.json
+
+  NEW_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key.json | jq -r '.pub_key.value')'"}'
+  echo PubKey: $NEW_PUBKEY
+  echo "Copying new key to consumer-chain-validator1"
+  vagrant scp priv_validator_key.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
+
+  echo "Assining new key on provider-chain-validator1"
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain $NEW_PUBKEY --from provider-chain-validator1 $PROVIDER_FLAGS
   # TODO
 }
 
