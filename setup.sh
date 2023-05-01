@@ -83,14 +83,19 @@ function manipulateGenesis() {
     sed -i 's/stake/icsstake/g' $DAEMON_HOME/config/genesis.json
     jq '.app_state.staking.params.unbonding_time = "300s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-    jq '.app_state.gov.params.deposit_params.min_deposit[0].amount = "1"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    # jq '.app_state.gov.params.deposit_params.min_deposit[0].amount = "1"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+  
+    GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
+    jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   elif [ "$CHAIN_ID" == "consumer-chain" ]; then
     rm $DAEMON_HOME/config/genesis.json
     wget $CONSUMER_GENESIS_SOURCE -O $DAEMON_HOME/config/raw_genesis.json
-    jq --arg chainid "$CHAIN_ID" '.chain_id = $chainid' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    jq --arg chainid "$CHAIN_ID" '.chain_id = $chainid' $DAEMON_HOME/config/raw_genesis.json | sponge $DAEMON_HOME/config/raw_genesis.json
+
+    GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
+    jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/raw_genesis.json | sponge $DAEMON_HOME/config/raw_genesis.json
   fi
-  GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
-  jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+  
 }
 
 function genTx() {
@@ -120,4 +125,4 @@ main() {
   genTx
 }
 
-main && echo "SUCCESS >> provider chain started!"
+main && echo "SUCCESS >> node provisioned"
