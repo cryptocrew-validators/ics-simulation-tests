@@ -122,9 +122,12 @@ function proposeConsumerAdditionProposal() {
   # Prepare proposal file
   echo "Preparing consumer addition proposal..."
 
-  CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum $(which $CONSUMER_APP)" | awk '{ print $1 }')
-  CONSUMER_RAW_GENESIS_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum $DAEMON_HOME/genesis/raw_genesis.json" | awk '{ print $1 }')
+  CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum $CONSUMER_APP" | awk '{ print $1 }')
+  echo "Consumer binary sha256: $CONSUMER_BINARY_SHA256"
+  CONSUMER_RAW_GENESIS_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum $CONSUMER_HOME/genesis/raw_genesis.json" | awk '{ print $1 }')
+  echo "Consumer genesis sha256: $CONSUMER_RAW_GENESIS_SHA256"
   SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))")
+  echo "Consumer spawn time: $SPAWN_TIME"
   cat > prop.json <<EOT
 {
   "title": "Create the Consumer chain",
@@ -139,6 +142,7 @@ function proposeConsumerAdditionProposal() {
   "deposit": "1icsstake"
 } 
 EOT
+  cat prop.json
   vagrant scp prop.json provider-chain-validator1:/home/root/prop.json
 
   # Create and submit the consumer addition proposal
