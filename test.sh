@@ -175,7 +175,8 @@ function assignKeyPostLaunch() {
 
 function main() {
   loadEnv
-  startAndWaitForProviderChain
+  startProviderChain
+  waitForProviderChain
   proposeConsumerAdditionProposal
   voteConsumerAdditionProposal
   prepareConsumerChain
