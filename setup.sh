@@ -81,7 +81,7 @@ function initNode() {
 function manipulateGenesis() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
     sed -i 's/stake/icsstake/g' $DAEMON_HOME/config/genesis.json
-    jq '.app_state.staking.params.unbonding_time = "300s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     # jq '.app_state.gov.params.deposit_params.min_deposit[0].amount = "1"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   
