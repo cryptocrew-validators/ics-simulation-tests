@@ -38,8 +38,8 @@ function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""
   PERSISTENT_PEERS_CONSUMER=""
   for i in {1..3}; do
-    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
-    NODE_ID_CONSUMER="$(vagrant ssh provider-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
+    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- sudo $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
+    NODE_ID_CONSUMER="$(vagrant ssh provider-chain-validator${i} -- sudo $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
     PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
     PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
   done
@@ -49,8 +49,8 @@ function configPeers() {
   echo "[consumer] persistent_peers = $PERSISTENT_PEERS_CONSUMER"
 
   for i in {1..3}; do
-    vagrant ssh provider-chain-validator${i} -- sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_PROVIDER\"/g" $PROVIDER_HOME/config/config.toml
-    vagrant ssh provider-chain-validator${i} -- sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_CONSUMER\"/g" $CONSUMER_HOME/config/config.toml
+    vagrant ssh provider-chain-validator${i} -- sudo sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_PROVIDER\"/g" $PROVIDER_HOME/config/config.toml
+    vagrant ssh provider-chain-validator${i} -- sudo sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_CONSUMER\"/g" $CONSUMER_HOME/config/config.toml
   done
 }
 
@@ -73,10 +73,10 @@ function startProviderChain() {
   rm gentx2.json gentx3.json
 
   echo "Collecting gentxs on provider-chain-validator1"
-  vagrant ssh "provider-chain-validator1" -- $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
+  vagrant ssh "provider-chain-validator1" -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   
   # Wait for the first validator to collect gentxs
-  while ! vagrant ssh "provider-chain-validator1" -- test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
+  while ! vagrant ssh "provider-chain-validator1" -- sudo test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
 
   # Distribute genesis file from the first validator to validators 2 and 3
   echo "Distributing genesis file from provider-chain-validator1 to provider-chain-validator2 and provider-chain-validator3"
@@ -86,7 +86,7 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    $(get_terminal_command) "vagrant ssh \"provider-chain-validator${i}\" -- \"tail -f /var/log/icstest.log\"" &
+    $(get_terminal_command) "vagrant ssh \"provider-chain-validator${i}\" -- \"sudo tail -f /var/log/icstest.log\"" &
 $PROVIDER_APP --home $PROVIDER_HOME start &> /var/log/icstest.log &
   done
 }
@@ -108,8 +108,8 @@ function proposeConsumerAdditionProposal() {
   # Prepare proposal file
   echo "Preparing consumer addition proposal..."
 
-  CONSUMER_BINARY_SHA256=$(vagrant ssh "consumer-chain-validator1" -- "sha256sum $(which $CONSUMER_APP)" | awk '{ print $1 }')
-  CONSUMER_RAW_GENESIS_SHA256=$(vagrant ssh "consumer-chain-validator1" -- "sha256sum $DAEMON_HOME/genesis/raw_genesis.json" | awk '{ print $1 }')
+  CONSUMER_BINARY_SHA256=$(vagrant ssh "consumer-chain-validator1" -- "sudo sha256sum $(which $CONSUMER_APP)" | awk '{ print $1 }')
+  CONSUMER_RAW_GENESIS_SHA256=$(vagrant ssh "consumer-chain-validator1" -- "sudo sha256sum $DAEMON_HOME/genesis/raw_genesis.json" | awk '{ print $1 }')
   SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))")
   cat > prop.json <<EOT
 {
@@ -129,7 +129,7 @@ EOT
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
-  RES=$(vagrant ssh "provider-chain-validator1" -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/root/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS")
+  RES=$(vagrant ssh "provider-chain-validator1" -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/root/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS")
   if [ -z "$RES" ]; then
     echo "Error submitting consumer addition proposal"
     exit 1
@@ -143,7 +143,7 @@ function voteConsumerAdditionProposal() {
 
   for i in {1..3} ; do 
     echo "Voting 'yes' from provider-chain-validator${i}..."
-    RES=$(vagrant ssh "provider-chain-validator${i}" -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS")
+    RES=$(vagrant ssh "provider-chain-validator${i}" -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS")
     if [ -z "$RES" ]; then
       echo "Error voting on consumer addition proposal"
       exit 1
@@ -166,24 +166,24 @@ function prepareConsumerChain() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
   while [[ $PROPOSAL_STATUS != "PROPOSAL_STATUS_PASSED" ]]; do
-    PROPOSAL_STATUS=$(vagrant ssh "provider-chain-validator1" -- "$PROVIDER_APP --home $PROVIDER_HOME q gov proposal 1 -o json | jq -r '.status'")
+    PROPOSAL_STATUS=$(vagrant ssh "provider-chain-validator1" -- "sudo $PROVIDER_APP --home $PROVIDER_HOME q gov proposal 1 -o json | jq -r '.status'")
     sleep 2
   done
   echo "Consumer addition proposal passed"
 
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
-  CONSUMER_CCV_STATE=$(vagrant ssh "provider-chain-validator1" -- "$PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
+  CONSUMER_CCV_STATE=$(vagrant ssh "provider-chain-validator1" -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
   for i in {1..3} ; do 
     vagrant scp "ccv.json" "consumer-chain-validator${i}:/home/root/ccv.json"
-    vagrant ssh "consumer-chain-validator${i}" "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/raw_genesis.json /home/root/ccv.json > $CONSUMER_HOME/config/genesis.json"
+    vagrant ssh "consumer-chain-validator${i}" "sudo jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/raw_genesis.json /home/root/ccv.json > $CONSUMER_HOME/config/genesis.json"
   done
   rm "ccv.json"
 }
 
 function startConsumerChain() {
   for i in {1..3} ; do 
-    $(get_terminal_command) "vagrant ssh \"consumer-chain-validator${i}\" -- \"tail -f /var/log/icstest.log\"" &
+    $(get_terminal_command) "vagrant ssh \"consumer-chain-validator${i}\" -- \"sudo tail -f /var/log/icstest.log\"" &
 $CONSUMER_APP --home $CONSUMER_HOME start &> /var/log/icstest.log &
   done
 }
