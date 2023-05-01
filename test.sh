@@ -142,7 +142,7 @@ function proposeConsumerAdditionProposal() {
 
   echo "Adding relayer account & balances"
   vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
-  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
+  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP --home $CONSUMER_HOME keys add relayer --recover --keyring-backend test --output json")
   cat > relayer_account_consumer.json <<EOT
 {
   "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -244,7 +244,7 @@ function prepareConsumerChain() {
 
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
   for i in {1..3} ; do 
-    vagrant scp final_genesis.json consumer-chain-validator${i}:/home/vagrant/genesis.json
+    vagrant scp final_genesis.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
   rm "ccv.json"
 }
