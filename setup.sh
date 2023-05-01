@@ -123,6 +123,7 @@ main() {
   initNode
   manipulateGenesis
   genTx
+  installRelayer
   updatePermissions
 }
 
