@@ -1,5 +1,7 @@
 #!/bin/bash
 
+HERMES_SOURCE=https://github.com/informalsystems/hermes/releases/download/v1.4.0/hermes-v1.4.0-x86_64-unknown-linux-gnu.tar.gz
+
 # Update and install required packages, set timezone to UTC
 sudo apt-get update
 sudo apt-get install -yy git build-essential curl jq unzip moreutils net-tools
@@ -95,6 +97,16 @@ function genTx() {
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
+  fi
+}
+
+function installRelayer() {
+  if [ "$CHAIN_ID" == "provider-chain" ] && [ $NODE_INDEX -eq 1 ]; then
+    wget $HERMES_SOURCE -O hermes.tar.gz
+    mkdir -p /home/vagrant/.hermes/bin
+    tar -C /home/vagrant/.hermes/bin/ -vxzf hermes.tar.gz
+    rm hermes.tar.gz
+    export PATH="/home/vagrant/.hermes/bin:$PATH"
   fi
 }
 

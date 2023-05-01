@@ -4,19 +4,11 @@
 
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
-HERMES_SOURCE=https://github.com/informalsystems/hermes/releases/download/v1.4.0/hermes-v1.4.0-x86_64-unknown-linux-gnu.tar.gz
 
 set -e
 
 if ! (command -v sponge > /dev/null 2>&1); then
   echo "moreutils needs to be installed! run: apt install moreutils"
-fi
-if ! (command -v hermes > /dev/null 2>&1); then
-  wget $HERMES_SOURCE -O hermes.tar.gz
-  mkdir -p $HOME/.hermes/bin
-  tar -C $HOME/.hermes/bin/ -vxzf hermes.tar.gz
-  rm hermes.tar.gz
-  export PATH="$HOME/.hermes/bin:$PATH"
 fi
 
 # Load environment variables from .env file
@@ -283,26 +275,29 @@ function startConsumerChain() {
 }
 
 function prepareRelayer() {
+  HERMES_BIN=/home/vagrant/.hermes/bin/
   echo "Preparing hermes IBC relayer..."
   sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
     -e "0,/denom = .*/s//denom = \"icsstake\"/" \
     -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
     -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
-    hermes_config.toml > $HOME/.hermes/config.toml
-    hermes config validate
+    hermes_config.toml > config.toml
+
+  vagrant scp config.toml provider-chain-validator1:/home/vagrant/.hermes/config.toml
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN config validate"
 }
 
 function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
-  hermes create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0
-  hermes create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
 }
 
 function createIbcPaths() {
   echo "Starting relayer..."
-  touch hermes.log
-  hermes start > hermes.log 2>&1 &
-  echo "[local] started hermes IBC relayer: watch output at ./hermes.log"
+  vagrant ssh provider-chain-validator1 -- "sudo touch /var/log/hermes.log && sudo chmod 666 /var/log/hermes.log"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN start > /var/log/hermes.log 2>&1 &"
+  echo "[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log"
 }
 
 function assignKeyPostLaunch() {
