@@ -83,8 +83,9 @@ function startProviderChain() {
 
   rm gentx2.json gentx3.json
 
-  COLLECTED=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json | grep $VAL_ACCOUNT3)
-  if [ -z "$COLLECTED" ] ; then
+  # Check if genesis accounts have already been added
+  vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json | grep -q $VAL_ACCOUNT3
+  if [ $? -ne 0 ] ; then
     echo "Collecting gentxs on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
@@ -146,8 +147,7 @@ function proposeConsumerAdditionProposal() {
   "transfer_timeout_period": 600,
   "unbonding_period": 1728000, 
   "deposit": "10000000icsstake"
-} 
-
+}
 EOT
   cat prop.json
   vagrant scp prop.json provider-chain-validator1:/home/vagrant/prop.json
