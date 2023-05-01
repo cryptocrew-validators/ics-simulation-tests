@@ -88,7 +88,6 @@ function manipulateGenesis() {
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   elif [ "$CHAIN_ID" == "consumer-chain" ]; then
-    rm $DAEMON_HOME/config/genesis.json
     wget $CONSUMER_GENESIS_SOURCE -O $DAEMON_HOME/config/raw_genesis.json
     jq --arg chainid "$CHAIN_ID" '.chain_id = $chainid' $DAEMON_HOME/config/raw_genesis.json | sponge $DAEMON_HOME/config/raw_genesis.json
 
@@ -106,14 +105,6 @@ function genTx() {
   fi
 }
 
-function configNode() {
-  PERSISTENT_PEERS=$(for i in {1..3}; do
-    IP_PART=$( [ "$CHAIN_ID" == "provider-chain" ] && echo "33" || echo "34" )
-    echo -n "${CHAIN_ID}-validator${i}@192.168.${IP_PART}.1${i}:26656,"
-  done | sed 's/,$//')
-  sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS\"/g" $DAEMON_HOME/config/config.toml
-}
-
 main() {
   loadEnv
   setNodeVars
@@ -121,7 +112,6 @@ main() {
   installNode
   initNode
   manipulateGenesis
-  configNode
   genTx
 }
 

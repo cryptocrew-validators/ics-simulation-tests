@@ -33,6 +33,27 @@ function get_terminal_command() {
   esac
 }
 
+# Get peerlists for both provider and consumer chain, edit config
+function configPeers() {
+  PERSISTENT_PEERS_PROVIDER=""
+  PERSISTENT_PEERS_CONSUMER=""
+  for i in {1..3}; do
+    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
+    NODE_ID_CONSUMER="$(vagrant ssh provider-chain-validator${i} $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
+    PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
+    PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
+  done
+  PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER:1}"
+  PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER:1}"
+  echo "[provider] persistent_peers = $PERSISTENT_PEERS_PROVIDER"
+  echo "[consumer] persistent_peers = $PERSISTENT_PEERS_CONSUMER"
+
+  for i in {1..3}; do
+    vagrant ssh provider-chain-validator${i} sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_PROVIDER\"/g" $PROVIDER_HOME/config/config.toml
+    vagrant ssh provider-chain-validator${i} sed -i "s/persistent_peers = \"\"/persistent_peers = \"$PERSISTENT_PEERS_CONSUMER\"/g" $CONSUMER_HOME/config/config.toml
+  done
+}
+
 # Start all virtual machines, collect gentxs & start provider chain
 function startProviderChain() {
   echo "Starting vagrant VMs, waiting for PC to produce blocks..."
@@ -40,24 +61,30 @@ function startProviderChain() {
   vagrant up
 
   sleep 1
+  echo "Getting peerlists, editing configs..."
+  configPeers
 
   # Copy gentxs to the first validator of provider chain, collect gentxs
+  echo "Copying gentxs to provider-chain-validator1..."
   vagrant scp "provider-chain-validator2" $PROVIDER_HOME/config/gentx/*.json gentx2.json
   vagrant scp gentx2.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
   vagrant scp "provider-chain-validator3" $PROVIDER_HOME/config/gentx/*.json gentx3.json
   vagrant scp gentx3.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
   rm gentx2.json gentx3.json
 
+  echo "Collecting gentxs on provider-chain-validator1"
   vagrant ssh "provider-chain-validator1" $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   
   # Wait for the first validator to collect gentxs
   while ! vagrant ssh "provider-chain-validator1" test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
 
   # Distribute genesis file from the first validator to validators 2 and 3
+  echo "Distributing genesis file from provider-chain-validator1 to provider-chain-validator2 and provider-chain-validator3"
   vagrant scp "provider-chain-validator1:$PROVIDER_APP/config/genesis.json" genesis.json
   vagrant scp genesis.json "provider-chain-validator2:$PROVIDER_APP/config/genesis.json" 
   vagrant scp genesis.json "provider-chain-validator3:$PROVIDER_APP/config/genesis.json" 
   
+  echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
     $(get_terminal_command) "vagrant ssh \"provider-chain-validator${i}\" \"tail -f /var/log/icstest.log\"" &
 $PROVIDER_APP --home $PROVIDER_HOME start &> /var/log/icstest.log &
@@ -175,6 +202,7 @@ function assignKeyPostLaunch() {
 
 function main() {
   loadEnv
+  configPeers
   startProviderChain
   waitForProviderChain
   proposeConsumerAdditionProposal
