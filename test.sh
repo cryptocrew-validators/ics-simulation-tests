@@ -9,6 +9,7 @@ set -e
 
 if ! (command -v sponge > /dev/null 2>&1); then
   echo "moreutils needs to be installed! run: apt install moreutils"
+  exit 1
 fi
 
 # Load environment variables from .env file
@@ -140,6 +141,7 @@ function proposeConsumerAdditionProposal() {
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
 
   echo "Adding relayer account & balances"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP delete relayer --keyring-backend test -y"
   CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
   cat > relayer_account_consumer.json <<EOT
 {
