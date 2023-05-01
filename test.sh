@@ -134,7 +134,7 @@ function proposeConsumerAdditionProposal() {
   "description": "This is the proposal to create the consumer chain \"consumer-chain\".",
   "chain_id": "consumer-chain",
   "initial_height": {
-      "revision_height": 1,
+      "revision_height": 1
   },
   "genesis_hash": "$CONSUMER_BINARY_SHA256",
   "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
