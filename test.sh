@@ -76,7 +76,7 @@ function startProviderChain() {
   vagrant scp provider-chain-validator2:$PROVIDER_HOME/config/gentx/$GENTX2_FILENAME gentx2.json
   vagrant scp gentx2.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
   vagrant scp provider-chain-validator3:$PROVIDER_HOME/config/gentx/$GENTX3_FILENAME gentx3.json
-  vagrant scp gentx3.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
+  vagrant scp gentx3.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
 
   VAL_ACCOUNT2=$(cat gentx2.json | jq -r '.body.messages[0].delegator_address')
   VAL_ACCOUNT3=$(cat gentx3.json | jq -r '.body.messages[0].delegator_address')
@@ -86,7 +86,7 @@ function startProviderChain() {
   echo "Collecting gentxs on provider-chain-validator1"
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs --keyring-backend test
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   
   # Wait for the first validator to collect gentxs
   while ! vagrant ssh provider-chain-validator1 -- sudo test -f $PROVIDER_HOME/config/genesis.json; do sleep 1; done
