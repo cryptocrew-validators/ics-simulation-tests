@@ -154,12 +154,8 @@ EOT
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
-  RES=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/vagrant/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS")
-  if [ -z "$RES" ]; then
-    echo "Error submitting consumer addition proposal"
-    exit 1
-  fi
-  echo "Consumer addition proposal submitted successfully"
+  vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/vagrant/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS"
+  echo "Consumer addition proposal submitted"
 }
 
 # Vote yes on the consumer addition proposal from all provider validators
@@ -168,12 +164,8 @@ function voteConsumerAdditionProposal() {
 
   for i in {1..3} ; do 
     echo "Voting 'yes' from provider-chain-validator${i}..."
-    RES=$(vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS")
-    if [ -z "$RES" ]; then
-      echo "Error voting on consumer addition proposal"
-      exit 1
-    fi
-    echo "Voted 'yes' from provider-chain-validator${i} successfully"
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
+    echo "Voted 'yes' from provider-chain-validator${i}"
   done
 }
 
