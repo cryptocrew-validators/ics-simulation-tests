@@ -111,7 +111,7 @@ function prepareConsumerChain() {
 
 function startConsumerChain() {
   if [ "$CHAIN_ID" == "consumer-chain" ]; then
-    $DAEMON_NAME --home $DAEMON_HOME start &
+    $DAEMON_NAME --home $DAEMON_HOME start &2>1 /var/log/icstest.log
   fi
 }
 

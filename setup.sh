@@ -103,7 +103,7 @@ function startProviderChain() {
 
       # Get genesis file and persistent_peers from the first validator
       scp "${CHAIN_ID}-validator1:$DAEMON_HOME/config/genesis.json" $DAEMON_HOME/config/genesis.json
-      $DAEMON_NAME --home $DAEMON_HOME start &
+      $DAEMON_NAME --home $DAEMON_HOME start &2>1 /var/log/icstest.log
     fi
   fi
 }
