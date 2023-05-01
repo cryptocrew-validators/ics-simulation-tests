@@ -96,31 +96,6 @@ function genTx() {
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
-    
-    # Copy gentxs to the first validator of provider chain, collect gentxs
-    if [ "$NODE_INDEX" != "1" ]; then
-      scp $DAEMON_HOME/config/gentx/*.json "${CHAIN_ID}-validator1:$DAEMON_HOME/config/gentx/"
-    elif [ "$NODE_INDEX" == "1" ]; then
-      sleep 5
-      $DAEMON_NAME --home $DAEMON_HOME collect-gentxs
-    fi
-  fi
-}
-
-function startProviderChain() {
-  if [ "$CHAIN_ID" == "provider-chain" ]; then
-    if [ "$NODE_INDEX" == "1" ]; then
-      $DAEMON_NAME --home $DAEMON_HOME start &
-    else
-      # Wait for the first validator to collect gentxs
-      while ! ssh "${CHAIN_ID}-validator1" test -f $DAEMON_HOME/config/genesis.json; do sleep 2; done
-
-      # Get genesis file and persistent_peers from the first validator
-      scp "${CHAIN_ID}-validator1:$DAEMON_HOME/config/genesis.json" $DAEMON_HOME/config/genesis.json
-      $(get_terminal_command) "ssh \"${CHAIN_ID}-validator${NODE_INDEX}\" \"tail -f /var/log/icstest.log\"" &
-$DAEMON_NAME --home $DAEMON_HOME start &> /var/log/icstest.log &
-    fi
-  fi
 }
 
 function configNode() {
@@ -140,7 +115,6 @@ main() {
   manipulateGenesis
   configNode
   genTx
-  startProviderChain
 }
 
 main && echo "SUCCESS >> provider chain started!"
