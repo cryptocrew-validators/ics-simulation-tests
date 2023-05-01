@@ -64,6 +64,11 @@ function startProviderChain() {
   echo "Getting peerlists, editing configs..."
   configPeers
 
+  for i in {1..3}; do
+    vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 777 /home/vagrant"
+    vagrant ssh consumer-chain-validator${i} -- "sudo chmod -R 777 /home/vagrant"
+  done
+  
   # Copy gentxs to the first validator of provider chain, collect gentxs
   echo "Copying gentxs to provider-chain-validator1..."
   GENTX2_FILENAME=$(vagrant ssh provider-chain-validator2 -- "bash -c 'sudo ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
