@@ -1,10 +1,23 @@
 #!/bin/bash
 
-# node logs piped to /home/vagrant/icstest.log
+# node logs piped to /var/logs/chain.log
+
+PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
+RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
+HERMES_SOURCE=https://github.com/informalsystems/hermes/releases/download/v1.4.0/hermes-v1.4.0-x86_64-unknown-linux-gnu.tar.gz
 
 set -e
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
+if ! (command -v sponge > /dev/null 2>&1); then
+  echo "moreutils needs to be installed! run: apt install moreutils"
+fi
+if ! (command -v hermes > /dev/null 2>&1); then
+  wget $HERMES_SOURCE -O hermes.tar.gz
+  mkdir -p $HOME/.hermes/bin
+  tar -C $HOME/.hermes/bin/ -vxzf hermes.tar.gz
+  rm hermes.tar.gz
+  export PATH="$HOME/.hermes/bin:$PATH"
+fi
 
 # Load environment variables from .env file
 function loadEnv {
@@ -81,9 +94,14 @@ function startProviderChain() {
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json)
   if [[ ! "$GENESIS_JSON" == *"$VAL_ACCOUNT2"* ]] ; then
-    echo "Collecting gentxs on provider-chain-validator1"
+    echo "Adding genesis accounts..."
+    # Add validator accounts & relayer account
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
+    vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
+    
+    # Collect gentxs & finalize provider-chain genesis
+    echo "Collecting gentxs on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   fi
 
@@ -95,9 +113,9 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/provider_chain.log && sudo chmod 666 /var/log/provider_chain.log"
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/provider_chain.log 2>&1 &"
-    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/provider_chain.log"
+    vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr 0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
+    echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
 }
 
@@ -118,9 +136,46 @@ function proposeConsumerAdditionProposal() {
   # Prepare proposal file
   echo "Preparing consumer addition proposal..."
 
+  # Download and manipulate consumer genesis file
+  echo "Downloading consumer genesis file"
+  wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+
+  echo "Setting chain_id: consumer-chain"
+  jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
+  
+  GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
+  echo "Setting genesis time: $GENESIS_TIME" 
+  jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
+
+  echo "Adding relayer account & balances"
+  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $PROVIDER_APP --home $PROVIDER_HOME keys add relayer --recover --keyring-backend test --output json")
+  cat > relayer_account_consumer.json <<EOT
+{
+  "@type": "/cosmos.auth.v1beta1.BaseAccount",
+  "address": "$(echo $CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
+  "pub_key": null,
+  "account_number": "1",
+  "sequence": "0"
+}
+EOT
+  cat > relayer_balance_consumer.json <<EOT
+{
+  "address": "$CONSUMER_RELAYER_ACCOUNT_ADDRESS",
+  "coins": [
+    {
+      "denom": "$CONSUMER_FEE_DENOM",
+      "amount": "150000000"
+    }
+  ]
+}
+EOT
+  jq '.app_state.auth.accounts += [input]' raw_genesis.json relayer_account_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
+  jq '.app_state.bank.balances += [input]' raw_genesis.json balance.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
+  rm relayer_account_consumer.json && relayer_balance_consumer.json
+
   CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   echo "Consumer binary sha256: $CONSUMER_BINARY_SHA256"
-  CONSUMER_RAW_GENESIS_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum $CONSUMER_HOME/config/raw_genesis.json" | awk '{ print $1 }')
+  CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   echo "Consumer genesis sha256: $CONSUMER_RAW_GENESIS_SHA256"
   SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))")
   echo "Consumer spawn time: $SPAWN_TIME"
@@ -190,7 +245,7 @@ function prepareConsumerChain() {
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
-  wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
   for i in {1..3} ; do 
     vagrant scp final_genesis.json consumer-chain-validator${i}:/home/vagrant/genesis.json
@@ -213,21 +268,41 @@ function assignKey() {
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME  tx provider assign-consensus-key consumer-chain "'"$NEW_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
 }
 
-function startConsumerChain() {
-  echo ">> STARTING CONSUMER CHAIN"
-  for i in {1..3} ; do 
-    vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/consumer_chain.log && sudo chmod 666 /var/log/consumer_chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/consumer_chain.log 2>&1 &"
-    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer_chain.log"
-  done
-}
-
-################################### TODO: setup hermes, add ccv channel, check if consumer panicks
-
-
 function assignKeyPreLaunch() {
   echo "Assigning keys pre-launch..."
   assignKey
+}
+
+function startConsumerChain() {
+  echo ">> STARTING CONSUMER CHAIN"
+  for i in {1..3} ; do 
+    vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
+    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr 0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
+  done
+}
+
+function prepareRelayer() {
+  echo "Preparing hermes IBC relayer..."
+  sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
+    -e "0,/denom = .*/s//denom = \"icsstake\"/" \
+    -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
+    -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
+    hermes_config.toml > $HOME/.hermes/config.toml
+    hermes config validate
+}
+
+function createIbcPaths() {
+  echo "Creating CCV IBC Paths..."
+  hermes create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0
+  hermes create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1
+}
+
+function createIbcPaths() {
+  echo "Starting relayer..."
+  touch hermes.log
+  hermes start > hermes.log 2>&1 &
+  echo "[local] started hermes IBC relayer: watch output at ./hermes.log"
 }
 
 function assignKeyPostLaunch() {
@@ -244,6 +319,9 @@ function main() {
   prepareConsumerChain
   assignKeyPreLaunch
   startConsumerChain
+  prepareRelayer
+  createIbcPaths
+  startRelayer
   assignKeyPostLaunch
 }
 

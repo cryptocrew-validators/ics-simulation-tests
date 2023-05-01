@@ -87,14 +87,7 @@ function manipulateGenesis() {
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-  elif [ "$CHAIN_ID" == "consumer-chain" ]; then
-    wget $CONSUMER_GENESIS_SOURCE -O $DAEMON_HOME/config/raw_genesis.json
-    jq --arg chainid "$CHAIN_ID" '.chain_id = $chainid' $DAEMON_HOME/config/raw_genesis.json | sponge $DAEMON_HOME/config/raw_genesis.json
-
-    GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
-    jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/raw_genesis.json | sponge $DAEMON_HOME/config/raw_genesis.json
   fi
-  
 }
 
 function genTx() {
