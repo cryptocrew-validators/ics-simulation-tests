@@ -104,7 +104,7 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- sudo touch /home/vagrant/icstest.log && sudo chmod 666 /home/vagrant/icstest.log && $PROVIDER_APP --home $PROVIDER_HOME start > /home/vagrant/icstest.log 2>&1
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start 2>&1 | sudo tee /home/vagrant/icstest.log"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /home/vagrant/icstest.log"
   done
 }
