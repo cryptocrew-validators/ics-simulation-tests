@@ -66,9 +66,11 @@ function startProviderChain() {
 
   # Copy gentxs to the first validator of provider chain, collect gentxs
   echo "Copying gentxs to provider-chain-validator1..."
-  vagrant scp provider-chain-validator2 $PROVIDER_HOME/config/gentx/*.json gentx2.json
+  GENTX2_FILENAME=$(vagrant ssh provider-chain-validator2 -- "bash -c 'ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
+  GENTX3_FILENAME=$(vagrant ssh provider-chain-validator3 -- "bash -c 'ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
+  vagrant scp provider-chain-validator2:$PROVIDER_HOME/config/gentx/$GENTX2_FILENAME gentx2.json
   vagrant scp gentx2.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
-  vagrant scp provider-chain-validator3 $PROVIDER_HOME/config/gentx/*.json gentx3.json
+  vagrant scp provider-chain-validator3:$PROVIDER_HOME/config/gentx/$GENTX3_FILENAME gentx3.json
   vagrant scp gentx3.json $provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
   rm gentx2.json gentx3.json
 
