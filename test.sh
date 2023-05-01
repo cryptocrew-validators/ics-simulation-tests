@@ -56,7 +56,7 @@ function configPeers() {
 
 # Start all virtual machines, collect gentxs & start provider chain
 function startProviderChain() {
-  echo "Starting vagrant VMs, waiting for PC to produce blocks..."
+  echo "Starting vagrant VMs"
   vagrant plugin install vagrant-scp
   vagrant up
 
@@ -65,8 +65,8 @@ function startProviderChain() {
   configPeers
 
   for i in {1..3}; do
-    vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 777 $PROVIDER_HOME"
-    vagrant ssh consumer-chain-validator${i} -- "sudo chmod -R 777 $CONSUMER_HOME"
+    vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 666 $PROVIDER_HOME"
+    vagrant ssh consumer-chain-validator${i} -- "sudo chmod -R 666 $CONSUMER_HOME"
   done
   
   # Copy gentxs to the first validator of provider chain, collect gentxs
@@ -85,9 +85,7 @@ function startProviderChain() {
 
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json)
-  COLLECTED=$(echo "$GENESIS_JSON" | grep $VAL_ACCOUNT2)
-
-  if [ -z "$COLLECTED" ] ; then
+  if [ ! "$GENESIS_JSON" == *"$VAL_ACCOUNT2"* ] ; then
     echo "Collecting gentxs on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
