@@ -16,6 +16,20 @@ function loadEnv {
   fi
 }
 
+function get_terminal_command() {
+  local desktop_env
+  desktop_env="$(echo $XDG_CURRENT_DESKTOP | tr '[:upper:]' '[:lower:]')"
+
+  case $desktop_env in
+    *gnome*)
+      echo "gnome-terminal --"
+      ;;
+    *)
+      echo "xterm -e"
+      ;;
+  esac
+}
+
 function setNodeVars() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
     DAEMON_NAME=$PROVIDER_APP
@@ -103,7 +117,8 @@ function startProviderChain() {
 
       # Get genesis file and persistent_peers from the first validator
       scp "${CHAIN_ID}-validator1:$DAEMON_HOME/config/genesis.json" $DAEMON_HOME/config/genesis.json
-      $DAEMON_NAME --home $DAEMON_HOME start &2>1 /var/log/icstest.log
+      $(get_terminal_command) "ssh \"${CHAIN_ID}-validator${NODE_INDEX}\" \"tail -f /var/log/icstest.log\"" &
+$DAEMON_NAME --home $DAEMON_HOME start &> /var/log/icstest.log &
     fi
   fi
 }

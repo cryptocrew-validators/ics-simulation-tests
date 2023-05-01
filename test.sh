@@ -18,6 +18,21 @@ function loadEnv {
   fi
 }
 
+# Determine desktop environment
+function get_terminal_command() {
+  local desktop_env
+  desktop_env="$(echo $XDG_CURRENT_DESKTOP | tr '[:upper:]' '[:lower:]')"
+
+  case $desktop_env in
+    *gnome*)
+      echo "gnome-terminal --"
+      ;;
+    *)
+      echo "xterm -e"
+      ;;
+  esac
+}
+
 # Start provider chain and wait for it to produce blocks
 function startAndWaitForProviderChain() {
   echo "Starting vagrant VMs, waiting for PC to produce blocks..."
@@ -114,7 +129,8 @@ function prepareConsumerChain() {
 
 function startConsumerChain() {
   if [ "$CHAIN_ID" == "consumer-chain" ]; then
-    $DAEMON_NAME --home $DAEMON_HOME start &2>1 /var/log/icstest.log
+    $(get_terminal_command) "ssh \"${CHAIN_ID}-validator${NODE_INDEX}\" \"tail -f /var/log/icstest.log\"" &
+$DAEMON_NAME --home $DAEMON_HOME start &> /var/log/icstest.log &
   fi
 }
 
