@@ -6,12 +6,12 @@ sudo apt-get install -yy git build-essential curl jq unzip
 sudo timedatectl set-timezone UTC
 
 function loadEnv {
-  if test -f .env ; then 
-      ENV=$(realpath .env)
+  ENV=$(/home/vagrant/.env)
+  if test -f $ENV ; then 
       export $(grep "^[^#;]" $ENV | xargs)
       echo "loaded configuration from ENV file: $ENV"
   else
-      echo "ENV file not found at .env"
+      echo "ENV file not found at $ENV"
       exit 1
   fi
 }
