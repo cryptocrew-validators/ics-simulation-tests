@@ -49,11 +49,11 @@ function setNodeVars() {
 function installGo() {
   wget -4 $DAEMON_GO_SOURCE -O $(basename $DAEMON_GO_SOURCE)
   sudo rm -rf /usr/local/go
-  sudo tar -C /usr/local -xzf $(basename $DAEMON_GO_SOURCE)
+  sudo tar -C /usr/local -xvzf $(basename $DAEMON_GO_SOURCE)
   rm $(basename $DAEMON_GO_SOURCE)
-  mkdir -p $HOME/go/bin
+  mkdir -p /home/vagrant/go/bin
   export GOROOT=/usr/local/go
-  export GOPATH=$HOME/go
+  export GOPATH=/home/vagrant/go
   export GO111MODULE=on
 }
 
