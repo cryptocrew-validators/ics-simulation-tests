@@ -65,8 +65,8 @@ function startProviderChain() {
   configPeers
 
   for i in {1..3}; do
-    vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 777 /home/vagrant"
-    vagrant ssh consumer-chain-validator${i} -- "sudo chmod -R 777 /home/vagrant"
+    vagrant ssh provider-chain-validator${i} -- "sudo chmod -R 777 $PROVIDER_HOME"
+    vagrant ssh consumer-chain-validator${i} -- "sudo chmod -R 777 $CONSUMER_HOME"
   done
   
   # Copy gentxs to the first validator of provider chain, collect gentxs
