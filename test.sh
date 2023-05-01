@@ -141,7 +141,7 @@ function proposeConsumerAdditionProposal() {
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
 
   echo "Adding relayer account & balances"
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
   CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
   cat > relayer_account_consumer.json <<EOT
 {
@@ -154,7 +154,7 @@ function proposeConsumerAdditionProposal() {
 EOT
   cat > relayer_balance_consumer.json <<EOT
 {
-  "address": "$CONSUMER_RELAYER_ACCOUNT_ADDRESS",
+  "address": "$CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
   "coins": [
     {
       "denom": "$CONSUMER_FEE_DENOM",
@@ -165,7 +165,7 @@ EOT
 EOT
   jq '.app_state.auth.accounts += [input]' raw_genesis.json relayer_account_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   jq '.app_state.bank.balances += [input]' raw_genesis.json relayer_balance_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
-  rm relayer_account_consumer.json && relayer_balance_consumer.json
+  rm relayer_account_consumer.json relayer_balance_consumer.json
 
   CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   echo "Consumer binary sha256: $CONSUMER_BINARY_SHA256"
