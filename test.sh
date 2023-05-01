@@ -56,7 +56,7 @@ function proposeConsumerAdditionProposal() {
 
   CONSUMER_BINARY_SHA256=$(ssh "consumer-chain-validator1" "sha256sum $(which $CONSUMER_APP)" | awk '{ print $1 }')
   CONSUMER_RAW_GENESIS_SHA256=$(ssh "consumer-chain-validator1" "sha256sum $DAEMON_HOME/genesis/raw_genesis.json" | awk '{ print $1 }')
-  SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
+  SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))")
   cat > prop.json <<EOT
 {
   "title": "Create the Consumer chain",
