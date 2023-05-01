@@ -2,7 +2,7 @@
 
 # Update and install required packages, set timezone to UTC
 sudo apt-get update
-sudo apt-get install -yy git build-essential curl jq unzip
+sudo apt-get install -yy git build-essential curl jq unzip moreutils net-tools
 sudo timedatectl set-timezone UTC
 
 function loadEnv {
@@ -75,7 +75,7 @@ function installNode() {
 
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
-  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID"
+  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
 }
 
 function manipulateGenesis() {
