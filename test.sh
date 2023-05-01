@@ -83,7 +83,7 @@ function startProviderChain() {
 
   rm gentx2.json gentx3.json
 
-  COLLECTED=$(ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json | grep $VAL_ACCOUNT3)
+  COLLECTED=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json | grep $VAL_ACCOUNT3)
   if [ -z $COLLECTED ] ; then
     echo "Collecting gentxs on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
