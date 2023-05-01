@@ -100,7 +100,7 @@ function startProviderChain() {
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
     $(get_terminal_command) "vagrant ssh provider-chain-validator${i} -- sudo tail -f /var/log/icstest.log" &
-$PROVIDER_APP --home $PROVIDER_HOME start &> /var/log/icstest.log &
+sudo $PROVIDER_APP --home $PROVIDER_HOME start > /var/log/icstest.log 2>&1
   done
 }
 
@@ -197,7 +197,7 @@ function prepareConsumerChain() {
 function startConsumerChain() {
   for i in {1..3} ; do 
     $(get_terminal_command) "vagrant ssh consumer-chain-validator${i} -- sudo tail -f /var/log/icstest.log" &
-$CONSUMER_APP --home $CONSUMER_HOME start &> /var/log/icstest.log &
+sudo $CONSUMER_APP --home $CONSUMER_HOME start > /var/log/icstest.log 2>&1
   done
 }
 
