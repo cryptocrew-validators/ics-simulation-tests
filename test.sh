@@ -162,7 +162,7 @@ EOT
 }
 EOT
   jq '.app_state.auth.accounts += [input]' raw_genesis.json relayer_account_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
-  jq '.app_state.bank.balances += [input]' raw_genesis.json balance.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
+  jq '.app_state.bank.balances += [input]' raw_genesis.json relayer_balance_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   rm relayer_account_consumer.json && relayer_balance_consumer.json
 
   CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
