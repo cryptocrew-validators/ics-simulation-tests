@@ -102,7 +102,7 @@ function startProviderChain() {
   
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
-    vagrant ssh provider-chain-validator${i} -- "sudo touch /home/vagrant/icstest.log && sudo $PROVIDER_APP --home $PROVIDER_HOME start > /home/vagrant/icstest.log 2>&1"
+    vagrant ssh provider-chain-validator${i} -- sudo touch /home/vagrant/icstest.log && sudo chmod 666 /home/vagrant/icstest.log && $PROVIDER_APP --home $PROVIDER_HOME start > /home/vagrant/icstest.log 2>&1
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /home/vagrant/icstest.log"
   done
 }
@@ -214,7 +214,7 @@ function assignKey() {
 
 function startConsumerChain() {
   for i in {1..3} ; do 
-    vagrant ssh consumer-chain-validator${i} -- "sudo touch /home/vagrant/icstest.log && sudo $CONSUMER_APP --home $CONSUMER_HOME start > /home/vagrant/icstest.log 2>&1"
+    vagrant ssh consumer-chain-validator${i} -- sudo touch /home/vagrant/icstest.log && sudo chmod 666 /home/vagrant/icstest.log && sudo $CONSUMER_APP --home $CONSUMER_HOME start > /home/vagrant/icstest.log 2>&1
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /home/vagrant/icstest.log"
   done
 }
