@@ -101,7 +101,7 @@ function genTx() {
 }
 
 function installRelayer() {
-  if [ "$CHAIN_ID" == "provider-chain" ] && [ $NODE_INDEX -eq 1 ]; then
+  if [ "$CHAIN_ID" == "provider-chain" ] && [ "$NODE_INDEX" == "1" ]; then
     wget $HERMES_SOURCE -O hermes.tar.gz
     mkdir -p /home/vagrant/.hermes/bin
     tar -C /home/vagrant/.hermes/bin/ -vxzf hermes.tar.gz

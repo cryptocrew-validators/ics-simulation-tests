@@ -317,6 +317,7 @@ function main() {
   prepareRelayer
   createIbcPaths
   startRelayer
+  sleep 120
   assignKeyPostLaunch
 }
 
