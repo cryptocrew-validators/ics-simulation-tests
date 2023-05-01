@@ -148,7 +148,7 @@ function proposeConsumerAdditionProposal() {
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
 
   echo "Adding relayer account & balances"
-  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $PROVIDER_APP --home $PROVIDER_HOME keys add relayer --recover --keyring-backend test --output json")
+  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP --home $CONSUMER_HOME keys add relayer --recover --keyring-backend test --output json")
   cat > relayer_account_consumer.json <<EOT
 {
   "@type": "/cosmos.auth.v1beta1.BaseAccount",
