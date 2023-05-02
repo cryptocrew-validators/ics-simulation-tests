@@ -283,7 +283,7 @@ function startConsumerChain() {
 }
 
 function prepareRelayer() {
-  HERMES_BIN=/home/vagrant/.hermes/bin/
+  HERMES_BIN=/home/vagrant/.hermes/bin/hermes
   echo "Preparing hermes IBC relayer..."
   sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
     -e "0,/denom = .*/s//denom = \"icsstake\"/" \
