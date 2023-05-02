@@ -10,7 +10,8 @@ It bootstraps a local provider testnet with 3 validators, proposes a `consumer-a
 
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-- [jq](https://stedolan.github.io/jq/download/)
+- [jq](https://stedolan.github.io/jq/download)
+- [moreutils](https://joeyh.name/code/moreutils)
 
 ## Setup
 
@@ -54,6 +55,10 @@ tail -f/var/log/chain.log
 Watch relayer output on `provider-chain-validator1`: 
 ```sh
 tail -f/var/log/relayer.log
+```
+Clean up:
+```sh
+vagrant destroy -f
 ```
 
 ## License
