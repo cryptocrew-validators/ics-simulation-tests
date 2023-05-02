@@ -65,7 +65,17 @@ function configPeers() {
 function startProviderChain() {
   echo "Starting vagrant VMs"
   vagrant plugin install vagrant-scp
-  vagrant up
+  
+  # Loop through the VM names and run vagrant up in the background
+  vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
+  for vm in "${vms[@]}"; do
+    echo "Starting provisioning for $vm"
+    vagrant up $vm --provision --no-parallel &
+  done
+
+  # Wait for all background tasks to complete
+  wait
+  echo "All VMs have been provisioned."
 
   sleep 1
   echo "Getting peerlists, editing configs..."
