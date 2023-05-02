@@ -10,6 +10,15 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
+
+      if i == 1
+        node.vm.provision "shell", inline: <<-SHELL
+          mkdir -p /home/vagrant/.hermes
+          chown vagrant:vagrant /home/vagrant/.hermes
+        SHELL
+
+        node.vm.provision "file", source: "hermes_config.toml", destination: "/home/vagrant/.hermes/hermes_config.toml"
+      end
     end
   end
 
