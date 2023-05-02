@@ -243,7 +243,7 @@ function prepareConsumerChain() {
 
   # TODO - erroring here in script, not in bash...
   echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
-  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP query provider consumer-genesis consumer-chain -o json")
+  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
 
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
