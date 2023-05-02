@@ -66,7 +66,7 @@ function configPeers() {
 function startProviderChain() {
   echo "Starting vagrant VMs"
   vagrant plugin install vagrant-scp
-  
+  vagrant destroy -f || true
   # Loop through the VM names and run vagrant up in the background
   vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
   for vm in "${vms[@]}"; do
