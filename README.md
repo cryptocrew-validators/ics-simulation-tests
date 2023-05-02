@@ -46,15 +46,15 @@ The script will perform the following steps:
 8. Create IBC paths between provider and consumer chain.
 9. Start a persistent IBC relayer.
 10. Test key assignment post consumer chain launch.
-**11. Upon successful completion, you should see the message "All tests passed!".**
+11. **Upon successful completion, you should see the message "All tests passed!".**
 
 Watch node output on each validator: 
 ```sh
-tail -f/var/log/chain.log
+tail -f /var/log/chain.log
 ```
 Watch relayer output on `provider-chain-validator1`: 
 ```sh
-tail -f/var/log/relayer.log
+tail -f /var/log/relayer.log
 ```
 Clean up:
 ```sh
