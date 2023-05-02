@@ -123,10 +123,11 @@ function installRelayer() {
     echo "Installing ibc-relayer-cli crate and building the hermes binary"
     cargo install ibc-relayer-cli --bin hermes --locked
 
-    mkdir /home/vagrant/.hermes
+    mkdir -p /home/vagrant/.hermes/bin
+    sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
     sudo chmod -R 777 /home/vagrant/.hermes
     
-    hermes version
+    /home/vagrant/.hermes/bin/hermes version
   fi
 }
 
