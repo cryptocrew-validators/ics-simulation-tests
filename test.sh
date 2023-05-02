@@ -5,6 +5,7 @@
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
+HERMES_CONFIG=/home/vagrant/.hermes/config.toml
 
 set -e
 
@@ -354,19 +355,19 @@ function prepareRelayer() {
     hermes_config.toml > config.toml
 
   vagrant scp config.toml provider-chain-validator1:/home/root/.hermes/config.toml
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN config validate"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG config validate"
 }
 
 function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0"
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
 }
 
 function startRelayer() {
   echo "Starting relayer..."
   vagrant ssh provider-chain-validator1 -- "sudo touch /var/log/hermes.log && sudo chmod 666 /var/log/hermes.log"
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN start > /var/log/hermes.log 2>&1 &"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG start > /var/log/hermes.log 2>&1 &"
   echo "[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log"
 }
 
