@@ -176,7 +176,7 @@ EOT
   echo "Consumer binary sha256: $CONSUMER_BINARY_SHA256"
   CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   echo "Consumer genesis sha256: $CONSUMER_RAW_GENESIS_SHA256"
-  SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))")
+  SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
   echo "Consumer spawn time: $SPAWN_TIME"
   cat > prop.json <<EOT
 {
@@ -215,34 +215,96 @@ function voteConsumerAdditionProposal() {
   for i in {1..3} ; do 
     echo "Voting 'yes' from provider-chain-validator${i}..."
     vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
-    echo "Voted 'yes' from provider-chain-validator${i}"
   done
 }
 
-# Prepare consumer chain: copy private validator keys and finalizing genesis
-function prepareConsumerChain() {
-  echo "Preparing consumer chain..."
-
-  for i in {1..3} ; do 
-    echo "Copying private validator keys from provider-chain-validator${i} to consumer-chain-validator${i}..."
-    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
-    vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
-    rm "priv_validator_key${i}.json" 
-  done
-
+function waitForProposal() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
   while [[ $PROPOSAL_STATUS != "PROPOSAL_STATUS_PASSED" ]]; do
     PROPOSAL_STATUS=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME q gov proposal 1 -o json | jq -r '.status'")
     sleep 2
   done
+
   echo "Consumer addition proposal passed"
 
   echo "Waiting 1 block for everything to be propagated..."
   sleep 6
+}
 
+function testKeyAssignment() {
+  if [[ "$1" == *"newkey"* ]]; then
+    echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
+    vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 777 /home/vagrant/tmp"
+  elif [[ "$1" == *"samekey"* ]]; then
+    echo "Using the PREVIOUS (SAME) key for KeyAssignment test on provider-chain-validator1, checking location..."
+    TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
+    echo $TMP_DIR_EXISTS
+    if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
+      vagrant ssh provider-chain-validator1 -- "sudo mkdir /home/vagrant/tmp && sudo cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 777 /home/vagrant/tmp"
+    fi
+  fi
+
+  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key1_UPDATED_"$1".json
+
+  UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')'"}'
+  echo "New PubKey: $UPDATED_PUBKEY"
+
+  echo "Assigning updated key on provider-chain-validator1"
+  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$UPDATED_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
+
+  sleep 2
+  echo "Copying key $1 to consumer-chain-validator1"
+  vagrant scp priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
+}
+
+
+function assignKeyPreLaunchNewKey() {
+  echo "Assigning keys pre-launch..."
+  testKeyAssignment "1-prelaunch-newkey"
+}
+
+function waitForSpawnTime() {
+  echo "Waiting for spawn time to be reached: $SPAWN_TIME"
+  CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
+  CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)
+  SPAWN_TIME_SECONDS=$(date -d "$SPAWN_TIME" +%s)
+  REMAINING_SECONDS=$((SPAWN_TIME_SECONDS - CURRENT_TIME_SECONDS))
+  echo "ETA: $REMAINING_SECONDS seconds..."
+  
+  while true; do
+    CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
+    if [[ "$CURRENT_TIME" > "$SPAWN_TIME" ]]; then
+      break
+    fi
+    sleep 5
+  done
+  
+  echo "Spawn time reached!"
+}
+
+# Prepare consumer chain: copy private validator keys and finalizing genesis
+function prepareConsumerChain() {
+  echo "Preparing consumer chain..."
+
+  # Check if we also need to include provider-chain-validat1 key, or if a KeyAssignment test has been run before (key has already been copied in this case)
+  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist'")
+  if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
+  echo "Copying ORIGINAL private validator keys from provider-chain-validator1 to consumer-chain-validator1..."
+    vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key1.json
+    vagrant scp priv_validator_key1.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json
+  fi
+
+  # Copy all other keys
+  for i in {2..3} ; do 
+    echo "Copying ORIGINAL private validator keys from provider-chain-validator${i} to consumer-chain-validator${i}..."
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
+    vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
+    rm "priv_validator_key${i}.json" 
+  done
+  
   # TODO - erroring here in script, not in bash...
-  echo "Querying CCV consumer state and finalizing consumer chain genesis on each consumer validator..."
+  echo "Querying CCV consumer state and finalizing consumer chain genesis on provider-chain-validator 2..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
 
@@ -253,25 +315,6 @@ function prepareConsumerChain() {
   rm "ccv.json"
 }
 
-function assignKey() {
-  echo "Generating new key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 777 /home/vagrant/tmp"
-  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key.json
-  vagrant ssh provider-chain-validator1 -- sudo rm -rf /home/vagrant/tmp
-
-  NEW_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key.json | jq -r '.pub_key.value')'"}'
-  echo "New PubKey: $NEW_PUBKEY"
-  echo "Copying new key to consumer-chain-validator1"
-  vagrant scp priv_validator_key.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
-
-  echo "Assigning new key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$NEW_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
-}
-
-function assignKeyPreLaunch() {
-  echo "Assigning keys pre-launch..."
-  assignKey
-}
 
 function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
@@ -301,16 +344,21 @@ function createIbcPaths() {
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
 }
 
-function createIbcPaths() {
+function startRelayer() {
   echo "Starting relayer..."
   vagrant ssh provider-chain-validator1 -- "sudo touch /var/log/hermes.log && sudo chmod 666 /var/log/hermes.log"
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN start > /var/log/hermes.log 2>&1 &"
   echo "[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log"
 }
 
-function assignKeyPostLaunch() {
+function assignKeyPostLaunchNewKey() {
   echo "Assigning keys post-launch..."
-  assignKey
+  testKeyAssignment "2-postlaunch-newkey"
+}
+
+function assignKeyPostLaunchSameKey() {
+  echo "Assigning keys post-launch..."
+  testKeyAssignment "3-postlaunch-samekey"
 }
 
 function main() {
@@ -319,14 +367,16 @@ function main() {
   waitForProviderChain
   proposeConsumerAdditionProposal
   voteConsumerAdditionProposal
+  waitForProposal
+  assignKeyPreLaunchNewKey
+  waitForSpawnTime
   prepareConsumerChain
-  assignKeyPreLaunch
   startConsumerChain
   prepareRelayer
   createIbcPaths
-  startRelayer
-  sleep 120
-  assignKeyPostLaunch
+  startRelayer && sleep 120 # sleeps to offer more time to watch output, can be removed
+  assignKeyPreLaunchNewKey && sleep 60 # sleeps to offer more time to watch output, can be removed
+  assignKeyPreLaunchSameKey && sleep 60 # sleeps to offer more time to watch output, can be removed
 }
 
 main
