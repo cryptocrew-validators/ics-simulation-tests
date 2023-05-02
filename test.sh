@@ -66,13 +66,21 @@ function configPeers() {
 function startProviderChain() {
   echo "Starting vagrant VMs"
   vagrant plugin install vagrant-scp
-  vagrant destroy -f || true
-  # Loop through the VM names and run vagrant up in the background
-  vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
-  for vm in "${vms[@]}"; do
-    echo "Starting provisioning for $vm"
-    vagrant up $vm --provision --no-parallel &
-  done
+  
+  PROVISIONED_FLAG_FILE="/home/vagrant/.provisioned"
+
+  # Check if the flag file exists; if it does not, start provisioning
+  if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
+
+    # Loop through the VM names and run vagrant up in the background
+    vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
+    for vm in "${vms[@]}"; do
+      echo "Starting provisioning for $vm"
+      vagrant up $vm --provision --no-parallel &
+    done
+
+    touch "$PROVISIONED_FLAG_FILE"
+  fi
 
   # Wait for all background tasks to complete
   wait
@@ -100,6 +108,7 @@ function startProviderChain() {
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json)
   if [[ ! "$GENESIS_JSON" == *"$VAL_ACCOUNT2"* ]] ; then
     echo "Adding genesis accounts..."
+
     # Add validator accounts & relayer account
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
@@ -150,12 +159,6 @@ function proposeConsumerAdditionProposal() {
 
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
-
-  # TEST: Neutron consumer genesis possible issue
-  echo "Testing Neutron raw_genesis.json fixes:"
-  sed -i 's/"limit": 5/"limit": "5"/g' raw_genesis.json
-  jq 'del(.app_state.wasm.gen_msgs[] | select(.instantiate_contract.label == "ASTROPORT_SATELLITE"))' raw_genesis.json | sponge raw_genesis.json
-  ###############################################
   
   GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
   echo "Setting genesis time: $GENESIS_TIME" 
