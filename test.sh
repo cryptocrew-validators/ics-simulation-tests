@@ -67,7 +67,7 @@ function startProviderChain() {
   echo "Starting vagrant VMs"
   vagrant plugin install vagrant-scp
   
-  PROVISIONED_FLAG_FILE="/home/vagrant/.provisioned"
+  PROVISIONED_FLAG_FILE=".provisioned"
 
   # Check if the flag file exists; if it does not, start provisioning
   if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
