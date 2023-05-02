@@ -122,8 +122,10 @@ function installRelayer() {
     cargo install ibc-relayer-cli --bin hermes --locked
 
     mkdir -p /home/vagrant/.hermes/bin
+    mkdir -p /home/root/.hermes
     sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
     sudo chmod -R 777 /home/vagrant/.hermes
+    sudo chmod -R 777 /home/root/.hermes
     
     /home/vagrant/.hermes/bin/hermes version
   fi
