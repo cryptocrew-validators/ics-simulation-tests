@@ -243,7 +243,7 @@ function testKeyAssignment() {
   TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
   echo $TMP_DIR_EXISTS
   if [[ "$1" == *"newkey"* ]]; then
-    if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
+    if [[ "$TMP_DIR_EXISTS" == *"exists"* ]]; then
       vagrant ssh provider-chain-validator1 -- "sudo rm -rf /home/vagrant/tmp"
     fi
     echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
