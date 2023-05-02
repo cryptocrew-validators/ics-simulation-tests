@@ -107,6 +107,7 @@ function installRelayer() {
     tar -C /home/vagrant/.hermes/bin/ -vxzf hermes.tar.gz
     rm hermes.tar.gz
     export PATH="/home/vagrant/.hermes/bin:$PATH"
+    sudo chmod -R 777 /home/vagrant/.hermes
   fi
 }
 
