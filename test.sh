@@ -240,13 +240,16 @@ function waitForProposal() {
 }
 
 function testKeyAssignment() {
+  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
+  echo $TMP_DIR_EXISTS
   if [[ "$1" == *"newkey"* ]]; then
+    if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
+      vagrant ssh provider-chain-validator1 -- "sudo rm -rf /home/vagrant/tmp"
+    fi
     echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 777 /home/vagrant/tmp"
   elif [[ "$1" == *"samekey"* ]]; then
     echo "Using the PREVIOUS (SAME) key for KeyAssignment test on provider-chain-validator1, checking location..."
-    TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
-    echo $TMP_DIR_EXISTS
     if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
       vagrant ssh provider-chain-validator1 -- "sudo mkdir /home/vagrant/tmp && sudo cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 777 /home/vagrant/tmp"
     fi
