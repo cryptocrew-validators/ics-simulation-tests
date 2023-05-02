@@ -1,0 +1,64 @@
+10:35AM ERR WARNING: The minimum-gas-prices config in app.toml is set to the empty string. This defaults to 0 in the current version, but will error in the next version (SDK v0.45). Please explicitly put the desired minimum-gas-prices in your app.toml.
+10:35AM INF Enabled wasm proposals proposals=["MigrateContract","SudoContract","UpdateAdmin","ClearAdmin","PinCodes","UnpinCodes"]
+10:35AM INF starting node with ABCI Tendermint in-process
+10:35AM INF service start impl=multiAppConn module=proxy msg={}
+10:35AM INF service start connection=query impl=localClient module=abci-client msg={}
+10:35AM INF service start connection=snapshot impl=localClient module=abci-client msg={}
+10:35AM INF service start connection=mempool impl=localClient module=abci-client msg={}
+10:35AM INF service start connection=consensus impl=localClient module=abci-client msg={}
+10:35AM INF service start impl=EventBus module=events msg={}
+10:35AM INF service start impl=PubSub module=pubsub msg={}
+10:35AM INF service start impl=IndexerService module=txindex msg={}
+10:35AM INF ABCI Handshake App Info hash= height=0 module=consensus protocol-version=0 software-version=1.0.0-rc1
+10:35AM INF ABCI Replay Blocks appHeight=0 module=consensus stateHeight=0 storeHeight=0
+10:35AM INF created new capability module=ibc name=ports/transfer
+10:35AM INF port binded module=x/ibc/port port=transfer
+10:35AM INF claimed capability capability=1 module=transfer name=ports/transfer
+10:35AM INF asserting crisis invariants inv=1/2 module=x/crisis name=bank/nonnegative-outstanding
+10:35AM INF asserting crisis invariants inv=2/2 module=x/crisis name=bank/total-supply
+10:35AM INF asserted all invariants duration=0.114797 height=0 module=x/crisis
+panic: value from ParamSetPair is invalid: : decimal string cannot be empty
+
+goroutine 1 [running]:
+github.com/cosmos/cosmos-sdk/x/params/types.Subspace.SetParamSet({{0x2cb16c0, 0xc001083a20}, 0xc000014bb0, {0x2c8b078, 0xc000f9e7b0}, {0x2c8b0c8, 0xc000f9e910}, {0xc001068060, 0xb, 0x2c}, ...}, ...)
+	github.com/cosmos/cosmos-sdk@v0.45.15/x/params/types/subspace.go:246 +0x29c
+github.com/cosmos/interchain-security/x/ccv/consumer/keeper.Keeper.SetParams(...)
+	github.com/cosmos/interchain-security@v1.0.1-0.20230419165046-6089b6121c33/x/ccv/consumer/keeper/params.go:30
+github.com/cosmos/interchain-security/x/ccv/consumer/keeper.Keeper.InitGenesis({{0x2c8b078, 0xc000f9e8b0}, {0x2cb16c0, 0xc001083a20}, {{0x2cb16c0, 0xc001083a20}, 0xc000014bb0, {0x2c8b078, 0xc000f9e7b0}, {0x2c8b0c8, ...}, ...}, ...}, ...)
+	github.com/cosmos/interchain-security@v1.0.1-0.20230419165046-6089b6121c33/x/ccv/consumer/keeper/genesis.go:32 +0x365
+github.com/cosmos/interchain-security/x/ccv/consumer.AppModule.InitGenesis({{}, {{0x2c8b078, 0xc000f9e8b0}, {0x2cb16c0, 0xc001083a20}, {{0x2cb16c0, 0xc001083a20}, 0xc000014bb0, {0x2c8b078, 0xc000f9e7b0}, ...}, ...}}, ...)
+	github.com/cosmos/interchain-security@v1.0.1-0.20230419165046-6089b6121c33/x/ccv/consumer/module.go:135 +0x125
+github.com/cosmos/cosmos-sdk/types/module.(*Manager).InitGenesis(_, {{0x2ca23b8, 0xc000130138}, {0x2cb1228, 0xc00108d9c0}, {{0x0, 0x0}, {0xc0010420b0, 0xe}, 0x0, ...}, ...}, ...)
+	github.com/cosmos/cosmos-sdk@v0.45.15/types/module/module.go:327 +0x23d
+github.com/neutron-org/neutron/app.(*App).InitChainer(_, {{0x2ca23b8, 0xc000130138}, {0x2cb1228, 0xc00108d9c0}, {{0x0, 0x0}, {0xc0010420b0, 0xe}, 0x0, ...}, ...}, ...)
+	github.com/neutron-org/neutron/app/app.go:933 +0x20e
+github.com/cosmos/cosmos-sdk/baseapp.(*BaseApp).InitChain(0xc000155340, {{0x0, 0xedbe2de10, 0x0}, {0xc0010420b0, 0xe}, 0xc000ec90e0, {0x3cbd368, 0x0, 0x0}, ...})
+	github.com/cosmos/cosmos-sdk@v0.45.15/baseapp/abci.go:63 +0x455
+github.com/tendermint/tendermint/abci/client.(*localClient).InitChainSync(0xc000f81200, {{0x0, 0xedbe2de10, 0x0}, {0xc0010420b0, 0xe}, 0xc000ec90e0, {0x3cbd368, 0x0, 0x0}, ...})
+	github.com/tendermint/tendermint@v0.34.27/abci/client/local_client.go:272 +0x118
+github.com/tendermint/tendermint/proxy.(*appConnConsensus).InitChainSync(0xc000536210?, {{0x0, 0xedbe2de10, 0x0}, {0xc0010420b0, 0xe}, 0xc000ec90e0, {0x3cbd368, 0x0, 0x0}, ...})
+	github.com/tendermint/tendermint@v0.34.27/proxy/app_conn.go:77 +0x55
+github.com/tendermint/tendermint/consensus.(*Handshaker).ReplayBlocks(_, {{{0xb, 0x0}, {0x1e631e7, 0x7}}, {0xc0010420b0, 0xe}, 0x1, 0x0, {{0x0, ...}, ...}, ...}, ...)
+	github.com/tendermint/tendermint@v0.34.27/consensus/replay.go:319 +0xf18
+github.com/tendermint/tendermint/consensus.(*Handshaker).Handshake(0xc000c3dbb8, {0x2cb40f8, 0xc0001208f0})
+	github.com/tendermint/tendermint@v0.34.27/consensus/replay.go:268 +0x3d4
+github.com/tendermint/tendermint/node.doHandshake({_, _}, {{{0xb, 0x0}, {0x1e631e7, 0x7}}, {0xc0010420b0, 0xe}, 0x1, 0x0, ...}, ...)
+	github.com/tendermint/tendermint@v0.34.27/node/node.go:333 +0x1b8
+github.com/tendermint/tendermint/node.NewNode(0xc00108f180, {0x2c9ece0, 0xc001064aa0}, 0xc001024040, {0x2c85ae0, 0xc00106e588}, 0x0?, 0x0?, 0xc001024270, {0x2ca32d0, ...}, ...)
+	github.com/tendermint/tendermint@v0.34.27/node/node.go:805 +0x597
+github.com/cosmos/cosmos-sdk/server.startInProcess(_, {{0x0, 0x0, 0x0}, {0x2cc0e58, 0xc000ababd0}, {0x0, 0x0}, {0x2ca8538, 0xc001083a20}, ...}, ...)
+	github.com/cosmos/cosmos-sdk@v0.45.15/server/start.go:280 +0x89b
+github.com/cosmos/cosmos-sdk/server.StartCmd.func2(0xc0010b3500?, {0xc0001fac00?, 0x0?, 0x6?})
+	github.com/cosmos/cosmos-sdk@v0.45.15/server/start.go:128 +0x169
+github.com/spf13/cobra.(*Command).execute(0xc0010b3500, {0xc0001fab40, 0x6, 0x6})
+	github.com/spf13/cobra@v1.7.0/command.go:940 +0x862
+github.com/spf13/cobra.(*Command).ExecuteC(0xc0001a8900)
+	github.com/spf13/cobra@v1.7.0/command.go:1068 +0x3bd
+github.com/spf13/cobra.(*Command).Execute(...)
+	github.com/spf13/cobra@v1.7.0/command.go:992
+github.com/spf13/cobra.(*Command).ExecuteContext(...)
+	github.com/spf13/cobra@v1.7.0/command.go:985
+github.com/cosmos/cosmos-sdk/server/cmd.Execute(0xc0001a8900?, {0xc001043330, 0xf})
+	github.com/cosmos/cosmos-sdk@v0.45.15/server/cmd/execute.go:36 +0x1eb
+main.main()
+	github.com/neutron-org/neutron/cmd/neutrond/main.go:19 +0x85
