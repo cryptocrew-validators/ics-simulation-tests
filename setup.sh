@@ -109,7 +109,7 @@ function installRelayer() {
   if [ "$CHAIN_ID" == "provider-chain" ] && [ "$NODE_INDEX" == "1" ]; then
     echo "Installing Rust and Cargo"
     mkdir /home/vagrant/.cargo || true
-    sudo apt install cargo
+    sudo apt install cargo -yy
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         
     # Add the /home/vagrant/.cargo/bin directory to the PATH environment variable
