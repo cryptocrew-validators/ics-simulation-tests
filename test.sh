@@ -4,6 +4,7 @@
 
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
+HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 
 set -e
 
@@ -326,7 +327,6 @@ function startConsumerChain() {
 }
 
 function prepareRelayer() {
-  HERMES_BIN=/home/vagrant/.hermes/bin/hermes
   echo "Preparing hermes IBC relayer..."
   sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
     -e "0,/denom = .*/s//denom = \"icsstake\"/" \
