@@ -110,12 +110,12 @@ function installRelayer() {
     echo "Creating /home/vagrant/.cargo and installing Rust"
     mkdir /home/vagrant/.cargo || true
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source /home/vagrant/.cargo/env
-    
+        
     # Add the /home/vagrant/.cargo/bin directory to the PATH environment variable
     echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> /home/vagrant/.bashrc
     export PATH="/home/vagrant/.cargo/bin:$PATH"
 
+    source /home/vagrant/.bashrc
     sudo chmod -R 777 /home/vagrant/.cargo
 
     # Install ibc-relayer-cli crate and build the hermes binary
