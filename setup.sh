@@ -121,7 +121,7 @@ function installRelayer() {
 
     # Install ibc-relayer-cli crate and build the hermes binary
     echo "Installing ibc-relayer-cli crate and building the hermes binary"
-    cargo install ibc-relayer-cli --bin hermes --locked --version $HERMES_VERSION
+    cargo install ibc-relayer-cli --bin hermes --locked
 
     mkdir /home/vagrant/.hermes
     sudo chmod -R 777 /home/vagrant/.hermes
