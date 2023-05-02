@@ -139,6 +139,14 @@ function proposeConsumerAdditionProposal() {
 
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
+
+  # TEST: Neutron consumer genesis possbile issue
+  echo "Testing Neutron raw_genesis.json fixes:"
+  echo `sed -i 's/"limit": 5/"limit": "5"/g'`
+  echo `jq 'del(.app_state.wasm.contracts[] | select(.instantiate_contract.label == "ASTROPORT_SATELLITE"))' raw_genesis.json | sponge raw_genesis.json`
+  sed -i 's/"limit": 5/"limit": "5"/g' raw_genesis.json
+  jq 'del(.app_state.wasm.contracts[] | select(.instantiate_contract.label == "ASTROPORT_SATELLITE"))' raw_genesis.json | sponge raw_genesis.json
+  ###############################################
   
   GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
   echo "Setting genesis time: $GENESIS_TIME" 
