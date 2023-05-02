@@ -133,7 +133,7 @@ function proposeConsumerAdditionProposal() {
   echo "Downloading consumer genesis file"
   wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
 
-  ############## Dirty Neutron Supply Fix ##############                    ############# TODO: find a better solution
+  ############## Dirty Neutron Supply Fix ############## TODO: find a better solution 
   echo "Applying dirty Neutron supply fix"
   sed -i 's/90000000000000/89999850000000/g' raw_genesis.json
 
@@ -146,7 +146,7 @@ function proposeConsumerAdditionProposal() {
 
   echo "Adding relayer account & balances"
   vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
-  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo $RELAYER_MNEMONIC | $CONSUMER_APP --home $CONSUMER_HOME keys add relayer --recover --keyring-backend test --output json")
+  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
   cat > relayer_account_consumer.json <<EOT
 {
   "@type": "/cosmos.auth.v1beta1.BaseAccount",
