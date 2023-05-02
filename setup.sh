@@ -1,7 +1,5 @@
 #!/bin/bash
 
-HERMES_VERSION=v1.4.1
-
 # Update and install required packages, set timezone to UTC
 sudo apt-get update
 sudo apt-get install -yy git build-essential curl jq unzip moreutils net-tools
