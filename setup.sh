@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERMES_SOURCE=https://github.com/informalsystems/hermes/releases/download/v1.4.0/hermes-v1.4.0-x86_64-unknown-linux-gnu.tar.gz
+HERMES_VERSION=v1.4.1
 
 # Update and install required packages, set timezone to UTC
 sudo apt-get update
@@ -54,6 +54,10 @@ function installGo() {
   sudo tar -C /usr/local -xzf $(basename $DAEMON_GO_SOURCE)
   rm $(basename $DAEMON_GO_SOURCE)
   mkdir -p /home/vagrant/go/bin
+  echo 'export GOROOT=/usr/local/go' >> /home/vagrant/.bashrc
+  echo 'export GOPATH=/home/vagrant/go' >> /home/vagrant/.bashrc
+  echo 'export GO111MODULE=on' >> /home/vagrant/.bashrc
+  echo 'export PATH=$PATH:$GOROOT/bin' >> /home/vagrant/.bashrc
   export GOROOT=/usr/local/go
   export GOPATH=/home/vagrant/go
   export GO111MODULE=on
@@ -100,14 +104,28 @@ function genTx() {
   fi
 }
 
+# Install Relayer with Rust & Cargo
 function installRelayer() {
   if [ "$CHAIN_ID" == "provider-chain" ] && [ "$NODE_INDEX" == "1" ]; then
-    wget $HERMES_SOURCE -O hermes.tar.gz
-    mkdir -p /home/vagrant/.hermes/bin
-    tar -C /home/vagrant/.hermes/bin/ -vxzf hermes.tar.gz
-    rm hermes.tar.gz
-    export PATH="/home/vagrant/.hermes/bin:$PATH"
+    echo "Creating /home/vagrant/.cargo and installing Rust"
+    mkdir /home/vagrant/.cargo || true
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source /home/vagrant/.cargo/env
+    
+    # Add the /home/vagrant/.cargo/bin directory to the PATH environment variable
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> /home/vagrant/.bashrc
+    export PATH="/home/vagrant/.cargo/bin:$PATH"
+
+    sudo chmod -R 777 /home/vagrant/.cargo
+
+    # Install ibc-relayer-cli crate and build the hermes binary
+    echo "Installing ibc-relayer-cli crate and building the hermes binary"
+    cargo install ibc-relayer-cli --bin hermes --locked --version $HERMES_VERSION
+
+    mkdir /home/vagrant/.hermes
     sudo chmod -R 777 /home/vagrant/.hermes
+    
+    hermes version
   fi
 }
 
