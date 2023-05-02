@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
           chown vagrant:vagrant /home/vagrant/.hermes
         SHELL
 
-        node.vm.provision "file", source: "hermes_config.toml", destination: "/home/vagrant/.hermes/hermes_config.toml"
+        node.vm.provision "file", source: "hermes_config.toml", destination: "/home/vagrant/.hermes/config.toml"
       end
     end
   end
