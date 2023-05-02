@@ -343,7 +343,7 @@ function prepareRelayer() {
     -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
     hermes_config.toml > config.toml
 
-  vagrant scp config.toml provider-chain-validator1:/home/vagrant/.hermes/config.toml
+  vagrant scp config.toml provider-chain-validator1:/home/root/.hermes/config.toml
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN config validate"
 }
 
