@@ -211,11 +211,11 @@ EOT
   "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
   "spawn_time": "$SPAWN_TIME",
   "consumer_redistribution_fraction": "0.75",
-  "blocks_per_distribution_transmission": 150,
-  "historical_entries": 10,
-  "ccv_timeout_period": 2419200,
-  "transfer_timeout_period": 600,
-  "unbonding_period": 1728000, 
+  "blocks_per_distribution_transmission": "150",
+  "historical_entries": "10",
+  "ccv_timeout_period": "2419200s",
+  "transfer_timeout_period": "600s",
+  "unbonding_period": "1728000s", 
   "deposit": "10000000icsstake"
 }
 EOT
