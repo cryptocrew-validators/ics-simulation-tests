@@ -64,13 +64,12 @@ function configPeers() {
 
 # Start all virtual machines, collect gentxs & start provider chain
 function startProviderChain() {
-  echo "Starting vagrant VMs"
-  vagrant plugin install vagrant-scp
-  
   PROVISIONED_FLAG_FILE=".provisioned"
 
   # Check if the flag file exists; if it does not, start provisioning
   if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
+    echo "Starting vagrant VMs"
+    vagrant plugin install vagrant-scp
 
     # Loop through the VM names and run vagrant up in the background
     vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
@@ -211,11 +210,11 @@ EOT
   "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
   "spawn_time": "$SPAWN_TIME",
   "consumer_redistribution_fraction": "0.75",
-  "blocks_per_distribution_transmission": "150",
-  "historical_entries": "10",
-  "ccv_timeout_period": "2419200s",
-  "transfer_timeout_period": "600s",
-  "unbonding_period": "1728000s", 
+  "blocks_per_distribution_transmission": 150,
+  "historical_entries": 10,
+  "ccv_timeout_period": 2419200,
+  "transfer_timeout_period": 600,
+  "unbonding_period": 1728000, 
   "deposit": "10000000icsstake"
 }
 EOT
