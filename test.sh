@@ -204,13 +204,14 @@ function proposeConsumerAdditionProposal() {
     PROP_CCV_TIMEOUT_PERIOD=2419200000000000
     PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
     PROP_UNBONDING_PERIOD=1728000000000000
+    PROP_SOFT_OPT_OUT_THRESHOLD=0.05
   else
 
     # Download original proposal and constuct proposal file
     echo "Downloading ORIGINAL consumer addition proposal..."
     curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > original_prop.json
-    PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
-    PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
+    # PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
+    # PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
 
     PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
     PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
@@ -247,6 +248,7 @@ function proposeConsumerAdditionProposal() {
   "ccv_timeout_period": $PROP_CCV_TIMEOUT_PERIOD,
   "transfer_timeout_period": $PROP_TRANSFER_TIMEOUT_PERIOD,
   "unbonding_period": $PROP_UNBONDING_PERIOD, 
+  "soft_opt_out_threshold": "$PROP_SOFT_OPT_OUT_THRESHOLD",
   "deposit": "10000000icsstake"
 }
 EOT
