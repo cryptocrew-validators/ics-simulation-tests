@@ -404,6 +404,17 @@ function prepareRelayer() {
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG config validate"
 }
 
+function waitForConsumerChain() {
+  echo "Waiting for the consumer chain to launch..."
+  echo "Waiting for Provider Chain to finalize a block..."
+  CONSUMER_LATEST_HEIGHT=""
+  while [[ ! $CONSUMER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $CONSUMER_LATEST_HEIGHT -lt 1 ]]; do
+    CONSUMER_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
+    sleep 2
+  done
+  echo ">> CONSUMER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+}
+
 # Create the cross-chain-validation and transfer IBC-paths
 function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
