@@ -143,29 +143,35 @@ function waitForProviderChain() {
   echo ">> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
 }
 
-# Propose consumer addition proposal from provider validator 1
-function proposeConsumerAdditionProposal() {
-  
-  # Prepare proposal file
-  echo "Preparing consumer addition proposal..."
+function manipulateConsumerGenesis() {
+  echo "Manipulating consumer raw_genesis file"
 
-  # Download and manipulate consumer genesis file
-  echo "Downloading consumer genesis file"
-  wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+  if [ ! -f "raw_genesis.json" ]; then
+    # Download and manipulate consumer genesis file
+    echo "Downloading consumer genesis file"
+    wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+  else
+    echo "Using local raw_genesis.json file"
+  fi
 
+  # Update supply to empty array to pass genesis supply check
   echo "Setting supply to []"
   jq '.app_state.bank.supply = []' raw_genesis.json | sponge raw_genesis.json
 
+  # Update chain_id to `consumer-chain`
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
   
+  # Update genesis_time to 1min in the past
   GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
   echo "Setting genesis time: $GENESIS_TIME" 
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
 
+  # Add relayer account and balances
   echo "Adding relayer account & balances"
   vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
   CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
+  
   cat > relayer_account_consumer.json <<EOT
 {
   "@type": "/cosmos.auth.v1beta1.BaseAccount",
@@ -175,6 +181,7 @@ function proposeConsumerAdditionProposal() {
   "sequence": "0"
 }
 EOT
+
   cat > relayer_balance_consumer.json <<EOT
 {
   "address": "$(echo $CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
@@ -186,18 +193,56 @@ EOT
   ]
 }
 EOT
+
   cat relayer_account_consumer.json
   cat relayer_balance_consumer.json
   jq '.app_state.auth.accounts += [input]' raw_genesis.json relayer_account_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   jq '.app_state.bank.balances += [input]' raw_genesis.json relayer_balance_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   rm relayer_account_consumer.json relayer_balance_consumer.json
+}
 
-  CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-  echo "Consumer binary sha256: $CONSUMER_BINARY_SHA256"
-  CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
-  echo "Consumer genesis sha256: $CONSUMER_RAW_GENESIS_SHA256"
-  SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
-  echo "Consumer spawn time: $SPAWN_TIME"
+# Propose consumer addition proposal from provider validator 1
+function proposeConsumerAdditionProposal() {
+  if [ ! -z "$ORIG_PROP_NR" ]; then
+    
+    # Prepare proposal file
+    echo "Preparing NEW consumer addition proposal..."
+
+    CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
+    CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
+    SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
+    CONSUMER_REDISTRIBUTION_FRACTION=0.75
+    BLOCKS_PER_REDISTRIBUTION_FRACTION=150
+    HISTORICAL_ENTRIES=10
+
+    # times-string would be better but currently gaiad wants nanoseconds here
+    CCV_TIMEOUT_PERIOD=2419200000000000
+    TRANSFER_TIMEOUT_PERIOD=600000000000
+    UNBONDING_PERIOD=1728000000000000
+  else
+
+    # Download original proposal and constuct proposal file
+    echo "Downloading ORIGINAL consumer addition proposal..."
+    curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > original_prop.json
+
+    CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
+    CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
+    SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
+    CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
+    BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json)
+    HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
+
+    # Extract durations in seconds
+    UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period | rtrimstr("s")' original_prop.json)
+    CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period | rtrimstr("s")' original_prop.json)
+    TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' original_prop.json)
+
+    # times-string would be better but currently gaiad wants nanoseconds here
+    UNBONDING_PERIOD_NANOSECONDS=$((UNBONDING_PERIOD_SECONDS * 1000000000))
+    CCV_TIMEOUT_PERIOD_NANOSECONDS=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    TRANSFER_TIMEOUT_PERIOD_NANOSECONDS=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
+  fi
+
   cat > prop.json <<EOT
 {
   "title": "Create the Consumer chain",
@@ -209,16 +254,17 @@ EOT
   "genesis_hash": "$CONSUMER_BINARY_SHA256",
   "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
   "spawn_time": "$SPAWN_TIME",
-  "consumer_redistribution_fraction": "0.75",
-  "blocks_per_distribution_transmission": 150,
-  "historical_entries": 10,
-  "ccv_timeout_period": 2419200,
-  "transfer_timeout_period": 600,
-  "unbonding_period": 1728000, 
+  "consumer_redistribution_fraction": "$CONSUMER_REDISTRIBUTION_FRACTION",
+  "blocks_per_distribution_transmission": $BLOCKS_PER_REDISTRIBUTION_FRACTION,
+  "historical_entries": $HISTORICAL_ENTRIES,
+  "ccv_timeout_period": $CCV_TIMEOUT_PERIOD,
+  "transfer_timeout_period": $TRANSFER_TIMEOUT_PERIOD,
+  "unbonding_period": $UNBONDING_PERIOD, 
   "deposit": "10000000icsstake"
 }
 EOT
   cat prop.json
+  
   vagrant scp prop.json provider-chain-validator1:/home/vagrant/prop.json
 
   # Create and submit the consumer addition proposal
@@ -386,6 +432,7 @@ function main() {
   loadEnv
   startProviderChain
   waitForProviderChain
+  manipulateConsumerGenesis
   proposeConsumerAdditionProposal
   voteConsumerAdditionProposal
   waitForProposal
