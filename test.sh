@@ -362,16 +362,22 @@ function prepareConsumerChain() {
     rm "priv_validator_key${i}.json" 
   done
   
-  # TODO - erroring here in script, not in bash...
+  # Query CCV consumer state on provider-chain-validator1
   echo "Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
 
+  # Finalize consumer-chain genesis
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
+  
+  # FIX: soft_opt_out_threshold gets lost / isn't returned by gaiad
+  jq '.app_state.ccvconsumer |= . + {"soft_opt_out_threshold": "0.05"}' final_genesis.json > final_genesis_with_threshold.json
+  mv final_genesis_with_threshold.json final_genesis.json
+
+  # Distribute consumer-chain genesis
   for i in {1..3} ; do 
     vagrant scp final_genesis.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
-  rm "ccv.json"
 }
 
 # Start consumer-chain
