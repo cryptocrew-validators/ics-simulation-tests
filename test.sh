@@ -203,34 +203,36 @@ EOT
 
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
+  PROP_TITLE="Create the Consumer chain"
+  PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
   if [ ! -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
-    echo "Preparing NEW consumer addition proposal..."
-
-    CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-    CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
-    SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
-    CONSUMER_REDISTRIBUTION_FRACTION=0.75
-    BLOCKS_PER_REDISTRIBUTION_FRACTION=150
-    HISTORICAL_ENTRIES=10
+    PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
+    PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
+    PROP_SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
+    PROP_CONSUMER_REDISTRIBUTION_FRACTION=0.75
+    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=150
+    PROP_HISTORICAL_ENTRIES=10
 
     # times-string would be better but currently gaiad wants nanoseconds here
-    CCV_TIMEOUT_PERIOD=2419200000000000
-    TRANSFER_TIMEOUT_PERIOD=600000000000
-    UNBONDING_PERIOD=1728000000000000
+    PROP_CCV_TIMEOUT_PERIOD=2419200000000000
+    PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
+    PROP_UNBONDING_PERIOD=1728000000000000
   else
 
     # Download original proposal and constuct proposal file
     echo "Downloading ORIGINAL consumer addition proposal..."
     curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > original_prop.json
+    PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
+    PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
 
-    CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
-    CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
-    SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
-    CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
-    BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json)
-    HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
+    PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
+    PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
+    PROP_SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
+    PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
+    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json)
+    PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
 
     # Extract durations in seconds
     UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period | rtrimstr("s")' original_prop.json)
@@ -238,28 +240,29 @@ function proposeConsumerAdditionProposal() {
     TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' original_prop.json)
 
     # times-string would be better but currently gaiad wants nanoseconds here
-    UNBONDING_PERIOD_NANOSECONDS=$((UNBONDING_PERIOD_SECONDS * 1000000000))
-    CCV_TIMEOUT_PERIOD_NANOSECONDS=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
-    TRANSFER_TIMEOUT_PERIOD_NANOSECONDS=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    PROP_UNBONDING_PERIOD_NANOSECONDS=$((UNBONDING_PERIOD_SECONDS * 1000000000))
+    PROP_CCV_TIMEOUT_PERIOD_NANOSECONDS=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    PROP_TRANSFER_TIMEOUT_PERIOD_NANOSECONDS=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
   fi
 
   cat > prop.json <<EOT
 {
-  "title": "Create the Consumer chain",
-  "description": "This is the proposal to create the consumer chain \"consumer-chain\".",
+  "title": "$PROP_TITLE",
+  "description": "$PROP_DESCRIPTION",
   "chain_id": "consumer-chain",
   "initial_height": {
+      "revision_number": "1",
       "revision_height": 1
   },
-  "genesis_hash": "$CONSUMER_BINARY_SHA256",
-  "binary_hash": "$CONSUMER_RAW_GENESIS_SHA256",
-  "spawn_time": "$SPAWN_TIME",
-  "consumer_redistribution_fraction": "$CONSUMER_REDISTRIBUTION_FRACTION",
-  "blocks_per_distribution_transmission": $BLOCKS_PER_REDISTRIBUTION_FRACTION,
-  "historical_entries": $HISTORICAL_ENTRIES,
-  "ccv_timeout_period": $CCV_TIMEOUT_PERIOD,
-  "transfer_timeout_period": $TRANSFER_TIMEOUT_PERIOD,
-  "unbonding_period": $UNBONDING_PERIOD, 
+  "genesis_hash": "$PROP_CONSUMER_BINARY_SHA256",
+  "binary_hash": "$PROP_CONSUMER_RAW_GENESIS_SHA256",
+  "spawn_time": "$PROP_SPAWN_TIME",
+  "consumer_redistribution_fraction": "$PROP_CONSUMER_REDISTRIBUTION_FRACTION",
+  "blocks_per_distribution_transmission": $PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION,
+  "historical_entries": $PROP_HISTORICAL_ENTRIES,
+  "ccv_timeout_period": $PROP_CCV_TIMEOUT_PERIOD,
+  "transfer_timeout_period": $PROP_TRANSFER_TIMEOUT_PERIOD,
+  "unbonding_period": $PROP_UNBONDING_PERIOD, 
   "deposit": "10000000icsstake"
 }
 EOT
@@ -284,6 +287,7 @@ function voteConsumerAdditionProposal() {
   done
 }
 
+# Wait for proposal to pass
 function waitForProposal() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
@@ -298,6 +302,7 @@ function waitForProposal() {
   sleep 6
 }
 
+# KeyAssignment test function
 function testKeyAssignment() {
   TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
   echo $TMP_DIR_EXISTS
@@ -327,12 +332,13 @@ function testKeyAssignment() {
   vagrant scp priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
 }
 
-
+# Run KeyAssignmentTest pro launch, new key
 function assignKeyPreLaunchNewKey() {
   echo "Assigning keys pre-launch..."
   testKeyAssignment "1-prelaunch-newkey"
 }
 
+# Wait for spawn_time to be reached
 function waitForSpawnTime() {
   echo "Waiting for spawn time to be reached: $SPAWN_TIME"
   CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
@@ -384,7 +390,7 @@ function prepareConsumerChain() {
   rm "ccv.json"
 }
 
-
+# Start consumer-chain
 function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
   for i in {1..3} ; do 
@@ -394,6 +400,7 @@ function startConsumerChain() {
   done
 }
 
+# Preperare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
   sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
@@ -405,12 +412,14 @@ function prepareRelayer() {
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG config validate"
 }
 
+# Create the cross-chain-validation and transfer IBC-paths
 function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0"
   vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
 }
 
+# Start IBC Relayer
 function startRelayer() {
   echo "Starting relayer..."
   vagrant ssh provider-chain-validator1 -- "sudo touch /var/log/hermes.log && sudo chmod 666 /var/log/hermes.log"
@@ -418,11 +427,13 @@ function startRelayer() {
   echo "[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log"
 }
 
+# Run KeyAssignmentTest post launch, new key
 function assignKeyPostLaunchNewKey() {
   echo "Assigning keys post-launch..."
   testKeyAssignment "2-postlaunch-newkey"
 }
 
+# Run KeyAssignmentTest post launch, same key
 function assignKeyPostLaunchSameKey() {
   echo "Assigning keys post-launch..."
   testKeyAssignment "3-postlaunch-samekey"
