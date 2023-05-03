@@ -236,8 +236,8 @@ function proposeConsumerAdditionProposal() {
   "description": "$PROP_DESCRIPTION",
   "chain_id": "consumer-chain",
   "initial_height": {
-      "revision_number": "1",
-      "revision_height": "1"
+      "revision_number": 1,
+      "revision_height": 1
   },
   "genesis_hash": "$PROP_CONSUMER_BINARY_SHA256",
   "binary_hash": "$PROP_CONSUMER_RAW_GENESIS_SHA256",
