@@ -394,9 +394,7 @@ function startConsumerChain() {
 # Preperare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
-  vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn && \ 
-  sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && \
-  sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
+  vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
 }
 
 function waitForConsumerChain() {
