@@ -404,7 +404,7 @@ function prepareRelayer() {
   #   hermes_config.toml > config.toml
   
   vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn"
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn"
+  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
 }
 
 function waitForConsumerChain() {
