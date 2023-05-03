@@ -58,15 +58,14 @@ function installNode() {
   cd $LOCAL_REPO
   git checkout $DAEMON_VERSION
 
-  if [[ "$CHAIN_ID" == "consumer-chain" ]]; then
-    sed -i 's#github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.45.15-ics#github.com/cosmos/cosmos-sdk => github.com/monopauli/cosmos-sdk v0.45.15-ics-showkey#g' go.mod
-    go mod tidy
-  fi
+  #if [[ "$CHAIN_ID" == "consumer-chain" ]]; then
+  #  sed -i 's#github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.45.15-ics#github.com/cosmos/cosmos-sdk => github.com/monopauli/cosmos-sdk v0.45.15-ics-showkey#g' go.mod
+  #  go mod tidy
+  #fi
 
   make install
   sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
   cd ..
-  rm -rf $LOCAL_REPO
 }
 
 function initNode() {
