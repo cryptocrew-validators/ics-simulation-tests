@@ -112,7 +112,7 @@ function startProviderChain() {
   echo ">> STARTING PROVIDER CHAIN"
   for i in {1..3} ; do 
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9099 > /var/log/chain.log 2>&1 &"
+    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
 }
@@ -387,7 +387,7 @@ function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
   for i in {1..3} ; do 
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9099 > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --rpc.grpc_laddr tcp://0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
@@ -396,7 +396,7 @@ function startConsumerChain() {
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
 
-  # let's use a static hermes config
+  # use a static hermes config
   # sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
   #   -e "0,/denom = .*/s//denom = \"icsstake\"/" \
   #   -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
@@ -409,13 +409,23 @@ function prepareRelayer() {
 
 function waitForConsumerChain() {
   echo "Waiting for the consumer chain to launch..."
-  echo "Waiting for Provider Chain to finalize a block..."
   CONSUMER_LATEST_HEIGHT=""
   while [[ ! $CONSUMER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $CONSUMER_LATEST_HEIGHT -lt 1 ]]; do
     CONSUMER_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
   done
   echo ">> CONSUMER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+}
+
+# Wait for IBC client creation on consumer-chain
+function createIbcPaths() {
+  echo "Waiting for IBC client creation on consumer-chain..."
+  CLIENT_STATE_CHAIN_ID=""
+  while [[ ! $CLIENT_STATE_CHAIN_ID =~ ^[0-9]+$ ]] || [[ ! "$CLIENT_STATE_CHAIN_ID" == "provider-chain" ]]; do
+    CLIENT_STATE_CHAIN_ID=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME q ibc client state 07-tendermint-0 -o json | jq -r '.client_state.chain_id'")
+    sleep 2
+  done
+  echo "Client state found for client_id: 07-tendermint-0, chain_id: $CLIENT_STATE_CHAIN_ID"
 }
 
 # Create the cross-chain-validation and transfer IBC-paths
