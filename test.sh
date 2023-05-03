@@ -417,17 +417,17 @@ function waitForConsumerChain() {
   echo ">> CONSUMER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
 }
 
-# Wait for IBC client creation on consumer-chain
-function waitForIbcClient() {
-  echo "Waiting for IBC client creation on consumer-chain..."
-
-  CLIENT_STATE_CHAIN_ID=""
-  while [[ ! $CLIENT_STATE_CHAIN_ID =~ ^[0-9]+$ ]] || [[ ! "$CLIENT_STATE_CHAIN_ID" == "provider-chain" ]]; do
-    CLIENT_STATE_CHAIN_ID=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME q ibc client state 07-tendermint-0 -o json | jq -r '.client_state.chain_id'")
-    sleep 2
-  done
-  echo "Client state found for client_id: 07-tendermint-0, chain_id: $CLIENT_STATE_CHAIN_ID"
-}
+# # Wait for IBC client creation on consumer-chain
+# function waitForIbcClient() {
+#   echo "Waiting for IBC client creation on consumer-chain..."
+# 
+#   CLIENT_STATE_CHAIN_ID=""
+#   while [[ ! "$CLIENT_STATE_CHAIN_ID" == "provider-chain" ]]; do
+#     CLIENT_STATE_CHAIN_ID=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME q ibc client state 07-tendermint-0 -o json | jq -r '.client_state.chain_id'" || true)
+#     sleep 2
+#   done
+#   echo "Client state found for client_id: 07-tendermint-0, chain_id: $CLIENT_STATE_CHAIN_ID"
+# }
 
 # Create the cross-chain-validation and transfer IBC-paths
 function createIbcPaths() {
@@ -470,7 +470,7 @@ function main() {
   startConsumerChain
   prepareRelayer
   waitForConsumerChain
-  waitForIbcClient
+#  waitForIbcClient
   createIbcPaths
   startRelayer && sleep 120 # sleeps to offer more time to watch output, can be removed
   assignKeyPreLaunchNewKey && sleep 60 # sleeps to offer more time to watch output, can be removed
