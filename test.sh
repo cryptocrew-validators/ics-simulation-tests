@@ -371,7 +371,7 @@ function prepareConsumerChain() {
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
   
   # FIX: soft_opt_out_threshold gets lost / isn't returned by gaiad
-  jq '.app_state.ccvconsumer |= . + {"soft_opt_out_threshold": "0.05"}' final_genesis.json > final_genesis_with_threshold.json
+  jq '.app_state.ccvconsumer.params |= . + {"soft_opt_out_threshold": "0.05"}' final_genesis.json > final_genesis_with_threshold.json
   mv final_genesis_with_threshold.json final_genesis.json
 
   # Distribute consumer-chain genesis
