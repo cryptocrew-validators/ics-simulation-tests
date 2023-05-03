@@ -236,7 +236,6 @@ function proposeConsumerAdditionProposal() {
   "description": "$PROP_DESCRIPTION",
   "chain_id": "consumer-chain",
   "initial_height": {
-      "revision_number": 1,
       "revision_height": 1
   },
   "genesis_hash": "$PROP_CONSUMER_BINARY_SHA256",
@@ -349,7 +348,7 @@ function prepareConsumerChain() {
   echo "Preparing consumer chain..."
 
   # Check if we also need to include provider-chain-validat1 key, or if a KeyAssignment test has been run before (key has already been copied in this case)
-  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist'")
+  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo 'tmp directory exists' || echo 'tmp directory does not exist'")
   if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
   echo "Copying ORIGINAL private validator keys from provider-chain-validator1 to consumer-chain-validator1..."
     vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key1.json
@@ -395,39 +394,20 @@ function startConsumerChain() {
 # Preperare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
-
-  # use a static hermes config
-  # sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
-  #   -e "0,/denom = .*/s//denom = \"icsstake\"/" \
-  #   -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
-  #   -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
-  #   hermes_config.toml > config.toml
-  
-  vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn"
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
+  vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn && \ 
+  sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && \
+  sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
 }
 
 function waitForConsumerChain() {
   echo "Waiting for the consumer chain to launch..."
   CONSUMER_LATEST_HEIGHT=""
-  while [[ ! $CONSUMER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $CONSUMER_LATEST_HEIGHT -lt 1 ]]; do
+  while [[ ! $CONSUMER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $CONSUMER_LATEST_HEIGHT -lt 2 ]]; do
     CONSUMER_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
   done
   echo ">> CONSUMER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
 }
-
-# # Wait for IBC client creation on consumer-chain
-# function waitForIbcClient() {
-#   echo "Waiting for IBC client creation on consumer-chain..."
-# 
-#   CLIENT_STATE_CHAIN_ID=""
-#   while [[ ! "$CLIENT_STATE_CHAIN_ID" == "provider-chain" ]]; do
-#     CLIENT_STATE_CHAIN_ID=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME q ibc client state 07-tendermint-0 -o json | jq -r '.client_state.chain_id'" || true)
-#     sleep 2
-#   done
-#   echo "Client state found for client_id: 07-tendermint-0, chain_id: $CLIENT_STATE_CHAIN_ID"
-# }
 
 # Create the cross-chain-validation and transfer IBC-paths
 function createIbcPaths() {
@@ -470,7 +450,6 @@ function main() {
   startConsumerChain
   prepareRelayer
   waitForConsumerChain
-#  waitForIbcClient
   createIbcPaths
   startRelayer && sleep 120 # sleeps to offer more time to watch output, can be removed
   assignKeyPreLaunchNewKey && sleep 60 # sleeps to offer more time to watch output, can be removed
