@@ -29,7 +29,7 @@ Modify the `.env` file to set up the required environment variables. These varia
 ## Running the Test
 
 ```bash
-./test.sh
+bash test.sh
 ```
 
 _-> please note node provision with vagrant takes about 15mins_
@@ -56,9 +56,11 @@ Watch relayer output on `provider-chain-validator1`:
 ```sh
 tail -f /var/log/relayer.log
 ```
+
+---
 Clean up:
 ```sh
-vagrant destroy -f
+bash destroy.sh
 ```
 
 ## License
