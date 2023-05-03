@@ -6,8 +6,7 @@ It bootstraps a local provider testnet with 3 validators, proposes a `consumer-a
 
 ## Requirements
 
-- min 12 core CPU, 64GB RAM
-
+- min 16 core CPU, 64GB RAM
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [jq](https://stedolan.github.io/jq/download)
