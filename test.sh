@@ -395,13 +395,16 @@ function startConsumerChain() {
 # Preperare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
-  sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
-    -e "0,/denom = .*/s//denom = \"icsstake\"/" \
-    -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
-    -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
-    hermes_config.toml > config.toml
 
-  vagrant ssh provider-chain-validator1 -- "sudo $HERMES_BIN --config $HERMES_CONFIG config validate"
+  # let's use a static hermes config
+  # sed -e "0,/account_prefix = .*/s//account_prefix = \"cosmos\"/" \
+  #   -e "0,/denom = .*/s//denom = \"icsstake\"/" \
+  #   -e "1,/account_prefix = .*/s//account_prefix = \"$CONSUMER_BECH32_PREFIX\"/" \
+  #   -e "1,/denom = .*/s//denom = \"$CONSUMER_FEE_DENOM\"/" \
+  #   hermes_config.toml > config.toml
+  
+  vagrant ssh provider-chain-validator1 -- "sudo echo $RELAYER_MNEMONIC > .mn"
+  vagrant ssh provider-chain-validator1 -- "sudo sed -i 's//$CONSUMER_BECH32_PREFIX/g' sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn && sudo $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn"
 }
 
 function waitForConsumerChain() {

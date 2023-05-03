@@ -59,13 +59,13 @@ rpc_addr = 'http://192.168.34.11:26657'
 grpc_addr = 'http://192.168.34.11:9099'
 websocket_addr = 'ws://192.168.34.11:26657/websocket'
 rpc_timeout = '10s'
-account_prefix = 'prefix_placeholder'
+account_prefix = 'neutron'
 key_name = 'default'
 address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'denom_placeholder' }
+gas_price = { price = 0.025, denom = 'untrn' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
