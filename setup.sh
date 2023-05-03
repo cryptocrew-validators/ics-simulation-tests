@@ -16,20 +16,6 @@ function loadEnv {
   fi
 }
 
-function get_terminal_command() {
-  local desktop_env
-  desktop_env="$(echo $XDG_CURRENT_DESKTOP | tr '[:upper:]' '[:lower:]')"
-
-  case $desktop_env in
-    *gnome*)
-      echo "gnome-terminal --"
-      ;;
-    *)
-      echo "xterm -e"
-      ;;
-  esac
-}
-
 function setNodeVars() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
     DAEMON_NAME=$PROVIDER_APP

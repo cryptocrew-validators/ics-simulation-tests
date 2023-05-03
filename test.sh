@@ -26,21 +26,6 @@ function loadEnv {
   fi
 }
 
-# Determine desktop environment
-function get_terminal_command() {
-  local desktop_env
-  desktop_env="$(echo $XDG_CURRENT_DESKTOP | tr '[:upper:]' '[:lower:]')"
-
-  case $desktop_env in
-    *gnome*)
-      echo "gnome-terminal --"
-      ;;
-    *)
-      echo "xterm -e"
-      ;;
-  esac
-}
-
 # Get peerlists for both provider and consumer chain, edit config
 function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""
@@ -252,7 +237,7 @@ function proposeConsumerAdditionProposal() {
   "chain_id": "consumer-chain",
   "initial_height": {
       "revision_number": "1",
-      "revision_height": 1
+      "revision_height": "1"
   },
   "genesis_hash": "$PROP_CONSUMER_BINARY_SHA256",
   "binary_hash": "$PROP_CONSUMER_RAW_GENESIS_SHA256",
