@@ -148,7 +148,7 @@ function manipulateConsumerGenesis() {
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
   
   # Update genesis_time to 1min in the past
-  GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
+  GENESIS_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))"')
   echo "Setting genesis time: $GENESIS_TIME" 
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' raw_genesis.json | sponge raw_genesis.json
 
@@ -190,12 +190,12 @@ EOT
 function proposeConsumerAdditionProposal() {
   PROP_TITLE="Create the Consumer chain"
   PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
+  PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
+  PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
+  PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   if [ ! -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
-    PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-    PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
-    PROP_SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
     PROP_CONSUMER_REDISTRIBUTION_FRACTION=0.75
     PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=150
     PROP_HISTORICAL_ENTRIES=10
@@ -214,7 +214,6 @@ function proposeConsumerAdditionProposal() {
 
     PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
     PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
-    PROP_SPAWN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))") # leave 120 sec for pre-spawtime key-assignment test
     PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
     PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json)
     PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
@@ -364,7 +363,7 @@ function prepareConsumerChain() {
   done
   
   # TODO - erroring here in script, not in bash...
-  echo "Querying CCV consumer state and finalizing consumer chain genesis on provider-chain-validator 2..."
+  echo "Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json..."
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
 
