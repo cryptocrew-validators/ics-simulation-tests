@@ -326,16 +326,16 @@ function assignKeyPreLaunchNewKey() {
 
 # Wait for spawn_time to be reached
 function waitForSpawnTime() {
-  echo "Waiting for spawn time to be reached: $SPAWN_TIME"
+  echo "Waiting for spawn time to be reached: $PROP_SPAWN_TIME"
   CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
   CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)
-  SPAWN_TIME_SECONDS=$(date -d "$SPAWN_TIME" +%s)
+  SPAWN_TIME_SECONDS=$(date -d "$PROP_SPAWN_TIME" +%s)
   REMAINING_SECONDS=$((SPAWN_TIME_SECONDS - CURRENT_TIME_SECONDS))
   echo "ETA: $REMAINING_SECONDS seconds..."
   
   while true; do
     CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
-    if [[ "$CURRENT_TIME" > "$SPAWN_TIME" ]]; then
+    if [[ "$CURRENT_TIME" > "$PROP_SPAWN_TIME" ]]; then
       break
     fi
     sleep 5
