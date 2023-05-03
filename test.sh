@@ -418,7 +418,7 @@ function waitForConsumerChain() {
 }
 
 # Wait for IBC client creation on consumer-chain
-function createIbcPaths() {
+function waitForIbcClient() {
   echo "Waiting for IBC client creation on consumer-chain..."
   CLIENT_STATE_CHAIN_ID=""
   while [[ ! $CLIENT_STATE_CHAIN_ID =~ ^[0-9]+$ ]] || [[ ! "$CLIENT_STATE_CHAIN_ID" == "provider-chain" ]]; do
@@ -468,6 +468,7 @@ function main() {
   prepareConsumerChain
   startConsumerChain
   prepareRelayer
+  waitForIbcClient
   createIbcPaths
   startRelayer && sleep 120 # sleeps to offer more time to watch output, can be removed
   assignKeyPreLaunchNewKey && sleep 60 # sleeps to offer more time to watch output, can be removed
