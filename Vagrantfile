@@ -5,8 +5,13 @@ Vagrant.configure("2") do |config|
       node.vm.box = "ubuntu/focal64"
       node.vm.network "private_network", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 4096
-        v.cpus = 4
+        if i == 1
+          v.memory = 32768
+          v.cpus = 16
+        else
+          v.memory = 4096
+          v.cpus = 4
+        end
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
