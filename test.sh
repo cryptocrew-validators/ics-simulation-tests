@@ -193,6 +193,7 @@ function proposeConsumerAdditionProposal() {
   PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
+  PROP_SOFT_OPT_OUT_THRESHOLD=0.05
   if [ -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
@@ -204,7 +205,6 @@ function proposeConsumerAdditionProposal() {
     PROP_CCV_TIMEOUT_PERIOD=2419200000000000
     PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
     PROP_UNBONDING_PERIOD=1728000000000000
-    PROP_SOFT_OPT_OUT_THRESHOLD=0.05
   else
 
     # Download original proposal and constuct proposal file
@@ -225,9 +225,9 @@ function proposeConsumerAdditionProposal() {
     TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' original_prop.json)
 
     # times-string would be better but currently gaiad wants nanoseconds here
-    PROP_UNBONDING_PERIOD_NANOSECONDS=$((UNBONDING_PERIOD_SECONDS * 1000000000))
-    PROP_CCV_TIMEOUT_PERIOD_NANOSECONDS=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
-    PROP_TRANSFER_TIMEOUT_PERIOD_NANOSECONDS=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    PROP_UNBONDING_PERIOD=$((UNBONDING_PERIOD_SECONDS * 1000000000))
+    PROP_CCV_TIMEOUT_PERIOD=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    PROP_TRANSFER_TIMEOUT_PERIOD=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
   fi
 
   cat > prop.json <<EOT
