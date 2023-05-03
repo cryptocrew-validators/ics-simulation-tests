@@ -193,7 +193,7 @@ function proposeConsumerAdditionProposal() {
   PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
-  if [ ! -z "$ORIG_PROP_NR" ]; then
+  if [ -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
     PROP_CONSUMER_REDISTRIBUTION_FRACTION=0.75
