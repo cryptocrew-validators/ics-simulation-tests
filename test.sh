@@ -17,12 +17,13 @@ fi
 
 function loadEnv {
   if test -f .env ; then 
-    ENV=$(realpath .env)
-    while IFS="=" read -r key value; do
-      if [[ ! $key =~ ^# && ! -z $key ]]; then
-        export "$key=$value"
-      fi
-    done < "$ENV"
+    . .env
+    # ENV=$(realpath .env)
+    # while IFS="=" read -r key value; do
+    #   if [[ ! $key =~ ^# && ! -z $key ]]; then
+    #     export "$key=$value"
+    #   fi
+    # done < "$ENV"
     echo "loaded configuration from ENV file: $ENV"
   else
     echo "ENV file not found at .env"
