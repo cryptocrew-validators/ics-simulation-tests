@@ -59,19 +59,20 @@ function validateAssignedKey() {
   fi
 
   count=0
-  while [[ "$VP" == "0" ]] && [ $count -le 10 ]; do
+  while [[ "$VOTING_POWER" == "0" ]]; do
     echo "Waiting up to 30 seconds for IBC valset update to arrive."
     VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 3
   done
 
-  if [[ "$VP" == "0" ]]; then
+  if [[ "$VOTING_POWER" == "0" ]]; then
     echo "Valset update not received on consumer-chain within 30 seconds!"
     echo "Check the relayer log on provider-chain-validator1: /var/log/relayer.sh"
     echo "If you can find the valset update in the relayer log, it has not been properly propagated on the consumer-chain! This could point to a possible issue with the consumer-chain software."
     exit 1
+  else
+    echo "Voting power: $VOTING_POWER"
+    echo "Key Assignment test passed!"
   fi
-  echo "Voting power: $VP"
-  echo "Key Assignment test passed!"
 }
