@@ -23,11 +23,14 @@ if ! (command -v sponge > /dev/null 2>&1); then
   exit 1
 fi
 
-# Load environment variables from .env file
 function loadEnv {
   if test -f .env ; then 
     ENV=$(realpath .env)
-    export $(grep "^[^#;]" $ENV | xargs)
+    while IFS="=" read -r key value; do
+      if [[ ! $key =~ ^# && ! -z $key ]]; then
+        export "$key=$value"
+      fi
+    done < "$ENV"
     echo "loaded configuration from ENV file: $ENV"
   else
     echo "ENV file not found at .env"
