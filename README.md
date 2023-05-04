@@ -27,6 +27,13 @@ Modify the `.env` file to set up the required environment variables. These varia
 
 ## Running the Test
 
+First run:
+```bash
+vagrant up
+bash test.sh
+```
+
+After provisioning _once_ with `vagrant up` you can use:
 ```bash
 bash test.sh
 ```
