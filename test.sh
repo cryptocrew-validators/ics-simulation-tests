@@ -31,6 +31,14 @@ function loadEnv {
   fi
 }
 
+function call_and_log() {
+  local function_name=$1
+  local argument=$2
+  echo "--- Running $function_name $argument" | tee -a ./tests/result.log
+  $function_name $argument 2>&1 | tee -a ./tests/result.log
+  echo "--- Finished $function_name $argument" | tee -a ./tests/result.log
+}
+
 function main() {
   loadEnv
   
@@ -42,28 +50,31 @@ function main() {
   . ./src/consumer.sh
   . ./src/relayer.sh
   
-  provisionVms
-  startProviderChain
-  waitForProviderChain
-  manipulateConsumerGenesis
-  proposeConsumerAdditionProposal
-  voteConsumerAdditionProposal
-  waitForProposal
-  testKeyAssignment "1-prelaunch-newkey"
-  waitForSpawnTime
-  prepareConsumerChain
-  startConsumerChain
-  waitForConsumerChain
-  prepareRelayer
-  createIbcPaths
-  startRelayer 
+  # Clear the log file
+  > test_result.log
+  
+  call_and_log provisionVms
+  call_and_log startProviderChain
+  call_and_log waitForProviderChain
+  call_and_log manipulateConsumerGenesis
+  call_and_log proposeConsumerAdditionProposal
+  call_and_log voteConsumerAdditionProposal
+  call_and_log waitForProposal
+  call_and_log testKeyAssignment "1-prelaunch-newkey"
+  call_and_log waitForSpawnTime
+  call_and_log prepareConsumerChain
+  call_and_log startConsumerChain
+  call_and_log waitForConsumerChain
+  call_and_log prepareRelayer
+  call_and_log createIbcPaths
+  call_and_log startRelayer
     sleep 60 # sleeps to offer more time to watch output, can be removed
-  validateAssignedKey # validate the key that was assigned pre-launch
-  testKeyAssignment "2-postlaunch-newkey" 
-  validateAssignedKey
+  call_and_log validateAssignedKey # validate the key that was assigned pre-launch
+  call_and_log testKeyAssignment "2-postlaunch-newkey"
+  call_and_log validateAssignedKey
     sleep 60 # sleeps to offer more time to watch output, can be removed
-  testKeyAssignment "3-postlaunch-samekey" 
-  validateAssignedKey
+  call_and_log testKeyAssignment "3-postlaunch-samekey"
+  call_and_log validateAssignedKey
     sleep 60 # sleeps to offer more time to watch output, can be removed
 }
 
