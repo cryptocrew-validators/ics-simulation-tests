@@ -55,5 +55,3 @@ EOT
   jq '.app_state.bank.balances += [input]' raw_genesis.json relayer_balance_consumer.json > raw_genesis_modified.json && mv raw_genesis_modified.json raw_genesis.json
   rm relayer_account_consumer.json relayer_balance_consumer.json
 }
-
-manipulateConsumerGenesis
