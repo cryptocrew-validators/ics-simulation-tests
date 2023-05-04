@@ -31,7 +31,7 @@ function prepareConsumerChain() {
   fi
 
   # Copy all other keys
-  for i in $(seq 2 $CHAIN_NUM_VALIDATORS); do
+  for i in $(seq 2 $NUM_VALIDATORS); do
     echo "Copying ORIGINAL private validator keys from provider-chain-validator${i} to consumer-chain-validator${i}..."
     vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
     vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
@@ -51,7 +51,7 @@ function prepareConsumerChain() {
   mv final_genesis_with_threshold.json final_genesis.json
 
   # Distribute consumer-chain genesis
-  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+  for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp final_genesis.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
 }
@@ -59,7 +59,7 @@ function prepareConsumerChain() {
 # Start consumer-chain
 function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
-  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+  for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
     vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"

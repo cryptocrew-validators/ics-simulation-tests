@@ -78,7 +78,7 @@ function voteConsumerAdditionProposal() {
   echo "Waiting for consumer addition proposal to go live..."
   sleep 7
 
-  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+  for i in $(seq 1 $NUM_VALIDATORS); do
     echo "Voting 'yes' from provider-chain-validator${i}..."
     vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
   done
