@@ -27,4 +27,39 @@ function testKeyAssignment() {
   sleep 2
   echo "Copying key $1 to consumer-chain-validator1"
   vagrant scp priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
+  sleep 2
+  echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
+  vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP && sleep 1 && sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+  
+  CONSUMER_PUBKEY=""
+  while [ -z "$CONSUMER_PUBKEY" ]; do
+    VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
+    CONSUMER_PUBKEY=$(echo $VALIDATOR_INFO | jq -r ".pub_key.value")
+    VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
+    sleep 2
+  done
+
+  echo "Consumer-chain-validator1 restarted, current pubkey: $CONSUMER_PUBKEY"
+  if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY" ]]; then
+    echo "Current validator pubkey does not match assigned key!"
+    echo "Current pubkey: $CONSUMER_PUBKEY"
+    echo "Assigned pubkey: $UPDATED_PUBKEY"
+    exit 1
+  fi
+
+  count=0
+  while [[ "$VP" == "0" ]] && [ $count -le 10 ]; do
+    echo "Waiting up to 30 seconds for IBC valset update to arrive."
+    VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
+    VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
+    sleep 3
+  done
+
+  if [[ "$VP" == "0" ]]; then
+    echo "Valset update not received on consumer-chain within 30 seconds!"
+    echo "Check the relayer log on provider-chain-validator1: /var/log/relayer.sh"
+    echo "If you can find the valset update in the relayer log, it has not been properly propagated on the consumer-chain! This could point to a possible issue with the consumer-chain software."
+    exit 1
+  fi
+  echo "Key Assignment test passed!"
 }
