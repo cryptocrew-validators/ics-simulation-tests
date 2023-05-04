@@ -70,14 +70,14 @@ function main() {
 
   sleep 60 # sleeps to offer more time to watch output, can be removed
 
-  call_and_log validateAssignedKey # validate the key that was assigned pre-launch
+  call_and_log validateAssignedKey "1-prelaunch-newkey"
   call_and_log testKeyAssignment "2-postlaunch-newkey"
-  call_and_log validateAssignedKey
+  call_and_log validateAssignedKey "2-postlaunch-newkey"
 
   sleep 60 # sleeps to offer more time to watch output, can be removed
 
   call_and_log testKeyAssignment "3-postlaunch-samekey"
-  call_and_log validateAssignedKey
+  call_and_log validateAssignedKey "3-postlaunch-samekey"
 
   sleep 60 # sleeps to offer more time to watch output, can be removed
 }

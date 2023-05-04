@@ -32,11 +32,17 @@ function testKeyAssignment() {
 }
 
 function validateAssignedKey() {
-  echo "Validating new pubkey."
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP"
   sleep 1
   vagrant ssh consumer-chain-validator1 -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+
+  echo "Validating new pubkey."
+
+  UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
+  UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
+  echo "New PubKey: $UPDATED_PUBKEY_VALUE"
+  
   CONSUMER_PUBKEY=""
   while [ -z "$CONSUMER_PUBKEY" ]; do
     VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
@@ -44,12 +50,12 @@ function validateAssignedKey() {
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 2
   done
+  echo "Consumer-chain-validator1 restarted"
 
-  echo "Consumer-chain-validator1 restarted, new pubkey: $CONSUMER_PUBKEY"
+  echo "New pubkey: $CONSUMER_PUBKEY"
+  echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
   if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY_VALUE" ]]; then
     echo "New validator pubkey does not match assigned key!"
-    echo "New pubkey: $CONSUMER_PUBKEY"
-    echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
     exit 1
   fi
 
@@ -67,5 +73,6 @@ function validateAssignedKey() {
     echo "If you can find the valset update in the relayer log, it has not been properly propagated on the consumer-chain! This could point to a possible issue with the consumer-chain software."
     exit 1
   fi
+  echo "Voting power: $VP"
   echo "Key Assignment test passed!"
 }
