@@ -3,8 +3,8 @@ function manipulateConsumerGenesis() {
 
   if [ ! -f "raw_genesis.json" ]; then
     # Download and manipulate consumer genesis file
-    echo "Downloading consumer genesis file"
-    wget -4 $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
+    echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
+    wget -4 -q $CONSUMER_GENESIS_SOURCE -O raw_genesis.json
   else
     echo "Using local raw_genesis.json file"
   fi
