@@ -45,10 +45,10 @@ function validateAssignedKey() {
     sleep 2
   done
 
-  echo "Consumer-chain-validator1 restarted, current pubkey: $CONSUMER_PUBKEY"
+  echo "Consumer-chain-validator1 restarted, new pubkey: $CONSUMER_PUBKEY"
   if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY_VALUE" ]]; then
-    echo "Current validator pubkey does not match assigned key!"
-    echo "Current pubkey: $CONSUMER_PUBKEY"
+    echo "New validator pubkey does not match assigned key!"
+    echo "New pubkey: $CONSUMER_PUBKEY"
     echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
     exit 1
   fi
