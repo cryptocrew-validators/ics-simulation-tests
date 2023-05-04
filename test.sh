@@ -84,3 +84,6 @@ function main() {
 
 main
 echo "All tests passed!"
+
+# copy all generated files to ./tests
+find ./ -maxdepth 1 -type f ! \( -name destroy.sh -o -name hermes_config.sh -o -name README.md -o -name setup.sh -o -name test.sh -o -name Vagrantfile \) -exec cp {} ./tests \;
