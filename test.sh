@@ -40,8 +40,10 @@ function call_and_log() {
 }
 
 function main() {
+  # Load .env file
   loadEnv
-  
+
+  # Dependencies
   . ./src/provision.sh
   . ./src/provider.sh
   . ./src/consumerGenesis.sh
@@ -53,7 +55,10 @@ function main() {
   # Clear the log file
   > test_result.log
   
+  # Provision
   provisionVms
+
+  # Run tests
   call_and_log startProviderChain
   call_and_log waitForProviderChain
   call_and_log manipulateConsumerGenesis
@@ -68,14 +73,23 @@ function main() {
   call_and_log prepareRelayer
   call_and_log createIbcPaths
   call_and_log startRelayer
-    sleep 60 # sleeps to offer more time to watch output, can be removed
-  call_and_log validateAssignedKey # validate the key that was assigned pre-launch
+
+  # sleeps to offer more time to watch output, can be removed
+  sleep 60 
+
+  # validate the key that was assigned pre-launch
+  call_and_log validateAssignedKey 
   call_and_log testKeyAssignment "2-postlaunch-newkey"
   call_and_log validateAssignedKey
-    sleep 60 # sleeps to offer more time to watch output, can be removed
+
+  # sleeps to offer more time to watch output, can be removed
+  sleep 60 
+
   call_and_log testKeyAssignment "3-postlaunch-samekey"
   call_and_log validateAssignedKey
-    sleep 60 # sleeps to offer more time to watch output, can be removed
+  
+  # sleeps to offer more time to watch output, can be removed
+  sleep 60
 }
 
 main
