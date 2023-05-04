@@ -1,17 +1,22 @@
+File.foreach('.env') do |line|
+  next if line.strip.start_with?('#')
+  
+  key, value = line.strip.split('=', 2)
+  ENV[key] = value
+end
+
 Vagrant.configure("2") do |config|
+  provider_chain_validators = ENV['CHAIN_NUM_VALIDATORS'].to_i
+  consumer_chain_validators = ENV['CHAIN_NUM_VALIDATORS'].to_i
+
   # Create the provider-chain validators
-  (1..3).each do |i|
+  (1..provider_chain_validators).each do |i|
     config.vm.define "provider-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/focal64"
       node.vm.network "private_network", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
-      #  if i == 1
-      #    v.memory = 32768
-      #    v.cpus = 16
-      #  else
-          v.memory = 4096
-          v.cpus = 4
-      #  end
+        v.memory = 4096
+        v.cpus = 4
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
@@ -28,7 +33,7 @@ Vagrant.configure("2") do |config|
   end
 
   # Create the consumer-chain validators
-  (1..3).each do |i|
+  (1..consumer_chain_validators).each do |i|
     config.vm.define "consumer-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/focal64"
       node.vm.network "private_network", ip: "192.168.34.1#{i}"
