@@ -18,8 +18,9 @@ function testKeyAssignment() {
 
   vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key1_UPDATED_"$1".json
 
-  UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')'"}'
-  echo "New PubKey: $UPDATED_PUBKEY"
+  UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
+  UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
+  echo "New PubKey: $UPDATED_PUBKEY_VALUE"
 
   echo "Assigning updated key on provider-chain-validator1"
   vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$UPDATED_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
@@ -45,10 +46,10 @@ function validateAssignedKey() {
   done
 
   echo "Consumer-chain-validator1 restarted, current pubkey: $CONSUMER_PUBKEY"
-  if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY" ]]; then
+  if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY_VALUE" ]]; then
     echo "Current validator pubkey does not match assigned key!"
     echo "Current pubkey: $CONSUMER_PUBKEY"
-    echo "Assigned pubkey: $UPDATED_PUBKEY"
+    echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
     exit 1
   fi
 
