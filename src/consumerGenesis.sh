@@ -1,3 +1,5 @@
+set -e
+
 function manipulateConsumerGenesis() {
   echo "Manipulating consumer raw_genesis file"
 

@@ -1,3 +1,5 @@
+set -e
+
 # Get peerlists for both provider and consumer chain, edit config
 function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""

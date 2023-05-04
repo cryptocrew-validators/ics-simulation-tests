@@ -1,3 +1,5 @@
+set -e
+
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
   PROP_TITLE="Create the Consumer chain"

@@ -1,3 +1,5 @@
+set -e
+
 # Wait for spawn_time to be reached
 function waitForSpawnTime() {
   PROP_SPAWN_TIME=$(cat prop.json | jq -r '.spawn_time')

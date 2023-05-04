@@ -1,3 +1,5 @@
+set -e
+
 # Preperare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."

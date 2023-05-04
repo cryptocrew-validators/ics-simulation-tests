@@ -1,3 +1,5 @@
+set -e
+
 # KeyAssignment test function
 function testKeyAssignment() {
   echo "Assigning Key: $1"
