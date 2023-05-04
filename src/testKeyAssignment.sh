@@ -66,6 +66,10 @@ function validateAssignedKey() {
     VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 3
+    count=$((count+1))
+    if [ $count -gt 10 ]; then
+      break
+    fi
   done
 
   if [[ "$VOTING_POWER" == "0" ]]; then
