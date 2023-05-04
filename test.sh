@@ -30,7 +30,7 @@ function loadEnv {
 function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""
   PERSISTENT_PEERS_CONSUMER=""
-  for i in {1..3}; do
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- sudo $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
     NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- sudo $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
     PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
@@ -41,7 +41,7 @@ function configPeers() {
   echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS_PROVIDER'"'
   echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
 
-  for i in {1..3}; do
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "bash -c 'sudo sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
     vagrant ssh consumer-chain-validator${i} -- "bash -c 'sudo sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
   done
@@ -57,7 +57,11 @@ function startProviderChain() {
     vagrant plugin install vagrant-scp
 
     # Loop through the VM names and run vagrant up in the background
-    vms=("provider-chain-validator1" "provider-chain-validator2" "provider-chain-validator3" "consumer-chain-validator1" "consumer-chain-validator2" "consumer-chain-validator3")
+    vms=()
+    for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+      vms+=("provider-chain-validator$i")
+      vms+=("consumer-chain-validator$i")
+    done
     for vm in "${vms[@]}"; do
       echo "Starting provisioning for $vm"
       vagrant up $vm --provision --no-parallel &
@@ -76,26 +80,24 @@ function startProviderChain() {
   
   # Copy gentxs to the first validator of provider chain, collect gentxs
   echo "Copying gentxs to provider-chain-validator1..."
-  GENTX2_FILENAME=$(vagrant ssh provider-chain-validator2 -- "bash -c 'sudo ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
-  GENTX3_FILENAME=$(vagrant ssh provider-chain-validator3 -- "bash -c 'sudo ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
-  vagrant scp provider-chain-validator2:$PROVIDER_HOME/config/gentx/$GENTX2_FILENAME gentx2.json
-  vagrant scp gentx2.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx2.json
-  vagrant scp provider-chain-validator3:$PROVIDER_HOME/config/gentx/$GENTX3_FILENAME gentx3.json
-  vagrant scp gentx3.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx3.json
+  VAL_ACCOUNTS=()
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+    GENTX_FILENAME=$(vagrant ssh provider-chain-validator${i} -- "bash -c 'sudo ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME gentx${i}.json
+    vagrant scp gentx${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
 
-  VAL_ACCOUNT2=$(cat gentx2.json | jq -r '.body.messages[0].delegator_address')
-  VAL_ACCOUNT3=$(cat gentx3.json | jq -r '.body.messages[0].delegator_address')
-
-  rm gentx2.json gentx3.json
+    VAL_ACCOUNTS+=($(cat gentx${i}.json | jq -r '.body.messages[0].delegator_address'))
+  done
 
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- sudo cat $PROVIDER_HOME/config/genesis.json)
-  if [[ ! "$GENESIS_JSON" == *"$VAL_ACCOUNT2"* ]] ; then
+  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[1]}"* ]] ; then
     echo "Adding genesis accounts..."
 
     # Add validator accounts & relayer account
-    vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT2 1500000000000icsstake --keyring-backend test
-    vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $VAL_ACCOUNT3 1500000000000icsstake --keyring-backend test
+    for i in $(seq 2 $CHAIN_NUM_VALIDATORS); do
+      vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i]} 1500000000000icsstake --keyring-backend test
+    done
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
     
     # Collect gentxs & finalize provider-chain genesis
@@ -103,14 +105,15 @@ function startProviderChain() {
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
   fi
 
-  # Distribute genesis file from the first validator to validators 2 and 3
-  echo "Distributing genesis file from provider-chain-validator1 to provider-chain-validator2 and provider-chain-validator3"
+  # Distribute provider genesis
+  echo "Distributing provider-chain genesis file..."
   vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json genesis.json
-  vagrant scp genesis.json provider-chain-validator2:$PROVIDER_HOME/config/genesis.json
-  vagrant scp genesis.json provider-chain-validator3:$PROVIDER_HOME/config/genesis.json 
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
+    vagrant scp genesis.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
+  done
   
   echo ">> STARTING PROVIDER CHAIN"
-  for i in {1..3} ; do 
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
     vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
@@ -266,7 +269,7 @@ function voteConsumerAdditionProposal() {
   echo "Waiting for consumer addition proposal to go live..."
   sleep 7
 
-  for i in {1..3} ; do 
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     echo "Voting 'yes' from provider-chain-validator${i}..."
     vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
   done
@@ -356,7 +359,7 @@ function prepareConsumerChain() {
   fi
 
   # Copy all other keys
-  for i in {2..3} ; do 
+  for i in $(seq 2 $CHAIN_NUM_VALIDATORS); do
     echo "Copying ORIGINAL private validator keys from provider-chain-validator${i} to consumer-chain-validator${i}..."
     vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
     vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
@@ -376,7 +379,7 @@ function prepareConsumerChain() {
   mv final_genesis_with_threshold.json final_genesis.json
 
   # Distribute consumer-chain genesis
-  for i in {1..3} ; do 
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     vagrant scp final_genesis.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
 }
@@ -384,7 +387,7 @@ function prepareConsumerChain() {
 # Start consumer-chain
 function startConsumerChain() {
   echo ">> STARTING CONSUMER CHAIN"
-  for i in {1..3} ; do 
+  for i in $(seq 1 $CHAIN_NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
     vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
