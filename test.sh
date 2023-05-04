@@ -53,7 +53,7 @@ function main() {
   # Clear the log file
   > test_result.log
   
-  call_and_log provisionVms
+  provisionVms
   call_and_log startProviderChain
   call_and_log waitForProviderChain
   call_and_log manipulateConsumerGenesis
