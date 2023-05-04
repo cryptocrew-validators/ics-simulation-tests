@@ -62,7 +62,9 @@ function validateAssignedKey() {
 
   count=0
   while [[ "$VOTING_POWER" == "0" ]]; do
-    echo "Waiting up to 60 seconds for IBC valset update to arrive."
+    if [ $count -lt 1 ]; then
+      echo "Waiting up to 60 seconds for IBC valset update to arrive."
+    fi
     VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 3
