@@ -33,9 +33,10 @@ function startProviderChain() {
     GENTX_FILENAME=$(vagrant ssh provider-chain-validator${i} -- "bash -c 'sudo ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
     vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME gentx${i}.json
     vagrant scp gentx${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
-
-    VAL_ACCOUNTS+=("$(cat gentx${i}.json | jq -r '.body.messages[0].delegator_address')")
-    echo "[provider-chain-validator${i}] ${VAL_ACCOUNTS[i]} (account: provider-chain-validator${i})"
+    
+    ACCOUNT=$(cat gentx${i}.json | jq -r '.body.messages[0].delegator_address')
+    VAL_ACCOUNTS+=($ACCOUNT)
+    echo "[provider-chain-validator${i}] ${VAL_ACCOUNTS[i-1]} (account: provider-chain-validator${i})"
   done
 
   # Check if genesis accounts have already been added, if not: collect gentxs
@@ -45,7 +46,7 @@ function startProviderChain() {
 
     # Add validator accounts & relayer account
     for i in $(seq 2 $NUM_VALIDATORS); do
-      vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i]} 1500000000000icsstake --keyring-backend test
+      vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i-1]} 1500000000000icsstake --keyring-backend test
     done
     vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
 
