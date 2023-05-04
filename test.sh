@@ -18,12 +18,6 @@ fi
 function loadEnv {
   if test -f .env ; then 
     . .env
-    # ENV=$(realpath .env)
-    # while IFS="=" read -r key value; do
-    #   if [[ ! $key =~ ^# && ! -z $key ]]; then
-    #     export "$key=$value"
-    #   fi
-    # done < "$ENV"
     echo "loaded configuration from ENV file: $ENV"
   else
     echo "ENV file not found at .env"
@@ -74,22 +68,18 @@ function main() {
   call_and_log createIbcPaths
   call_and_log startRelayer
 
-  # sleeps to offer more time to watch output, can be removed
-  sleep 60 
+  sleep 60 # sleeps to offer more time to watch output, can be removed
 
-  # validate the key that was assigned pre-launch
-  call_and_log validateAssignedKey 
+  call_and_log validateAssignedKey # validate the key that was assigned pre-launch
   call_and_log testKeyAssignment "2-postlaunch-newkey"
   call_and_log validateAssignedKey
 
-  # sleeps to offer more time to watch output, can be removed
-  sleep 60 
+  sleep 60 # sleeps to offer more time to watch output, can be removed
 
   call_and_log testKeyAssignment "3-postlaunch-samekey"
   call_and_log validateAssignedKey
-  
-  # sleeps to offer more time to watch output, can be removed
-  sleep 60
+
+  sleep 60 # sleeps to offer more time to watch output, can be removed
 }
 
 main
