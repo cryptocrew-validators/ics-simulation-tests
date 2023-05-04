@@ -39,7 +39,7 @@ function validateAssignedKey() {
   sleep 1
   vagrant ssh consumer-chain-validator1 -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
 
-  echo "Validating new pubkey."
+  echo "Validating key assignment consumer-chain-validator1: $1"
 
   UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
   UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
@@ -51,7 +51,7 @@ function validateAssignedKey() {
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 2
   done
-  echo "Consumer-chain-validator1 restarted"
+  echo "Restarted consumer-chain-validator1."
 
   echo "New pubkey: $CONSUMER_PUBKEY"
   echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
