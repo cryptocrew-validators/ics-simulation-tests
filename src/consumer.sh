@@ -47,7 +47,7 @@ function prepareConsumerChain() {
   # Finalize consumer-chain genesis
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
   
-  if [[ "$PROVIER_VERSION" == *"v9.0"* ]]; then
+  if [[ "$PROVIDER_VERSION" == *"v9.0"* ]]; then
   # # FIX: soft_opt_out_threshold gets lost / isn't returned by gaiad
     echo "Gaiad version <= v9.0.3: Appending `soft_opt_out_threshold` to final_genesis ccvconsumer.params."
     jq '.app_state.ccvconsumer.params |= . + {"soft_opt_out_threshold": "0.05"}' final_genesis.json > final_genesis_with_threshold.json
