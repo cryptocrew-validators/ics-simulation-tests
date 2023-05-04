@@ -57,10 +57,13 @@ function main() {
   prepareRelayer
   createIbcPaths
   startRelayer 
-    sleep 120 # sleeps to offer more time to watch output, can be removed
+    sleep 60 # sleeps to offer more time to watch output, can be removed
+  validateAssignedKey # validate the key that was assigned pre-launch
   testKeyAssignment "2-postlaunch-newkey" 
+  validateAssignedKey
     sleep 60 # sleeps to offer more time to watch output, can be removed
   testKeyAssignment "3-postlaunch-samekey" 
+  validateAssignedKey
     sleep 60 # sleeps to offer more time to watch output, can be removed
 }
 

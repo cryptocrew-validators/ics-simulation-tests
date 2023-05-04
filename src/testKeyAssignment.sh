@@ -28,9 +28,12 @@ function testKeyAssignment() {
   echo "Copying key $1 to consumer-chain-validator1"
   vagrant scp priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
   sleep 2
+}
+
+function validateAssignedKey() {
+  echo "Validating new pubkey."
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP && sleep 1 && sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
-  
   CONSUMER_PUBKEY=""
   while [ -z "$CONSUMER_PUBKEY" ]; do
     VALIDATOR_INFO=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.validator_info"')
