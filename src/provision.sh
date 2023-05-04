@@ -1,5 +1,6 @@
 function provisionVms() {
   PROVISIONED_FLAG_FILE=".provisioned"
+  vagrant box update
 
   # Check if the flag file exists; if it does not, start provisioning
   if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
