@@ -2,7 +2,9 @@
 
 This repository contains a test suite for interchain staking between a provider chain (Gaia) and a consumer chain (Neutron). The test simulates the process of creating a consumer chain and the validator key-assignment feature.
 
-It bootstraps a local provider testnet with 3 validators, proposes a `consumer-addition-proposal`, tests the `key-assignment` feature and launches the `consumer-chain`
+It bootstraps a local provider testnet with N validators, proposes a `consumer-addition-proposal`, tests the `key-assignment` feature and launches the `consumer-chain`
+
+A test journal is written to `./tests/test_result.log`
 
 ## Requirements
 
@@ -23,7 +25,7 @@ cd ics-simulation-tests
 
 ## Configuration
 
-Modify the `.env` file to set up the required environment variables. These variables determine the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources
+Modify the `.env` file to set up the required environment variables. These variables determine the number of validators and the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources
 
 ## Running the Test
 
