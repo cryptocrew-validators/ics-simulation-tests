@@ -1,5 +1,7 @@
+PROVISIONED_FLAG_FILE=".provisioned"
+FIRST_RUN_FLAG_FILE=".first_run"
+
 function firstRun() {
-  FIRST_RUN_FLAG_FILE=".first_run"
   vagrant box update
   # Check if the flag file exists; if it does not, start first run
   if [ ! -f "$FIRST_RUN_FLAG_FILE" ]; then
@@ -8,13 +10,14 @@ function firstRun() {
     echo "Please note: This operation will take at least 10 minutes..."
     vagrant up
 
-    touch $FIRST_RUN_FLAG_FILE
+    touch $FIRST_RUN_FLAG_FILE || true
+    touch $PROVISIONED_FLAG_FILE || true
   fi
 }
 
 function provisionVms() {
+  # First run & box update
   firstRun
-  PROVISIONED_FLAG_FILE=".provisioned"
   
   # Check if the flag file exists; if it does not, start provisioning
   if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
@@ -38,7 +41,7 @@ function provisionVms() {
       wait $pid
     done
 
-    touch $PROVISIONED_FLAG_FILE
+    touch $PROVISIONED_FLAG_FILE || true
   fi
 
   echo "All VMs have been provisioned."
