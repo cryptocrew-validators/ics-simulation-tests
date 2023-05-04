@@ -1,11 +1,24 @@
-function provisionVms() {
-  PROVISIONED_FLAG_FILE=".provisioned"
+function firstRun() {
+  FIRST_RUN_FLAG_FILE=".first_run"
   vagrant box update
+  # Check if the flag file exists; if it does not, start first run
+  if [ ! -f "$FIRST_RUN_FLAG_FILE" ]; then
+    vagrant plugin install vagrant-scp
+    echo "Starting first run, provisioning with: vagrant -up"
+    echo "Please note: This operation will take at least 10 minutes..."
+    vagrant up
 
+    touch $FIRST_RUN_FLAG_FILE
+  fi
+}
+
+function provisionVms() {
+  firstRun
+  PROVISIONED_FLAG_FILE=".provisioned"
+  
   # Check if the flag file exists; if it does not, start provisioning
   if [ ! -f "$PROVISIONED_FLAG_FILE" ]; then
     echo "Starting vagrant VMs. Validators: $CHAIN_NUM_VALIDATORS"
-    vagrant plugin install vagrant-scp
 
     # Loop through the VM names and run vagrant up in the background
     vms=()
@@ -25,7 +38,7 @@ function provisionVms() {
       wait $pid
     done
 
-    touch "$PROVISIONED_FLAG_FILE"
+    touch $PROVISIONED_FLAG_FILE
   fi
 
   echo "All VMs have been provisioned."
