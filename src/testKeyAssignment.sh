@@ -41,7 +41,6 @@ function validateAssignedKey() {
 
   UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
   UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
-  echo "New PubKey: $UPDATED_PUBKEY_VALUE"
   
   CONSUMER_PUBKEY=""
   while [ -z "$CONSUMER_PUBKEY" ]; do
