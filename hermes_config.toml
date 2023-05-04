@@ -55,9 +55,9 @@ trust_threshold = { numerator = '1', denominator = '3' }
 
 [[chains]]
 id = 'consumer-chain'
-rpc_addr = 'http://192.168.34.11:26657'
-grpc_addr = 'http://192.168.34.11:9090'
-websocket_addr = 'ws://192.168.34.11:26657/websocket'
+rpc_addr = 'http://192.168.34.12:26657'
+grpc_addr = 'http://192.168.34.12:9090'
+websocket_addr = 'ws://192.168.34.12:26657/websocket'
 rpc_timeout = '10s'
 account_prefix = 'neutron'
 key_name = 'default'
