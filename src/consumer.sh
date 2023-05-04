@@ -1,5 +1,6 @@
 # Wait for spawn_time to be reached
 function waitForSpawnTime() {
+  PROP_SPAWN_TIME=$(cat prop.json | jq -r '.spawn_time')
   echo "Waiting for spawn time to be reached: $PROP_SPAWN_TIME"
   CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
   CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)

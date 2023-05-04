@@ -6,7 +6,6 @@ function proposeConsumerAdditionProposal() {
   PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   PROP_SOFT_OPT_OUT_THRESHOLD=0.05
-  export PROP_SPAWN_TIME=$PROP_SPAWN_TIME
   if [ -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
