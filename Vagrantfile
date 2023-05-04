@@ -16,11 +16,9 @@ if chain_num_validators.nil?
 end
 
 Vagrant.configure("2") do |config|
-  provider_chain_validators = chain_num_validators
-  consumer_chain_validators = chain_num_validators
 
   # Create the provider-chain validators
-  (1..provider_chain_validators).each do |i|
+  (1..chain_num_validators).each do |i|
     config.vm.define "provider-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
       node.vm.network "private_network", ip: "192.168.33.1#{i}"
@@ -43,7 +41,7 @@ Vagrant.configure("2") do |config|
   end
 
   # Create the consumer-chain validators
-  (1..consumer_chain_validators).each do |i|
+  (1..chain_num_validators).each do |i|
     config.vm.define "consumer-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" #ubuntu/focal64
       node.vm.network "private_network", ip: "192.168.34.1#{i}"
