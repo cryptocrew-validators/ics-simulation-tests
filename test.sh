@@ -3,14 +3,6 @@
 # node logs piped to /var/logs/chain.log
 # relayer logs piped to /var/logs/relayer.log
 
-. ./src/provision.sh
-. ./src/provider.sh
-. ./src/consumerGenesis.sh
-. ./src/proposal.sh
-. ./src/testKeyAssignment.sh
-. ./src/consumer.sh
-. ./src/relayer.sh
-
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
@@ -40,6 +32,15 @@ function loadEnv {
 
 function main() {
   loadEnv
+  
+  . ./src/provision.sh
+  . ./src/provider.sh
+  . ./src/consumerGenesis.sh
+  . ./src/proposal.sh
+  . ./src/testKeyAssignment.sh
+  . ./src/consumer.sh
+  . ./src/relayer.sh
+  
   provisionVms
   startProviderChain
   waitForProviderChain
