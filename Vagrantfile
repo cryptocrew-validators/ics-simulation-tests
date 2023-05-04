@@ -1,8 +1,18 @@
+chain_num_validators = nil
+
 File.foreach('.env') do |line|
   next if line.strip.start_with?('#')
-  
+
   key, value = line.strip.split('=', 2)
-  ENV[key] = value
+  if key == 'CHAIN_NUM_VALIDATORS'
+    chain_num_validators = value.to_i
+    break
+  end
+end
+
+if chain_num_validators.nil?
+  puts "CHAIN_NUM_VALIDATORS not found in .env file"
+  exit 1
 end
 
 Vagrant.configure("2") do |config|
