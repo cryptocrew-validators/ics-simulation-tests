@@ -16,8 +16,8 @@ if chain_num_validators.nil?
 end
 
 Vagrant.configure("2") do |config|
-  provider_chain_validators = ENV['CHAIN_NUM_VALIDATORS'].to_i
-  consumer_chain_validators = ENV['CHAIN_NUM_VALIDATORS'].to_i
+  provider_chain_validators = chain_num_validators
+  consumer_chain_validators = chain_num_validators
 
   # Create the provider-chain validators
   (1..provider_chain_validators).each do |i|
