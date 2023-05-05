@@ -37,7 +37,7 @@ function setNodeVars() {
 }
 
 function installGo() {
-  wget -4 $DAEMON_GO_SOURCE -O $(basename $DAEMON_GO_SOURCE)
+  wget -4 -q $DAEMON_GO_SOURCE -O $(basename $DAEMON_GO_SOURCE)
   sudo rm -rf /usr/local/go
   sudo tar -C /usr/local -xzf $(basename $DAEMON_GO_SOURCE)
   rm $(basename $DAEMON_GO_SOURCE)
