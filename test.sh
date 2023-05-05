@@ -48,7 +48,7 @@ function main() {
   . ./src/cleanup.sh
   
   # Clear the log file
-  > test_result.log
+  > result.log
   
   # Provision
   provisionVms
