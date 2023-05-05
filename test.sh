@@ -18,7 +18,7 @@ fi
 function loadEnv {
   if test -f .env ; then 
     . .env
-    echo "loaded configuration from ENV file: $ENV"
+    echo "loaded configuration from ENV file: .env"
   else
     echo "ENV file not found at .env"
     exit 1
