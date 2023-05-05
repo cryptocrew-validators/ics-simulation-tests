@@ -64,6 +64,8 @@ function installNode() {
 
     make install
     sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
+    sudo chown vagrant:vagrant /usr/local/bin/$DAEMON_NAME 
+    sudo chmod 777 /usr/local/bin/$DAEMON_NAME
     cd ..
 }
 
@@ -112,15 +114,15 @@ function installRelayer() {
 
     mkdir -p /home/vagrant/.hermes/bin
     sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
-    sudo chmod -R 777 /home/vagrant/.hermes
-    
-    /home/vagrant/.hermes/bin/hermes version
+    sudo chmod 777 /home/vagrant/.hermes/bin/hermes
+    sudo chown -R vagrant:vagrant /home/vagrant/.hermes
   fi
 }
 
-function updatePermissions() {
-  echo "Updating permissions..."
-  sudo chmod -R 777 $DAEMON_HOME
+function updateOwnerships() {
+  echo "Updating ownerships..."
+  # sudo chmod -R 777 $DAEMON_HOME
+  sudo chown -R vagrant:vagrant $DAEMON_HOME
 }
 
 main() {
@@ -132,7 +134,7 @@ main() {
   manipulateGenesis
   genTx
   installRelayer
-  updatePermissions
+  updateOwnerships
 }
 
 main && echo "SUCCESS >> node provisioned"
