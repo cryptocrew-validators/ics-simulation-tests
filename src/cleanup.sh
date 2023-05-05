@@ -14,7 +14,7 @@ function getLogs() {
   vagrant scp provider-chain-validator1:/var/log/hermes.log ./tests/hermes.log
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp provider-chain-validator${i}:/var/log/chain.log ./tests/chainlog_provider-chain-validator${i}.log
-    vagrant scp consumer-chain-validator${i}:/var/log/hermes.log ./tests/chainlog_consumer-chain-validator${i}.log
+    vagrant scp consumer-chain-validator${i}:/var/log/chain.log ./tests/chainlog_consumer-chain-validator${i}.log
   done
 }
 
