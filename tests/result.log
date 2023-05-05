@@ -1,0 +1,30 @@
+Copying hermes_config.toml to ./tests/* ...
+--- Finished copyGeneratedFiles 
+--- Running getLogs 
+Getting logs...
+Warning: Permanently added '[127.0.0.1]:2206' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2206' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+scp: /var/log/hermes.log: No such file or directory
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2205' (ED25519) to the list of known hosts.
+scp: /var/log/hermes.log: No such file or directory
+Warning: Permanently added '[127.0.0.1]:2202' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2201' (ED25519) to the list of known hosts.
+scp: /var/log/hermes.log: No such file or directory
+Warning: Permanently added '[127.0.0.1]:2204' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2203' (ED25519) to the list of known hosts.
+scp: /var/log/hermes.log: No such file or directory
+--- Finished getLogs 
+--- Running cleanUp 
+Killing services...
+[provider-chain-validator1] stopped hermes
+[provider-chain-validator1] stopped gaiad
+[consumer-chain-validator1] stopped neutrond
+[provider-chain-validator2] stopped gaiad
+[consumer-chain-validator2] stopped neutrond
+[provider-chain-validator3] stopped gaiad
+[consumer-chain-validator3] stopped neutrond
+[provider-chain-validator4] stopped gaiad
+[consumer-chain-validator4] stopped neutrond
+--- Finished cleanUp 
