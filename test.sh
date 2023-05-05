@@ -45,6 +45,7 @@ function main() {
   . ./src/testKeyAssignment.sh
   . ./src/consumer.sh
   . ./src/relayer.sh
+  . ./src/cleanup.sh
   
   # Clear the log file
   > test_result.log
@@ -80,10 +81,12 @@ function main() {
   call_and_log validateAssignedKey "3-postlaunch-samekey"
 
   sleep 60 # sleeps to offer more time to watch output, can be removed
+
+  call_and_log copyGeneratedFiles
+  call_and_log getLogs
+  call_and_log cleanUp
 }
 
 main
-echo "All tests passed!"
 
-# copy all generated files to ./tests
-find ./ -maxdepth 1 -type f ! \( -name destroy.sh -o -name hermes_config.sh -o -name README.md -o -name setup.sh -o -name test.sh -o -name Vagrantfile \) -exec cp {} ./tests \;
+echo "All tests passed!"

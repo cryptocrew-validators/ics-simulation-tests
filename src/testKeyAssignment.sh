@@ -37,7 +37,7 @@ function validateAssignedKey() {
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP"
   sleep 1
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
 
   echo "Validating key assignment consumer-chain-validator1: $1"
 

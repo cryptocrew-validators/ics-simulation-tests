@@ -1,5 +1,5 @@
 [global]
-log_level = 'info'
+log_level = 'trace'
 
 [mode]
 [mode.clients]
