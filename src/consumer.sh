@@ -80,5 +80,5 @@ function waitForConsumerChain() {
     CONSUMER_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
   done
-  echo ">>> CONSUMER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+  echo ">>> CONSUMER CHAIN successfully launched. Latest block height: $CONSUMER_LATEST_HEIGHT"
 }
