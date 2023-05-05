@@ -7,14 +7,14 @@ function testKeyAssignment() {
   echo $TMP_DIR_EXISTS
   if [[ "$1" == *"newkey"* ]]; then
     if [[ "$TMP_DIR_EXISTS" == *"exists"* ]]; then
-      vagrant ssh provider-chain-validator1 -- "sudo rm -rf /home/vagrant/tmp"
+      vagrant ssh provider-chain-validator1 -- "rm -rf /home/vagrant/tmp"
     fi
     echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 777 /home/vagrant/tmp"
+    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 666 /home/vagrant/tmp"
   elif [[ "$1" == *"samekey"* ]]; then
     echo "Using the PREVIOUS (SAME) key for KeyAssignment test on provider-chain-validator1, checking location..."
     if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
-      vagrant ssh provider-chain-validator1 -- "sudo mkdir /home/vagrant/tmp && sudo cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 777 /home/vagrant/tmp"
+      vagrant ssh provider-chain-validator1 -- "mkdir /home/vagrant/tmp && cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 666 /home/vagrant/tmp"
     fi
   fi
 
@@ -25,7 +25,7 @@ function testKeyAssignment() {
   echo "New PubKey: $UPDATED_PUBKEY_VALUE"
 
   echo "Assigning updated key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- sudo $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$UPDATED_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
+  vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$UPDATED_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
 
   sleep 2
   echo "Copying key $1 to consumer-chain-validator1"
@@ -37,7 +37,7 @@ function validateAssignedKey() {
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP"
   sleep 1
-  vagrant ssh consumer-chain-validator1 -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
 
   echo "Validating key assignment consumer-chain-validator1: $1"
 

@@ -5,7 +5,7 @@ function proposeConsumerAdditionProposal() {
   PROP_TITLE="Create the Consumer chain"
   PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
   PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
-  PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sudo sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
+  PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   PROP_SOFT_OPT_OUT_THRESHOLD=0.05
   if [ -z "$ORIG_PROP_NR" ]; then
@@ -71,7 +71,7 @@ EOT
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
-  vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/vagrant/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS"
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal consumer-addition /home/vagrant/prop.json --from provider-chain-validator1 $PROVIDER_FLAGS"
   echo "Consumer addition proposal submitted"
 }
 
@@ -82,7 +82,7 @@ function voteConsumerAdditionProposal() {
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     echo "Voting 'yes' from provider-chain-validator${i}..."
-    vagrant ssh provider-chain-validator${i} -- "sudo $PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
   done
 }
 
@@ -91,7 +91,7 @@ function waitForProposal() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
   while [[ $PROPOSAL_STATUS != "PROPOSAL_STATUS_PASSED" ]]; do
-    PROPOSAL_STATUS=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME q gov proposal 1 -o json | jq -r '.status'")
+    PROPOSAL_STATUS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q gov proposal 1 -o json | jq -r '.status'")
     sleep 2
   done
 

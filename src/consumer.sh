@@ -43,7 +43,7 @@ function prepareConsumerChain() {
   
   # Query CCV consumer state on provider-chain-validator1
   echo "Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json..."
-  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "sudo $PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
+  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "ccv.json"
 
   # Finalize consumer-chain genesis
@@ -67,7 +67,7 @@ function startConsumerChain() {
   echo ">>> STARTING CONSUMER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "sudo $CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
