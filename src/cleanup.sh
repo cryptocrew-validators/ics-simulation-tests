@@ -4,7 +4,7 @@ set -e
 function copyGeneratedFiles() {
   echo "Success!"
   echo "Copying generated files to ./tests/* ..."
-  find ./ -maxdepth 1 -type f ! \( -name destroy.sh -o -name README.md -o -name setup.sh -o -name test.sh -o -name Vagrantfile \) -exec mv {} ./tests \;
+  find ./ -maxdepth 1 -type f ! \( -name destroy.sh -o -name README.md -o -name hermes_config.toml -o -name setup.sh -o -name test.sh -o -name Vagrantfile \) -exec mv {} ./tests \;
   echo "Copying hermes_config.toml to ./tests/* ..."
   cp hermes_config.toml ./tests
 }
