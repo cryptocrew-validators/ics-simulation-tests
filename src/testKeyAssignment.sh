@@ -10,11 +10,11 @@ function testKeyAssignment() {
       vagrant ssh provider-chain-validator1 -- "rm -rf /home/vagrant/tmp"
     fi
     echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 666 /home/vagrant/tmp"
+    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 766 /home/vagrant/tmp"
   elif [[ "$1" == *"samekey"* ]]; then
     echo "Using the PREVIOUS (SAME) key for KeyAssignment test on provider-chain-validator1, checking location..."
     if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
-      vagrant ssh provider-chain-validator1 -- "mkdir /home/vagrant/tmp && cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 666 /home/vagrant/tmp"
+      vagrant ssh provider-chain-validator1 -- "mkdir /home/vagrant/tmp && cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 766 /home/vagrant/tmp"
     fi
   fi
 
@@ -34,6 +34,7 @@ function testKeyAssignment() {
 }
 
 function validateAssignedKey() {
+  set -e
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP"
   sleep 1
