@@ -53,23 +53,18 @@ function installGo() {
 }
 
 function installNode() {
-  LOCAL_REPO=$DAEMON_NAME-core
-  if [ -d $LOCAL_REPO ] ; then
-    rm -r $LOCAL_REPO
-  fi
-  mkdir $LOCAL_REPO
-  git clone $DAEMON_REPO $LOCAL_REPO
-  cd $LOCAL_REPO
-  git checkout $DAEMON_VERSION
+    LOCAL_REPO=$DAEMON_NAME-core
+    if [ -d $LOCAL_REPO ] ; then
+      rm -r $LOCAL_REPO
+    fi
+    mkdir $LOCAL_REPO
+    git clone $DAEMON_REPO $LOCAL_REPO
+    cd $LOCAL_REPO
+    git checkout $DAEMON_VERSION
 
-  #if [[ "$CHAIN_ID" == "consumer-chain" ]]; then
-  #  sed -i 's#github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.45.15-ics#github.com/cosmos/cosmos-sdk => github.com/monopauli/cosmos-sdk v0.45.15-ics-showkey#g' go.mod
-  #  go mod tidy
-  #fi
-
-  make install
-  sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
-  cd ..
+    make install
+    sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin
+    cd ..
 }
 
 function initNode() {
@@ -79,10 +74,9 @@ function initNode() {
 
 function manipulateGenesis() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
-    sed -i 's/stake/icsstake/g' $DAEMON_HOME/config/genesis.json
+  sed -i 's/stake/icsstake/g' $DAEMON_HOME/config/genesis.json
     jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-    # jq '.app_state.gov.params.deposit_params.min_deposit[0].amount = "1"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
