@@ -20,12 +20,12 @@
       "blocks_per_distribution_transmission": "1500",
       "historical_entries": "10000"
     },
-    "status": "PROPOSAL_STATUS_VOTING_PERIOD",
+    "status": "PROPOSAL_STATUS_PASSED",
     "final_tally_result": {
-      "yes": "0",
-      "abstain": "0",
-      "no": "0",
-      "no_with_veto": "0"
+      "yes": "132181458365806",
+      "abstain": "12890145709397",
+      "no": "1641375931196",
+      "no_with_veto": "4070229695"
     },
     "submit_time": "2023-04-21T20:56:07.737413188Z",
     "deposit_end_time": "2023-05-05T20:56:07.737413188Z",

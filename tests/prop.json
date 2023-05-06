@@ -7,7 +7,7 @@
   },
   "genesis_hash": "f20ab1432746c146924eaf6644d3f3e62759f64096fe3f347b740af7e0032369",
   "binary_hash": "4d897938a69a3809828e70f34c7400ec134817fe34ca4090dbe5991d72fa744c",
-  "spawn_time": "2023-05-05T12:51:22Z",
+  "spawn_time": "2023-05-06T14:45:06Z",
   "consumer_redistribution_fraction": "0.75",
   "blocks_per_distribution_transmission": 1500,
   "historical_entries": 10000,
