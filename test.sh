@@ -69,19 +69,19 @@ function main() {
   call_and_log createIbcPaths
   call_and_log startRelayer
 
-  sleep 60 # sleeps to offer more time to watch output, can be removed
+  sleep 30 # sleeps to offer more time to watch output, can be removed
 
   call_and_log validateAssignedKey "1-prelaunch-newkey"
   call_and_log testKeyAssignment "2-postlaunch-newkey"
   call_and_log validateAssignedKey "2-postlaunch-newkey"
 
-  sleep 60 # sleeps to offer more time to watch output, can be removed
+  sleep 30 # sleeps to offer more time to watch output, can be removed
 
   call_and_log testKeyAssignment "3-postlaunch-samekey"
-  sleep 60
+  sleep 30
   call_and_log validateAssignedKey "3-postlaunch-samekey"
 
-  sleep 60 # sleeps to offer more time to watch output, can be removed
+  sleep 30 # sleeps to offer more time to watch output, can be removed
 
   call_and_log copyGeneratedFiles
   call_and_log getLogs
