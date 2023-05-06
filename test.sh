@@ -78,10 +78,10 @@ function main() {
   sleep 30 # sleeps to offer more time to watch output, can be removed
 
   call_and_log testKeyAssignment "3-postlaunch-samekey"
-  sleep 30
-  call_and_log validateAssignedKey "3-postlaunch-samekey"
-
+  
   sleep 30 # sleeps to offer more time to watch output, can be removed
+  
+  call_and_log validateAssignedKey "3-postlaunch-samekey"
 
   call_and_log copyGeneratedFiles
   call_and_log getLogs
