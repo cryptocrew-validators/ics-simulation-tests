@@ -15,7 +15,7 @@ function manipulateConsumerGenesis() {
   echo "Setting supply to []"
   jq '.app_state.bank.supply = []' raw_genesis.json | sponge raw_genesis.json
 
-  # Update chain_id to `consumer-chain`
+  # Update chain_id to consumer-chain
   echo "Setting chain_id: consumer-chain"
   jq --arg chainid "consumer-chain" '.chain_id = $chainid' raw_genesis.json | sponge raw_genesis.json
   
