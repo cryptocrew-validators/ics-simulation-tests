@@ -78,6 +78,7 @@ function main() {
   sleep 60 # sleeps to offer more time to watch output, can be removed
 
   call_and_log testKeyAssignment "3-postlaunch-samekey"
+  sleep 60
   call_and_log validateAssignedKey "3-postlaunch-samekey"
 
   sleep 60 # sleeps to offer more time to watch output, can be removed
