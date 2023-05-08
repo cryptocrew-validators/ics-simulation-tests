@@ -1,0 +1,41 @@
+{
+  "proposal": {
+    "proposal_id": "792",
+    "content": {
+      "@type": "/interchain_security.ccv.provider.v1.ConsumerAdditionProposal",
+      "title": "Launch Neutron on Replicated Security",
+      "description": "# Summary\r\n---\r\n\r\n[Proposal 72](https://forum.cosmos.network/t/proposal-72-accepted-bringing-liquid-staking-and-defi-to-the-cosmos-hub-with-interchain-security/6623) passed in July 2022, providing support and $ATOM funding to the development of Neutron, a DeFi Hub and permission-less CosmWasm execution layer to be launched on Cosmos Hub as a consumer chain. \r\n\r\nNeutron’s initial development is now complete: all core modules have been implemented, audited, and successfully run on testnet (`Quark`, `Game of Chains`, `Baryon`, `Rehearsal`, `Meson`, `Pion` and others). Through bleeding-edge Interchain Transaction and Interchain Queries modules, Neutron is now ready to bring truly interoperable smart-contracts to the Cosmos Hub. \r\n\r\nThis document provides detailed information about Neutron and its future relationship to the Hub, and proposes to launch Neutron as a consumer chain using replicated security. **It incorporate community feedback in the form of a soft opt-out feature for the bottom 5% validators, an extended downtime window (~4 days) and allocating unclaimed airdrop tokens to the Cosmos Hub.**\r\n- [**Forum discussion**](https://forum.cosmos.network/t/proposal-last-call-launch-neutron-on-replicated-security/10230)\r\n- [**Full proposal**](https://cloudflare-ipfs.com/ipfs/QmekEN16DuXaL63XMWs3K7Y2ezJ1q69kTRBsWBNAMu9GEh)\r\n\r\n# Governance votes\r\n---\r\n\r\nThe following items summarize the voting options and their significance for this proposal:\r\n\r\n- YES - You agree with the terms of the proposed security agreement and want Neutron to be secured by the entire Cosmos Hub validator set using Replicated Security.\r\n- NO - You do not agree with the terms of the proposed security agreement and/or do not want Neutron to be secured by the Cosmos Hub validator set using Replicated Security.\r\n- NO WITH VETO - You consider this proposal (1) to be spam, i.e., irrelevant to Cosmos Hub, (2) disproportionately infringes on minority interests, or (3) violates or encourages violation of the rules of engagement as currently set out by Cosmos Hub governance. If the number of ‘NoWithVeto’ votes is greater than a third of total votes, the proposal is rejected and the deposits are burned.\r\n- ABSTAIN - You wish to contribute to quorum but you formally decline to vote either for or against the proposal.\r\n\r\n# **Hub requirements**\r\n\r\n---\r\n\r\n- [**Neutron binary**](https://cloudflare-ipfs.com/ipfs/QmaxqMTS3yRapCmaP5zuKckP8z5rhfZQek8DEFdVEdEfuz)\r\n- [**Neutron genesis**](https://cloudflare-ipfs.com/ipfs/QmQZFY51F2nJYk8FixjR4MtWkmpGw5mGFUZrCQCyg64r76) - *The final genesis file will be provided before the spawn time*\r\n- **Repositories**\r\n    - [Network](https://github.com/neutron-org/neutron)\r\n    - [Governance](https://github.com/neutron-org/neutron-dao)\r\n    - [Launch Event](https://github.com/neutron-org/neutron-tge-contracts)\r\n- **Genesis file details:**\r\n    - **Chain type and version:**\r\n        - Cosmos-SDK v0.45.15\r\n        - wasmvm v1.2.3\r\n        - wasmd v0.31.0\r\n        - Go version: v1.20\r\n    - **Economic parameters:**\r\n        - Default fee token: uNTRN. Bridged IBC ATOM will also be accepted.\r\n        - Fee split between consumer and provider: 25% Hub / 75% Neutron\r\n    - **Network parameters**\r\n        - Soft_opt_out_threshold: 0.05 (e.g. 5% of the voting power)\r\n        - Commit_timeout: 1000ms (leads to ~2.5s blocktime on `Pion-1`)\r\n        - Signed_blocks_window: 140,000 blocks (~4 days at 2.5s per block)\r\n- **Software audit information**\r\n    - ****[2022-12-07 Audit Report - Neutron v1.0 by Oak Security](https://github.com/oak-security/audit-reports/blob/master/Neutron/2022-12-07%20Audit%20Report%20-%20Neutron%20v1.0.pdf)****\r\n    - [**2023-04-06 Audit Report - Neutron: Code Inspection and Protocol Analysis by Informal Systems**](https://github.com/neutron-org/audits/blob/main/06.04.2023%20Informal%20Systems%20Audit%20Report.pdf)\r\n- **Ongoing involvement required from Hub validators (e.g., Governance structure,\r\nmonitoring communication platforms, hardware requirements):**\r\n    - **No required governance involvement:** Neutron’s governance does not rely on delegations and the gov module, but rather on a custom implementation of DAODAO smart-contracts. Validators are welcome to participate in governance but are not required to do so.\r\n    - **Dedicated communications channels:**\r\n        - [Discord](https://discord.com/channels/986573321023942708/1030043854637899816): a dedicated channel has been created for Cosmos Hub validators.\r\n    - **Not required but recommended:** Setup relayer between neutron and Cosmos Hub to relay voting power updates\r\n    - **Hardware requirements:**\r\n        - 4 Cores\r\n        - 32 GB RAM\r\n        - 2x512 GB SSD",
+      "chain_id": "neutron-1",
+      "initial_height": {
+        "revision_number": "1",
+        "revision_height": "1"
+      },
+      "genesis_hash": "4d897938a69a3809828e70f34c7400ec134817fe34ca4090dbe5991d72fa744c",
+      "binary_hash": "f20ab1432746c146924eaf6644d3f3e62759f64096fe3f347b740af7e0032369",
+      "spawn_time": "2023-05-08T11:00:00Z",
+      "unbonding_period": "1728000s",
+      "ccv_timeout_period": "2419200s",
+      "transfer_timeout_period": "3600s",
+      "consumer_redistribution_fraction": "0.75",
+      "blocks_per_distribution_transmission": "1500",
+      "historical_entries": "10000"
+    },
+    "status": "PROPOSAL_STATUS_PASSED",
+    "final_tally_result": {
+      "yes": "132181458365806",
+      "abstain": "12890145709397",
+      "no": "1641375931196",
+      "no_with_veto": "4070229695"
+    },
+    "submit_time": "2023-04-21T20:56:07.737413188Z",
+    "deposit_end_time": "2023-05-05T20:56:07.737413188Z",
+    "total_deposit": [
+      {
+        "denom": "uatom",
+        "amount": "250731000"
+      }
+    ],
+    "voting_start_time": "2023-04-21T22:31:00.594620719Z",
+    "voting_end_time": "2023-05-05T22:31:00.594620719Z"
+  }
+}

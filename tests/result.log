@@ -1,33 +1,238 @@
---- Finished copyGeneratedFiles 
---- Running getLogs 
-Getting logs...
-Warning: Permanently added '[127.0.0.1]:2204' (ED25519) to the list of known hosts.
-Warning: Permanently added '[127.0.0.1]:2204' (ED25519) to the list of known hosts.
-Wrote chainlog_provider-chain-validator1.log
-Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
-Wrote chainlog_consumer-chain-validator1.log
+--- Running startProviderChain 
+Preparing provider-chain with 4 validators.
+Getting peerlists, editing configs...
+[provider-chain] persistent_peers = "66bf52da221dfe719068f2865c2951ee75d8a26e@192.168.33.11:26656,dec78dd9d85f6507c27e1d79dd85d43f66729a1e@192.168.33.12:26656,f15034e5d50e4e157f90a2d437fe71526dad2b0d@192.168.33.13:26656,d465b39fc4d25e0a0e7c2b3aa481e9340e75d626@192.168.33.14:26656"
+[consumer-chain] persistent_peers = "a4fa500281fa84427ef094920c7977a739c241df@192.168.34.11:26656,5e210e6bfcee28b486d9cfbc57dc1f28c1b78080@192.168.34.12:26656,e9f3b9521c2678ef0a2f968da16aaaa2b4a7e19c@192.168.34.13:26656,fabf0d04a8427a3d25270b1fb30c01b41e6a3c1b@192.168.34.14:26656"
+Copying gentxs to provider-chain-validator1...
 Warning: Permanently added '[127.0.0.1]:2205' (ED25519) to the list of known hosts.
-Wrote chainlog_provider-chain-validator2.log
-Warning: Permanently added '[127.0.0.1]:2206' (ED25519) to the list of known hosts.
-Wrote chainlog_consumer-chain-validator2.log
-Warning: Permanently added '[127.0.0.1]:2202' (ED25519) to the list of known hosts.
-Wrote chainlog_provider-chain-validator3.log
-Warning: Permanently added '[127.0.0.1]:2203' (ED25519) to the list of known hosts.
-Wrote chainlog_consumer-chain-validator3.log
-Warning: Permanently added '[127.0.0.1]:2201' (ED25519) to the list of known hosts.
-Wrote chainlog_provider-chain-validator4.log
 Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
-Wrote chainlog_consumer-chain-validator4.log
---- Finished getLogs 
---- Running cleanUp 
-Killing services...
-[provider-chain-validator1] stopped hermes
-[provider-chain-validator1] stopped gaiad
-[consumer-chain-validator1] stopped neutrond
-[provider-chain-validator2] stopped gaiad
-[consumer-chain-validator2] stopped neutrond
-[provider-chain-validator3] stopped gaiad
-[consumer-chain-validator3] stopped neutrond
-[provider-chain-validator4] stopped gaiad
-[consumer-chain-validator4] stopped neutrond
---- Finished cleanUp 
+[provider-chain-validator2] cosmos1maa96cqxu0lmj9np0fqjqp6cqvdjc7hurrvp83 (account: provider-chain-validator2)
+Warning: Permanently added '[127.0.0.1]:2202' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+[provider-chain-validator3] cosmos1n4pjywwveyn7eh5n24y7c5nufrqlpmzej85qq6 (account: provider-chain-validator3)
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+[provider-chain-validator4] cosmos1wmnde46jdsm3pzn5aegcz5z36qqfh4a4ycysaj (account: provider-chain-validator4)
+Adding genesis accounts...
+cosmos1maa96cqxu0lmj9np0fqjqp6cqvdjc7hurrvp83
+cosmos1n4pjywwveyn7eh5n24y7c5nufrqlpmzej85qq6
+cosmos1wmnde46jdsm3pzn5aegcz5z36qqfh4a4ycysaj
+Collecting gentxs on provider-chain-validator1
+{"app_message":{"auth":{"accounts":[{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos19ykp58l4raxtnk73uyypfwtqj554jk4yede3pr","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1maa96cqxu0lmj9np0fqjqp6cqvdjc7hurrvp83","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1n4pjywwveyn7eh5n24y7c5nufrqlpmzej85qq6","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1wmnde46jdsm3pzn5aegcz5z36qqfh4a4ycysaj","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7","pub_key":null,"sequence":"0"}],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"authz":{"authorization":[]},"bank":{"balances":[{"address":"cosmos19ykp58l4raxtnk73uyypfwtqj554jk4yede3pr","coins":[{"amount":"1500000000000","denom":"icsstake"}]},{"address":"cosmos1wmnde46jdsm3pzn5aegcz5z36qqfh4a4ycysaj","coins":[{"amount":"1500000000000","denom":"icsstake"}]},{"address":"cosmos1n4pjywwveyn7eh5n24y7c5nufrqlpmzej85qq6","coins":[{"amount":"1500000000000","denom":"icsstake"}]},{"address":"cosmos1maa96cqxu0lmj9np0fqjqp6cqvdjc7hurrvp83","coins":[{"amount":"1500000000000","denom":"icsstake"}]},{"address":"cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7","coins":[{"amount":"1500000000000","denom":"icsstake"}]}],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[{"amount":"7500000000000","denom":"icsstake"}]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"icsstake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"feegrant":{"allowances":[]},"genutil":{"gen_txs":[{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A9L+UXGO/Vp1CsSPiYzwHspywjOG2Hbf3/jK0gGup5jw"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"66bf52da221dfe719068f2865c2951ee75d8a26e@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos19ykp58l4raxtnk73uyypfwtqj554jk4yede3pr","description":{"details":"","identity":"","moniker":"provider-chain-validator1","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"gN8H58BeJq69r6xrWTKxPOzHiPNUB6X2uQrh3RvaXQY="},"validator_address":"cosmosvaloper19ykp58l4raxtnk73uyypfwtqj554jk4yuedyds","value":{"amount":"1000000000","denom":"icsstake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["px4g0HD3Vrb5QmjdP1ZCA38powRDhu8pp1FCep9Opo9dcdzMrfYWoMpss+QtC1gbjXpnjAduaSAnCf2cj2rCcw=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AiluIdAko4I5dZiv5Glx0LWaaKkXQwhCgJga+SjICi4O"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"dec78dd9d85f6507c27e1d79dd85d43f66729a1e@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1maa96cqxu0lmj9np0fqjqp6cqvdjc7hurrvp83","description":{"details":"","identity":"","moniker":"provider-chain-validator2","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"5Vpa1MWfLj46F+epMKWR+eF++xGCCg8lUulT6blT7Nw="},"validator_address":"cosmosvaloper1maa96cqxu0lmj9np0fqjqp6cqvdjc7huxhc5tz","value":{"amount":"1000000000","denom":"icsstake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["iX12r7ePcfHuaVRr7Wm6dZdpBTXj+CfsCRztCdoZitogd0IrwM2EmJzI2MCvoK9CSgNyCSp9YxoGx5knxR3xLA=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A6xQ8wSiOrfuVnRjyg9iBHDT4+bxHnUf/LbAPXDYUEMu"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"f15034e5d50e4e157f90a2d437fe71526dad2b0d@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1n4pjywwveyn7eh5n24y7c5nufrqlpmzej85qq6","description":{"details":"","identity":"","moniker":"provider-chain-validator3","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"XRrnAyrANIQR7hn/H9x4RKgg2rhd4bP6bhMVQMu+5uE="},"validator_address":"cosmosvaloper1n4pjywwveyn7eh5n24y7c5nufrqlpmzehnq4vf","value":{"amount":"1000000000","denom":"icsstake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["L+Cv/guf39d7fkKmE/Dhy7TXDDo0nf/xqWmjWmS0c8sODvW0MzqbFhC7LVeImdOTKfeitW2NNeL1dDZup0rjsg=="]},{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Ahx3pak6j9rF+WVGdMchPg8222bIDTtcJqfGgHcNSxTT"},"sequence":"0"}]},"body":{"extension_options":[],"memo":"d465b39fc4d25e0a0e7c2b3aa481e9340e75d626@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos1wmnde46jdsm3pzn5aegcz5z36qqfh4a4ycysaj","description":{"details":"","identity":"","moniker":"provider-chain-validator4","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"XMerOP0GphvXsV/feMKQcWYymRRTLO4NGLjh6O57xak="},"validator_address":"cosmosvaloper1wmnde46jdsm3pzn5aegcz5z36qqfh4a4pvs93p","value":{"amount":"1000000000","denom":"icsstake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["Sa0Es95b6jwC1O9srhCttrGXNG1pmBDCzgZ3JZS38bNbjXK9aFztb5UWyCeUWIcz1F07/z5ESQqmPrcrINZN2A=="]}]},"globalfee":{"params":{"minimum_gas_prices":[]}},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"icsstake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"60s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0","params":{"max_expected_time_per_block":"30000000000"}}},"interchainaccounts":{"controller_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"controller_enabled":true},"ports":[]},"host_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"allow_messages":[],"host_enabled":true},"port":"icahost"}},"liquidity":{"params":{"circuit_breaker_enabled":false,"init_pool_coin_mint_amount":"1000000","max_order_amount_ratio":"0.100000000000000000","max_reserve_coin_amount":"0","min_init_deposit_amount":"1000000","pool_creation_fee":[{"amount":"40000000","denom":"icsstake"}],"pool_types":[{"description":"Standard liquidity pool with pool price function X/Y, ESPM constraint, and two kinds of reserve coins","id":1,"max_reserve_coin_num":2,"min_reserve_coin_num":2,"name":"StandardLiquidityPool"}],"swap_fee_rate":"0.003000000000000000","unit_batch_height":1,"withdraw_fee_rate":"0.000000000000000000"},"pool_records":[]},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"icsstake"}},"packetfowardmiddleware":{"in_flight_packets":{},"params":{"fee_percentage":"0.000000000000000000"}},"params":null,"provider":{"consumer_addition_proposals":[],"consumer_addrs_to_prune":[],"consumer_removal_proposals":[],"consumer_states":[],"mature_unbonding_ops":null,"params":{"ccv_timeout_period":"2419200s","init_timeout_period":"604800s","max_throttled_packets":"100000","slash_meter_replenish_fraction":"0.05","slash_meter_replenish_period":"3600s","template_client":{"allow_update_after_expiry":true,"allow_update_after_misbehaviour":true,"chain_id":"","frozen_height":{"revision_height":"0","revision_number":"0"},"latest_height":{"revision_height":"0","revision_number":"0"},"max_clock_drift":"10s","proof_specs":[{"inner_spec":{"child_order":[0,1],"child_size":33,"empty_child":null,"hash":"SHA256","max_prefix_length":12,"min_prefix_length":4},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0},{"inner_spec":{"child_order":[0,1],"child_size":32,"empty_child":null,"hash":"SHA256","max_prefix_length":1,"min_prefix_length":1},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0}],"trust_level":{"denominator":"3","numerator":"1"},"trusting_period":"0s","unbonding_period":"0s","upgrade_path":["upgrade","upgradedIBCState"]},"trusting_period_fraction":"0.66","vsc_timeout_period":"3024000s"},"unbonding_ops":[],"validator_consumer_pubkeys":[],"validators_by_consumer_addr":[],"valset_update_id":"1","valset_update_id_to_height":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"icsstake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"provider-chain","gentxs_dir":"/home/vagrant/.gaia/config/gentx","moniker":"provider-chain-validator1","node_id":"66bf52da221dfe719068f2865c2951ee75d8a26e"}
+Distributing provider-chain genesis file...
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2205' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2202' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+>>> STARTING PROVIDER CHAIN
+[provider-chain-validator1] started gaiad: watch output at /var/log/chain.log
+[provider-chain-validator2] started gaiad: watch output at /var/log/chain.log
+[provider-chain-validator3] started gaiad: watch output at /var/log/chain.log
+[provider-chain-validator4] started gaiad: watch output at /var/log/chain.log
+--- Finished startProviderChain 
+--- Running waitForProviderChain 
+Waiting for Provider Chain to finalize a block...
+>>> PROVIDER CHAIN successfully launched. Latest block height: 1
+--- Finished waitForProviderChain 
+--- Running manipulateConsumerGenesis 
+Manipulating consumer raw_genesis file
+Downloading consumer genesis file from https://cloudflare-ipfs.com/ipfs/QmQZFY51F2nJYk8FixjR4MtWkmpGw5mGFUZrCQCyg64r76
+Setting supply to []
+Setting chain_id: consumer-chain
+Setting genesis time: 2023-05-08T16:03:10Z
+Adding relayer account & balances
+Error: relayer.info: key not found
+Usage:
+  neutrond keys delete <name>... [flags]
+
+Flags:
+  -f, --force   Remove the key unconditionally without asking for the passphrase. Deprecated.
+  -h, --help    help for delete
+  -y, --yes     Skip confirmation prompt when deleting offline or ledger key references
+
+Global Flags:
+      --home string              The application home directory (default "/home/vagrant/.neutrond")
+      --keyring-backend string   Select keyring's backend (os|file|test) (default "os")
+      --keyring-dir string       The client Keyring directory; if omitted, the default 'home' directory will be used
+      --log_format string        The logging format (json|plain) (default "plain")
+      --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+      --output string            Output format (text|json) (default "text")
+      --trace                    print out full stack trace on errors
+
+{
+  "@type": "/cosmos.auth.v1beta1.BaseAccount",
+  "address": "neutron1l7hrk5smvnatux7fsutvc0zldj3z8gawnjhmue",
+  "pub_key": null,
+  "account_number": "1",
+  "sequence": "0"
+}
+{
+  "address": "neutron1l7hrk5smvnatux7fsutvc0zldj3z8gawnjhmue",
+  "coins": [
+    {
+      "denom": "untrn",
+      "amount": "150000000"
+    }
+  ]
+}
+--- Finished manipulateConsumerGenesis 
+--- Running proposeConsumerAdditionProposal 
+Downloading ORIGINAL consumer addition proposal...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  6208    0  6208    0     0  22194      0 --:--:-- --:--:-- --:--:-- 22171
+{
+  "title": "Create the Consumer chain",
+  "description": "This is the proposal to create the consumer chain \"consumer-chain\".",
+  "chain_id": "consumer-chain",
+  "initial_height": {
+      "revision_height": 1
+  },
+  "genesis_hash": "f20ab1432746c146924eaf6644d3f3e62759f64096fe3f347b740af7e0032369",
+  "binary_hash": "4d897938a69a3809828e70f34c7400ec134817fe34ca4090dbe5991d72fa744c",
+  "spawn_time": "2023-05-08T16:06:15Z",
+  "consumer_redistribution_fraction": "0.75",
+  "blocks_per_distribution_transmission": 1500,
+  "historical_entries": 10000,
+  "ccv_timeout_period": 2419200000000000,
+  "transfer_timeout_period": 3600000000000,
+  "unbonding_period": 1728000000000000, 
+  "soft_opt_out_threshold": "0.05",
+  "deposit": "10000000icsstake"
+}
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Submitting consumer addition proposal from provider validator 1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: A6BCB9DA1EE9AFFE505709FAA369EF0FD5B5804C5FD133E08A0F34049FA186B4
+Consumer addition proposal submitted
+--- Finished proposeConsumerAdditionProposal 
+--- Running voteConsumerAdditionProposal 
+Waiting for consumer addition proposal to go live...
+Voting 'yes' from provider-chain-validator1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 4D5FC08C609F2CA742DAED6B371F13FC9136436F17DF253BDCFE99308FD29270
+Voting 'yes' from provider-chain-validator2...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 814B0D41FBE5F120050C6FBFDB972709DED4874501DB145FFFFC08E1E4B2CF6C
+Voting 'yes' from provider-chain-validator3...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 4C6EE31773A3DBE98C2ECD32C9C7F1D50FCC89567C47CE5EFDDED43AE6E33DB1
+Voting 'yes' from provider-chain-validator4...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 70683E6154C6F2D038AB250F5FFBB9A2C901456FACF486FDFE017BCC333A9D5B
+--- Finished voteConsumerAdditionProposal 
+--- Running waitForProposal 
+Waiting for consumer addition proposal to pass on provider-chain...
+Consumer addition proposal passed
+--- Finished waitForProposal 
+--- Running testKeyAssignment 1-prelaunch-newkey
+Assigning Key: 1-prelaunch-newkey
+/home/vagrant/tmp directory does not exist, creating...
+Generating NEW key for KeyAssignment test on provider-chain-validator1
+{"app_message":{"auth":{"accounts":[],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"authz":{"authorization":[]},"bank":{"balances":[],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"supply":[]},"capability":{"index":"1","owners":[]},"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.010000000000000000","bonus_proposer_reward":"0.040000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"feegrant":{"allowances":[]},"genutil":{"gen_txs":[]},"globalfee":{"params":{"minimum_gas_prices":[]}},"gov":{"deposit_params":{"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}]},"deposits":[],"proposals":[],"starting_proposal_id":"1","tally_params":{"quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000"},"votes":[],"voting_params":{"voting_period":"172800s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0","params":{"max_expected_time_per_block":"30000000000"}}},"interchainaccounts":{"controller_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"controller_enabled":true},"ports":[]},"host_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"allow_messages":[],"host_enabled":true},"port":"icahost"}},"liquidity":{"params":{"circuit_breaker_enabled":false,"init_pool_coin_mint_amount":"1000000","max_order_amount_ratio":"0.100000000000000000","max_reserve_coin_amount":"0","min_init_deposit_amount":"1000000","pool_creation_fee":[{"amount":"40000000","denom":"stake"}],"pool_types":[{"description":"Standard liquidity pool with pool price function X/Y, ESPM constraint, and two kinds of reserve coins","id":1,"max_reserve_coin_num":2,"min_reserve_coin_num":2,"name":"StandardLiquidityPool"}],"swap_fee_rate":"0.003000000000000000","unit_batch_height":1,"withdraw_fee_rate":"0.000000000000000000"},"pool_records":[]},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"packetfowardmiddleware":{"in_flight_packets":{},"params":{"fee_percentage":"0.000000000000000000"}},"params":null,"provider":{"consumer_addition_proposals":[],"consumer_addrs_to_prune":[],"consumer_removal_proposals":[],"consumer_states":[],"mature_unbonding_ops":null,"params":{"ccv_timeout_period":"2419200s","init_timeout_period":"604800s","max_throttled_packets":"100000","slash_meter_replenish_fraction":"0.05","slash_meter_replenish_period":"3600s","template_client":{"allow_update_after_expiry":true,"allow_update_after_misbehaviour":true,"chain_id":"","frozen_height":{"revision_height":"0","revision_number":"0"},"latest_height":{"revision_height":"0","revision_number":"0"},"max_clock_drift":"10s","proof_specs":[{"inner_spec":{"child_order":[0,1],"child_size":33,"empty_child":null,"hash":"SHA256","max_prefix_length":12,"min_prefix_length":4},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0},{"inner_spec":{"child_order":[0,1],"child_size":32,"empty_child":null,"hash":"SHA256","max_prefix_length":1,"min_prefix_length":1},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0}],"trust_level":{"denominator":"3","numerator":"1"},"trusting_period":"0s","unbonding_period":"0s","upgrade_path":["upgrade","upgradedIBCState"]},"trusting_period_fraction":"0.66","vsc_timeout_period":"3024000s"},"unbonding_ops":[],"validator_consumer_pubkeys":[],"validators_by_consumer_addr":[],"valset_update_id":"1","valset_update_id_to_height":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer"},"upgrade":{},"vesting":{}},"chain_id":"provider-chain","gentxs_dir":"","moniker":"tempnode","node_id":"db77dc5eb929369ae4f36cb9e171c7fad296919b"}
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+New PubKey: oFAewzTeLe1xiqXQyy0Tj9Qi7wB5/PDfWanfKVfhI1A=
+Assigning updated key on provider-chain-validator1
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 52F9998B73C0BE3BD4086880783503BC0BF6831901F8432755830C8A4A4DEC65
+Copying key 1-prelaunch-newkey to consumer-chain-validator1
+Warning: Permanently added '[127.0.0.1]:2201' (ED25519) to the list of known hosts.
+--- Finished testKeyAssignment 1-prelaunch-newkey
+--- Running waitForSpawnTime 
+Waiting for spawn time to be reached: 2023-05-08T16:06:15Z
+ETA: 31 seconds...
+Spawn time reached!
+--- Finished waitForSpawnTime 
+--- Running prepareConsumerChain 
+Preparing consumer chain...
+Copying ORIGINAL private validator keys from provider-chain-validator2 to consumer-chain-validator2...
+Warning: Permanently added '[127.0.0.1]:2205' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2203' (ED25519) to the list of known hosts.
+Copying ORIGINAL private validator keys from provider-chain-validator3 to consumer-chain-validator3...
+Warning: Permanently added '[127.0.0.1]:2202' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2204' (ED25519) to the list of known hosts.
+Copying ORIGINAL private validator keys from provider-chain-validator4 to consumer-chain-validator4...
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2206' (ED25519) to the list of known hosts.
+Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json...
+Warning: Permanently added '[127.0.0.1]:2201' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2203' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2204' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2206' (ED25519) to the list of known hosts.
+--- Finished prepareConsumerChain 
+--- Running startConsumerChain 
+>>> STARTING CONSUMER CHAIN
+[consumer-chain-validator1] started neutrond: watch output at /var/log/chain.log
+[consumer-chain-validator2] started neutrond: watch output at /var/log/chain.log
+[consumer-chain-validator3] started neutrond: watch output at /var/log/chain.log
+[consumer-chain-validator4] started neutrond: watch output at /var/log/chain.log
+--- Finished startConsumerChain 
+--- Running waitForConsumerChain 
+Waiting for the consumer chain to launch...

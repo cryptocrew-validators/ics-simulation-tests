@@ -8,7 +8,9 @@
     "transfer_timeout_period": "3600s",
     "consumer_redistribution_fraction": "0.75",
     "historical_entries": "10000",
-    "unbonding_period": "1728000s"
+    "unbonding_period": "1728000s",
+    "reward_denoms": [],
+    "provider_reward_denoms": []
   },
   "provider_client_id": "",
   "provider_channel_id": "",
@@ -28,7 +30,7 @@
     },
     "latest_height": {
       "revision_number": "0",
-      "revision_height": "28"
+      "revision_height": "27"
     },
     "proof_specs": [
       {
@@ -84,35 +86,35 @@
     "allow_update_after_misbehaviour": true
   },
   "provider_consensus_state": {
-    "timestamp": "2023-05-06T14:30:59.299215002Z",
+    "timestamp": "2023-05-08T16:06:16.137831070Z",
     "root": {
-      "hash": "icilS8K9l8CPm2e87pS3oqKoAkVglK3hmCP/PJj4s4g="
+      "hash": "VuQqzwEfvAt3Rf54ighOizAAjtS3SK1+hrNZguXnPtQ="
     },
-    "next_validators_hash": "0AABF7B3BF807D5FA2DEC6B1301F2FE211AB84C2CF3FE9FA7BFCC5B66D06123A"
+    "next_validators_hash": "3F1E6C4234FEAF030DB5EBBD12AAB1B7B6A520154E7D013DF2C5D8FE82CAE785"
   },
   "maturing_packets": [],
   "initial_val_set": [
     {
       "pub_key": {
-        "ed25519": "cAc8O5ZLnrXnV8HqNgrfKa+nJeKSxHNA+aWe1i5E/Ps="
+        "ed25519": "oFAewzTeLe1xiqXQyy0Tj9Qi7wB5/PDfWanfKVfhI1A="
       },
       "power": "1000"
     },
     {
       "pub_key": {
-        "ed25519": "bUQPOoNj8ygsk37dQlThxuNptAEhX6fOjhya9oW088U="
+        "ed25519": "XMerOP0GphvXsV/feMKQcWYymRRTLO4NGLjh6O57xak="
       },
       "power": "1000"
     },
     {
       "pub_key": {
-        "ed25519": "EK7nhTEP0az3sCRlM0AQrSmO/JUL+qukKqSKIj3UhtU="
+        "ed25519": "XRrnAyrANIQR7hn/H9x4RKgg2rhd4bP6bhMVQMu+5uE="
       },
       "power": "1000"
     },
     {
       "pub_key": {
-        "ed25519": "vMVwKH0n+H2oNyQgMLSxDi5JN5reI4pMbjMJllmhiPU="
+        "ed25519": "5Vpa1MWfLj46F+epMKWR+eF++xGCCg8lUulT6blT7Nw="
       },
       "power": "1000"
     }
