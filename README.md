@@ -4,7 +4,7 @@ This repository contains a test suite for interchain staking between a provider 
 
 It bootstraps a local provider testnet with N validators, proposes a `consumer-addition-proposal`, tests the `key-assignment` feature and launches the `consumer-chain`
 
-A test journal is written to `./tests/test_result.log`
+A test journal is written to `./tests/result.log`
 
 ## Requirements
 
@@ -56,7 +56,7 @@ tail -f /var/log/chain.log
 ```
 Watch relayer output on `provider-chain-validator1`: 
 ```sh
-tail -f /var/log/relayer.log
+tail -f /var/log/hermes.log
 ```
 
 ---
