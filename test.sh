@@ -83,9 +83,9 @@ function main() {
   
   call_and_log validateAssignedKey "3-postlaunch-samekey"
 
-  call_and_log copyGeneratedFiles
   call_and_log getLogs
   call_and_log cleanUp
+  copyGeneratedFiles
 }
 
 main
