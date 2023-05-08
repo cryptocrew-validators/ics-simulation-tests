@@ -93,7 +93,6 @@ function genTx() {
   fi
 }
 
-# Install Relayer with Rust & Cargo
 function installRelayer() {
   if [ "$CHAIN_ID" == "provider-chain" ] && [ "$NODE_INDEX" == "1" ]; then
     echo "Installing Rust and Cargo"
@@ -110,12 +109,20 @@ function installRelayer() {
 
     # Install ibc-relayer-cli crate and build the hermes binary
     echo "Installing ibc-relayer-cli crate and building the hermes binary"
-    cargo install ibc-relayer-cli --bin hermes --locked
-
     mkdir -p /home/vagrant/.hermes/bin
-    sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
+
+    # Check if the current Ubuntu version is not 22.04 (Jammy)
+    ubuntu_version=$(lsb_release -rs)
+    if [ "$ubuntu_version" != "22.04" ] || [ -z "$HERMES_SOURCE" ]; then
+      cargo install ibc-relayer-cli --bin hermes --locked
+      sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
+    else
+      wget wget -4 -q $HERMES_SOURCE -O $(basename $HERMES_SOURCE)
+      tar -C /home/vagrant/.hermes/bin/ -xzf $(basename $HERMES_SOURCE)
+    fi
+
     sudo chmod 777 /home/vagrant/.hermes/bin/hermes
-    sudo chown -R vagrant:vagrant /home/vagrant/.hermes
+    sudo chown -R vagrant:vagrant /home/vagrant/.hermes  
   fi
 }
 
