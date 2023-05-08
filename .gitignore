@@ -1,4 +1,4 @@
 .provisioned
 .first_run
-.vagrant
+.vagrant/*
 result.log
