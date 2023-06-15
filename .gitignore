@@ -1,4 +1,5 @@
 .provisioned
 .first_run
 .vagrant/*
+migration_state_export.json
 result.log
