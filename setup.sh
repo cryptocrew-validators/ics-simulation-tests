@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Update and install required packages, set timezone to UTC
-sudo apt-get update
-sudo apt-get install -yy git build-essential curl jq unzip moreutils net-tools
+sudo apt-get update -qq
+sudo apt-get install -qq git build-essential curl jq unzip moreutils net-tools
 sudo timedatectl set-timezone UTC
 
 function loadEnv {
@@ -111,7 +111,7 @@ function installRelayer() {
   if [ "$CHAIN_ID" == "provider-chain" ] && [ "$NODE_INDEX" == "1" ]; then
     echo "Installing Rust and Cargo"
     mkdir /home/vagrant/.cargo || true
-    sudo apt install cargo -yy
+    sudo apt install cargo -qq
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         
     # Add the /home/vagrant/.cargo/bin directory to the PATH environment variable
