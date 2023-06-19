@@ -1,27 +1,3 @@
-require 'json'
-
-class JsonValidator
-  @@validated = false
-  puts "CONSUMER_MIGRATION with state export, validating migration_state_export.json..."
-  def self.validate(file)
-    return if @@validated
-
-    begin
-      json_content = File.read(file)
-      JSON.parse(json_content)
-      puts "JSON validation successful"
-    rescue Errno::ENOENT
-      puts "File not found: #{file}"
-      exit 1
-    rescue JSON::ParserError
-      puts "Invalid JSON in file: #{file}"
-      exit 1
-    end
-
-    @@validated = true
-  end
-end
-
 chain_num_validators = nil
 consumer_migration = false
 consumer_migration_state_export = nil
@@ -43,9 +19,6 @@ end
 if chain_num_validators.nil?
   puts "NUM_VALIDATORS not found in .env file"
   exit 1
-end
-if consumer_migration && consumer_migration_state_export
-  JsonValidator.validate(consumer_migration_state_export)
 end
 
 Vagrant.configure("2") do |config|
