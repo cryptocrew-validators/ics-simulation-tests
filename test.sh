@@ -63,9 +63,9 @@ function main() {
   call_and_log waitForProposal
   call_and_log testKeyAssignment "1-prelaunch-newkey"
   call_and_log waitForSpawnTime
-  if $CONSUMER_MIGRATION ; then
+  # if $CONSUMER_MIGRATION ; then
     # call_and_log sovereign
-  fi
+  # fi
   call_and_log prepareConsumerChain
   call_and_log startConsumerChain
   call_and_log waitForConsumerChain
