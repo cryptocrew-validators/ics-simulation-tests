@@ -45,6 +45,7 @@ function main() {
   . ./src/testKeyAssignment.sh
   . ./src/consumer.sh
   . ./src/relayer.sh
+  . ./src/sovereign.sh  
   . ./src/cleanup.sh
   
   # Clear the log file
@@ -62,6 +63,9 @@ function main() {
   call_and_log waitForProposal
   call_and_log testKeyAssignment "1-prelaunch-newkey"
   call_and_log waitForSpawnTime
+  if $CONSUMER_MIGRATION ; then
+    # call_and_log sovereign
+  fi
   call_and_log prepareConsumerChain
   call_and_log startConsumerChain
   call_and_log waitForConsumerChain

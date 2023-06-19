@@ -12,7 +12,7 @@ File.foreach('.env') do |line|
     chain_num_validators = value.to_i
   elsif key == 'CONSUMER_MIGRATION'
     consumer_migration = value.downcase == 'true'
-  elsif key == 'CONSUMER_MIGRATION_STATE_EXPORT'
+  elsif key == 'CONSUMER_GENESIS_SOURCE' && value == 'migration_state_export.json'
     consumer_migration_state_export = value
   end
 end
