@@ -26,6 +26,7 @@ if consumer_migration && consumer_migration_state_export.nil?
   puts "CONSUMER_MIGRATION without state export"
 end
 if consumer_migration && consumer_migration_state_export
+  puts "CONSUMER_MIGRATION with state export, validating migration_state_export.json (this can take a few minutes)..."
   begin
     json_content = File.read(consumer_migration_state_export)
     JSON.parse(json_content)
