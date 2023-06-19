@@ -82,7 +82,7 @@ function manipulateGenesis() {
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-  elif [ "$CHAIN_ID" == "consumer-chain" && $CONSUMER_MIGRATION ]; then
+  elif [ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION"  == "true" ]; then
     if [ -f /home/vagrant/migration_state_export.json ] ; then
       echo "found state export for sovereign chain, creating genesis..."
       rm $DAEMON_HOME/config/genesis.json
@@ -100,7 +100,7 @@ function genTx() {
     $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
   fi
-  if [ "$CHAIN_ID" == "consumer-chain" && $CONSUMER_MIGRATION ]; then
+  if [ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION"  == "true" ]; then
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000$CONSUMER_FEE_DENOM --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000$CONSUMER_FEE_DENOM --chain-id "$CHAIN_ID" --keyring-backend test
@@ -131,7 +131,7 @@ function installRelayer() {
       cargo install ibc-relayer-cli --bin hermes --locked
       sudo cp /root/.cargo/bin/hermes /home/vagrant/.hermes/bin
     else
-      wget wget -4 -q $HERMES_SOURCE -O $(basename $HERMES_SOURCE)
+      wget -4 -q $HERMES_SOURCE -O $(basename $HERMES_SOURCE)
       tar -C /home/vagrant/.hermes/bin/ -xzf $(basename $HERMES_SOURCE)
     fi
 
