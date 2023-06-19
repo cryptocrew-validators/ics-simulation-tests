@@ -1,4 +1,8 @@
+require 'json'
+
 chain_num_validators = nil
+consumer_migration = false
+consumer_migration_state_export = nil
 
 File.foreach('.env') do |line|
   next if line.strip.start_with?('#')
@@ -6,13 +10,19 @@ File.foreach('.env') do |line|
   key, value = line.strip.split('=', 2)
   if key == 'NUM_VALIDATORS'
     chain_num_validators = value.to_i
-    break
+  elsif key == 'CONSUMER_MIGRATION'
+    consumer_migration = value.downcase == 'true'
+  elsif key == 'CONSUMER_MIGRATION_STATE_EXPORT'
+    consumer_migration_state_export = value
   end
 end
 
 if chain_num_validators.nil?
   puts "NUM_VALIDATORS not found in .env file"
   exit 1
+end
+if consumer_migration && consumer_migration_state_export.nil?
+  puts "CONSUMER_MIGRATION without state export"
 end
 
 Vagrant.configure("2") do |config|
@@ -51,6 +61,22 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
+
+      if consumer_migration && consumer_migration_state_export
+
+        # validate migration export
+        begin
+          json_content = File.read(consumer_migration_state_export)
+          JSON.parse(json_content)
+        rescue Errno::ENOENT
+          puts "File not found: #{consumer_migration_state_export}"
+          exit 1
+        rescue JSON::ParserError
+          puts "Invalid JSON in file: #{consumer_migration_state_export}"
+          exit 1
+        end
+        node.vm.provision "file", source: consumer_migration_state_export, destination: "/home/vagrant/migration_state_export.json"
+      end
     end
   end
 end
