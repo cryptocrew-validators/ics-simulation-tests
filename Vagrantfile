@@ -2,7 +2,7 @@ require 'json'
 
 class JsonValidator
   @@validated = false
-  puts "CONSUMER_MIGRATION with state export, validating migration_state_export.json (this can take a few minutes)..."
+  puts "CONSUMER_MIGRATION with state export, validating migration_state_export.json..."
   def self.validate(file)
     return if @@validated
 
