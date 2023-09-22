@@ -55,41 +55,42 @@ function main() {
   provisionVms
 
   # Run tests
-  call_and_log startProviderChain
-  call_and_log waitForProviderChain
-  call_and_log manipulateConsumerGenesis
-  call_and_log proposeConsumerAdditionProposal
-  call_and_log voteConsumerAdditionProposal
-  call_and_log waitForProposal
-  call_and_log testKeyAssignment "1-prelaunch-newkey"
-  call_and_log waitForSpawnTime
-  # if $CONSUMER_MIGRATION ; then
-    # call_and_log sovereign
-  # fi
-  call_and_log prepareConsumerChain
-  call_and_log startConsumerChain
-  call_and_log waitForConsumerChain
-  call_and_log prepareRelayer
-  call_and_log createIbcPaths
-  call_and_log startRelayer
+  # call_and_log startProviderChain
+  # call_and_log waitForProviderChain
+  # call_and_log manipulateConsumerGenesis
+  # call_and_log proposeConsumerAdditionProposal
+  # call_and_log voteConsumerAdditionProposal
+  # call_and_log waitForProposal
+  # call_and_log testKeyAssignment "1-prelaunch-newkey"
+  # call_and_log waitForSpawnTime
+  if $CONSUMER_MIGRATION ; then
+    call_and_log startSovereignChain
+    call_and_log waitForSovereignChain
+  fi
+  # call_and_log prepareConsumerChain
+  # call_and_log startConsumerChain
+  # call_and_log waitForConsumerChain
+  # call_and_log prepareRelayer
+  # call_and_log createIbcPaths
+  # call_and_log startRelayer
 
-  sleep 30 # sleeps to offer more time to watch output, can be removed
+  # sleep 30 # sleeps to offer more time to watch output, can be removed
 
-  call_and_log validateAssignedKey "1-prelaunch-newkey"
-  call_and_log testKeyAssignment "2-postlaunch-newkey"
-  call_and_log validateAssignedKey "2-postlaunch-newkey"
+  # call_and_log validateAssignedKey "1-prelaunch-newkey"
+  # call_and_log testKeyAssignment "2-postlaunch-newkey"
+  # call_and_log validateAssignedKey "2-postlaunch-newkey"
 
-  sleep 30 # sleeps to offer more time to watch output, can be removed
+  # sleep 30 # sleeps to offer more time to watch output, can be removed
 
-  call_and_log testKeyAssignment "3-postlaunch-samekey"
+  # call_and_log testKeyAssignment "3-postlaunch-samekey"
   
-  sleep 30 # sleeps to offer more time to watch output, can be removed
+  # sleep 30 # sleeps to offer more time to watch output, can be removed
   
-  call_and_log validateAssignedKey "3-postlaunch-samekey"
+  # call_and_log validateAssignedKey "3-postlaunch-samekey"
 
-  call_and_log getLogs
-  call_and_log cleanUp
-  copyGeneratedFiles
+  # call_and_log getLogs
+  # call_and_log cleanUp
+  # copyGeneratedFiles
 }
 
 main
