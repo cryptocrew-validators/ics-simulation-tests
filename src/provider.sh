@@ -2,22 +2,16 @@ set -e
 
 # Get peerlists for both provider and consumer chain, edit config
 function configPeers() {
-  PERSISTENT_PEERS_PROVIDER=""
-  PERSISTENT_PEERS_CONSUMER=""
+  PERSISTENT_PEERS=""
   for i in $(seq 1 $NUM_VALIDATORS); do
-    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
-    NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
-    PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
-    PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
+    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.56.1${i}:26656"
+    PERSISTENT_PEERS="${PERSISTENT_PEERS},${NODE_ID_PROVIDER}"
   done
-  PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER:1}"
-  PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER:1}"
-  echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS_PROVIDER'"'
-  echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
+  PERSISTENT_PEERS="${PERSISTENT_PEERS:1}"
+  echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS'"'
 
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
-    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS\\\"/g\" $PROVIDER_HOME/config/config.toml'"
   done
 }
 
@@ -43,7 +37,7 @@ function startProviderChain() {
 
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- cat $PROVIDER_HOME/config/genesis.json)
-  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[1]}"* ]] ; then
+  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[0]}"* ]] ; then
     echo "Adding genesis accounts..."
 
     # Add validator accounts & relayer account

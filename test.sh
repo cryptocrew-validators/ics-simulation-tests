@@ -55,8 +55,8 @@ function main() {
   provisionVms
 
   # Run tests
-  # call_and_log startProviderChain
-  # call_and_log waitForProviderChain
+  call_and_log startProviderChain
+  call_and_log waitForProviderChain
   # call_and_log manipulateConsumerGenesis
   # call_and_log proposeConsumerAdditionProposal
   # call_and_log voteConsumerAdditionProposal
