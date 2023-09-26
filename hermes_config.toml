@@ -33,9 +33,9 @@ port = 3001
 
 [[chains]]
 id = 'provider-chain'
-rpc_addr = 'http://192.168.33.11:26657'
-grpc_addr = 'http://192.168.33.11:9090'
-websocket_addr = 'ws://192.168.33.11:26657/websocket'
+rpc_addr = 'http://192.168.56.11:26657'
+grpc_addr = 'http://192.168.56.11:9090'
+event_source = { mode = 'push', url = 'ws://192.168.56.11:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
 account_prefix = 'cosmos'
 key_name = 'default'
@@ -55,11 +55,11 @@ trust_threshold = { numerator = '1', denominator = '3' }
 
 [[chains]]
 id = 'consumer-chain'
-rpc_addr = 'http://192.168.34.12:26657'
-grpc_addr = 'http://192.168.34.12:9090'
-websocket_addr = 'ws://192.168.34.12:26657/websocket'
+rpc_addr = 'http://192.168.57.11:26657'
+grpc_addr = 'http://192.168.57.11:9090'
+event_source = { mode = 'push', url = 'ws://192.168.57.11:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
-account_prefix = 'neutron'
+account_prefix = 'stride'
 key_name = 'default'
 address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'

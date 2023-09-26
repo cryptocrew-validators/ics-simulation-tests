@@ -70,9 +70,9 @@ function main() {
   # call_and_log prepareConsumerChain
   # call_and_log startConsumerChain
   # call_and_log waitForConsumerChain
-  # call_and_log prepareRelayer
-  # call_and_log createIbcPaths
-  # call_and_log startRelayer
+  call_and_log prepareRelayer
+  call_and_log createIbcPaths
+  call_and_log startRelayer
 
   # sleep 30 # sleeps to offer more time to watch output, can be removed
 

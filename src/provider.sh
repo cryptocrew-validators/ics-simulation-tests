@@ -1,26 +1,27 @@
 set -e
 
-# Get peerlists for both provider and consumer chain, edit config
+# Get peerlists for provider chain, edit config
 function configPeers() {
-  PERSISTENT_PEERS=""
+  PERSISTENT_PEERS_PROVIDER=""
   for i in $(seq 1 $NUM_VALIDATORS); do
     NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.56.1${i}:26656"
-    PERSISTENT_PEERS="${PERSISTENT_PEERS},${NODE_ID_PROVIDER}"
+    PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
   done
-  PERSISTENT_PEERS="${PERSISTENT_PEERS:1}"
-  echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS'"'
+  PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER:1}"
+  echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS_PROVIDER'"'
 
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS\\\"/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "grep 'persistent_peers' $PROVIDER_HOME/config/config.toml"
   done
 }
 
 # Start all virtual machines, collect gentxs & start provider chain
 function startProviderChain() {
   sleep 1
-  echo "Preparing provider-chain with $NUM_VALIDATORS validators."
-  echo "Getting peerlists, editing configs..."
-  configPeers
+  # echo "Preparing provider-chain with $NUM_VALIDATORS validators."
+  # echo "Getting peerlists, editing configs..."
+  # configPeers
   
   # Copy gentxs to the first validator of provider chain, collect gentxs
   echo "Copying gentxs to provider-chain-validator1..."
@@ -59,6 +60,10 @@ function startProviderChain() {
     vagrant scp genesis.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
   done
   
+  echo "Preparing provider-chain with $NUM_VALIDATORS validators."
+  echo "Getting peerlists, editing configs..."
+  configPeers
+
   echo ">>> STARTING PROVIDER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
