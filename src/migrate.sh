@@ -60,7 +60,7 @@ function waitForProposalUpgrade() {
   echo "Software upgrade proposal passed"
 }
 
-#Switches out the old binary for the new binary to be ready post-upgrade
+# Switches out the old binary for the new binary to be ready post-upgrade
 function switchBinaries() {
     echo "Switching out binary for new version on consumer-chain..."
     for i in $(seq 1 $NUM_VALIDATORS); do
@@ -78,19 +78,29 @@ function fetchCCVState() {
   done
 
 }
-#Create ccv.json by adding ccv state to genesis file
+# Create ccv.json by adding ccv state to genesis file
 function applyCCVState() {
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json ccv-state.json > $CONSUMER_HOME/config/ccv.json"
+    vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv-state.json > $CONSUMER_HOME/config/ccv.json"
   done
 }
 
-# Restarting the sovereign chain (now consumer chain), after ccv.json has been added and binary has been switched
+# Restarting the sovereign chain (now consumer chain), after ccv.json has been added and the binary has been switched
 function restartChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh ccv.json consumer-chain-validator${i} -- "pkill $CONSUMER_APP"
+    vagrant ssh consumer-chain-validator${i} -- "pkill $CONSUMER_APP"
     vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
+}
+
+function distributeProviderValidatorKeys() {
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
+  done
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
+  done
+
 }
 

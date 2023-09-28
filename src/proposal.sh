@@ -4,7 +4,7 @@ set -e
 function proposeConsumerAdditionProposal() {
   PROP_TITLE="Create the Consumer chain"
   PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
-  PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
+  PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 10))"') # leave 120 sec for pre-spawtime key-assignment test
   PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
   PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
   PROP_SOFT_OPT_OUT_THRESHOLD=0.05

@@ -82,9 +82,10 @@ function main() {
   call_and_log waitForProposalConsumer
   sleep 5
   call_and_log switchBinaries
-  sleep 120
+  sleep 10
   call_and_log fetchCCVState
   call_and_log applyCCVState
+  call_and_log distributeProviderValidatorKeys
   call_and_log restartChain
   
 
