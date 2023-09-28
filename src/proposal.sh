@@ -87,7 +87,7 @@ function voteConsumerAdditionProposal() {
 }
 
 # Wait for proposal to pass
-function waitForProposal() {
+function waitForProposalConsumer() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
   while [[ $PROPOSAL_STATUS != "PROPOSAL_STATUS_PASSED" ]]; do
@@ -97,3 +97,4 @@ function waitForProposal() {
 
   echo "Consumer addition proposal passed"
 }
+

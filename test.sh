@@ -4,6 +4,7 @@
 # relayer logs piped to /var/logs/relayer.log
 
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
+CONSUMER_FLAGS="--chain-id consumer-chain --gas 1000000 --gas-prices 0.25stake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
@@ -46,6 +47,7 @@ function main() {
   . ./src/consumer.sh
   . ./src/relayer.sh
   . ./src/sovereign.sh  
+  . ./src/migrate.sh
   . ./src/cleanup.sh
   
   # Clear the log file
@@ -58,9 +60,7 @@ function main() {
   call_and_log startProviderChain
   call_and_log waitForProviderChain
   # call_and_log manipulateConsumerGenesis
-  # call_and_log proposeConsumerAdditionProposal
-  # call_and_log voteConsumerAdditionProposal
-  # call_and_log waitForProposal
+  
   # call_and_log testKeyAssignment "1-prelaunch-newkey"
   # call_and_log waitForSpawnTime
   if $CONSUMER_MIGRATION ; then
@@ -73,6 +73,20 @@ function main() {
   call_and_log prepareRelayer
   call_and_log createIbcPaths
   call_and_log startRelayer
+  sleep 3
+  call_and_log proposeUpgradeSovereign
+  call_and_log voteSoftwareUpgradeProposal
+  call_and_log waitForProposalUpgrade
+  call_and_log proposeConsumerAdditionProposal
+  call_and_log voteConsumerAdditionProposal
+  call_and_log waitForProposalConsumer
+  sleep 5
+  call_and_log switchBinaries
+  sleep 120
+  call_and_log fetchCCVState
+  call_and_log applyCCVState
+  call_and_log restartChain
+  
 
   # sleep 30 # sleeps to offer more time to watch output, can be removed
 

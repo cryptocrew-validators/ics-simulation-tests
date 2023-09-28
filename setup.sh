@@ -69,6 +69,19 @@ function installNode() {
     cd ..
 }
 
+function buildNewBinary() {
+  cd $LOCAL_REPO
+  git checkout v12.1.0
+  echo "Installing new binary"
+  make install
+
+  sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin/newbin
+  sudo chown vagrant:vagrant /usr/local/bin/newbin
+  sudo chmod 777 /usr/local/bin/newbin
+  sudo chmod -R 777 /usr/local/bin
+  cd ..
+}
+
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
   $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
@@ -90,6 +103,7 @@ function manipulateGenesis() {
     else
       jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
       jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     fi
   fi
 }
@@ -153,6 +167,9 @@ main() {
   setNodeVars
   installGo
   installNode
+  if [[ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION" == "true" ]]; then
+    buildNewBinary
+  fi
   initNode
   manipulateGenesis
   genTx
