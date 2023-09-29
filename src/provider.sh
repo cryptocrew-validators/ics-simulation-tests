@@ -46,7 +46,10 @@ function startProviderChain() {
       echo ${VAL_ACCOUNTS[i-2]}
       vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
     done
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
+    
+    RELAYER_ACCOUNT_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --json keys list --chain provider-chain | grep result | jq -r '.result.default.account'")
+    echo "Provider relayer account:  $RELAYER_ACCOUNT_PROVIDER"
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $RELAYER_ACCOUNT_PROVIDER 1500000000000icsstake --keyring-backend test
 
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
@@ -68,10 +71,8 @@ function startProviderChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
     vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
-    sleep 2
     vagrant ssh provider-chain-validator${i} -- "pkill $PROVIDER_APP"
     vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tendermint unsafe-reset-all"
-    sleep 2
     vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done

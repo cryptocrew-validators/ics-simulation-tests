@@ -12,18 +12,18 @@ function proposeUpgradeSovereign() {
    "@type": "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
    "authority": "stride10d07y265gmmuvt4z0w9aw880jnsr700jefnezl",
    "plan": {
-    "name": "v12",
+    "name": "$CONSUMER_UPGRADE_NAME",
     "time": "0001-01-01T00:00:00Z",
-    "height": "40",
+    "height": "$CONSUMER_UPGRADE_HEIGHT",
     "info": "",
     "upgraded_client_state": null
    }
   }
  ],
  "metadata": "ipfs://CID",
- "deposit": "10000000stake",
- "title": "v12 upgrade",
- "summary": "upgrading to v12"
+ "deposit": "10000000$CONSUMER_FEE_DENOM",
+ "title": "$CONSUMER_UPGRADE_TITLE",
+ "summary": "$CONSUMER_UPGRADE_SUMMARY"
 }
 
 EOT
@@ -89,11 +89,12 @@ function applyCCVState() {
 function restartChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "pkill $CONSUMER_APP"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/chain.log 2>&1 &"
-    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer.log"
   done
 }
 
+# Fetching the private validator keys from the provider chain validators and giving them to the consumer chain validators
 function distributeProviderValidatorKeys() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
@@ -101,6 +102,19 @@ function distributeProviderValidatorKeys() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
   done
-
 }
+
+function waitForUpgradeHeight() {
+  echo "Waiting for sovereign chain to reach upgrade height..."
+  SOVEREIGN_LATEST_HEIGHT=""
+  while [[ ! $SOVEREIGN_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $SOVEREIGN_LATEST_HEIGHT -lt 1 ]] || [[ $SOVEREIGN_LATEST_HEIGHT -lt $CONSUMER_UPGRADE_HEIGHT ]]; do
+    SOVEREIGN_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
+    sleep 2
+  done
+  echo ">>> Sovereign chain has reached upgrade height. Latest block height: $SOVEREIGN_LATEST_HEIGHT"
+}
+
+# function fetchClientIDProvider() {
+#   #CLIENT_ID_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q )
+# }
 

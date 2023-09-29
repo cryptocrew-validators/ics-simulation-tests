@@ -49,6 +49,11 @@ function startSovereignChain() {
       echo ${VAL_ACCOUNTS_SOVEREIGN[i-2]}
       vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account ${VAL_ACCOUNTS_SOVEREIGN[i-2]} 1500000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
     done
+
+    RELAYER_ACCOUNT_CONSUMER=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --json keys list --chain consumer-chain | grep result | jq -r '.result.default.account'")
+    echo "Consumer relayer account: $RELAYER_ACCOUNT_CONSUMER"
+    vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account $RELAYER_ACCOUNT_CONSUMER 1500000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+    
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on consumer-chain-validator1"
     vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME collect-gentxs
@@ -63,9 +68,10 @@ function startSovereignChain() {
   
   echo ">>> STARTING SOVEREIGN CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/chain.log 2>&1 &"
-    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
+    vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/sovereign.log && sudo chmod 666 /var/log/sovereign.log"
+    vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/consumer.log && sudo chmod 666 /var/log/consumer.log"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/sovereign.log 2>&1 &"
+    echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/sovereign.log"
   done
 }
 
