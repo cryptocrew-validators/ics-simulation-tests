@@ -84,7 +84,7 @@ function buildNewBinary() {
 
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
-  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
+  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME --overwrite
 }
 
 function manipulateGenesis() {
