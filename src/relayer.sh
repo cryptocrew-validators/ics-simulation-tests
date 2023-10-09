@@ -21,7 +21,8 @@ function prepareRelayer() {
 function createIbcPaths() {
   echo "Fetching client ids for both chains..."
   CLIENT_ID_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider list-consumer-chains -o .json | jq -r '.chains[0].client_id'")
-  CLIENT_ID_CONSUMER=$(vagrant ssh consumer-chain-validator1 -- 'grep "client state updated" /var/log/consumer.log | awk -F"client-id=" "{print \$2}" | awk "{print \$1}" | head -1')
+  CLIENT_ID_CONSUMER=$(vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME q ibc client states -o json | jq -r '.client_states[] | select(.client_state.chain_id == "provider-chain") | .client_id')
+  #CLIENT_ID_CONSUMER=$(vagrant ssh consumer-chain-validator1 -- 'grep "client state updated" /var/log/consumer.log | awk -F"client-id=" "{print \$2}" | awk "{print \$1}" | head -1')
   echo "Provider client ID: $CLIENT_ID_PROVIDER"
   echo "Consumer client ID: $CLIENT_ID_CONSUMER"
 
