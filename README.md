@@ -35,7 +35,7 @@ If the file does not exist, it needs to be created first.
 ```bash
 git clone https://github.com/clemensgg/ics-simulation-tests
 cd ics-simulation-tests
-git branch ics-consumer-migration
+git switch ics-consumer-migration
 ```
 
 ## Configuration
