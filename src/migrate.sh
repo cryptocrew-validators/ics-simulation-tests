@@ -4,7 +4,7 @@ function proposeUpgradeSovereign() {
 
 # ACCOUNT=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME keys show consumer-chain-validator1 --keyring-backend test -a")
     
- cat > upgrade_proposal.json <<EOT
+ cat > files/generated/upgrade_proposal.json <<EOT
 
   {
  "messages": [
@@ -27,9 +27,9 @@ function proposeUpgradeSovereign() {
 }
 
 EOT
-  cat upgrade_proposal.json
+  cat files/generated/upgrade_proposal.json
   
-  vagrant scp upgrade_proposal.json consumer-chain-validator1:/home/vagrant/upgrade_proposal.json
+  vagrant scp files/generated/upgrade_proposal.json consumer-chain-validator1:/home/vagrant/upgrade_proposal.json
 
   # Create and submit the upgrade proposal
   echo "Submitting software upgrade proposal from consumer-chain-validator1..."
@@ -66,15 +66,15 @@ function switchBinaries() {
     for i in $(seq 1 $NUM_VALIDATORS); do
         vagrant ssh consumer-chain-validator${i} -- mv /usr/local/bin/newbin /usr/local/bin/$CONSUMER_APP
     done
-    echo "Successfully switched binary"
+    echo "Successfully switched binaries"
 }
 
 # Generate and distribute ccv state
 function fetchCCVState() {
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis consumer-chain -o json > $PROVIDER_HOME/config/ccv-state.json"
-  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv-state.json ccv-state.json
+  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv-state.json files/generated/ccv-state.json
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp ccv-state.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv-state.json
+    vagrant scp files/generated/ccv-state.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv-state.json
   done
 
 }
@@ -96,11 +96,20 @@ function restartChain() {
 
 # Fetching the private validator keys from the provider chain validators and giving them to the consumer chain validators
 function distributeProviderValidatorKeys() {
-  for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json priv_validator_key${i}.json
+  # Key assignment is only tested on the first validator in the list,
+  # so the other validators still need the validator keys from the provider-chain validators
+  # If key assignment is set to true, the first consumer-chain validator is skipped when copying the keys from the provider-chain
+  if $KEY_ASSIGNMENT; then
+    j=2
+  else
+    j=1
+  fi
+
+  for i in $(seq $j $NUM_VALIDATORS); do
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json files/generated/provider_priv_validator_key${i}.json
   done
-  for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
+  for i in $(seq $j $NUM_VALIDATORS); do
+    vagrant scp files/generated/provider_priv_validator_key${i}.json consumer-chain-validator${i}:$CONSUMER_HOME/config/priv_validator_key.json
   done
 }
 
@@ -114,7 +123,4 @@ function waitForUpgradeHeight() {
   echo ">>> Sovereign chain has reached upgrade height. Latest block height: $SOVEREIGN_LATEST_HEIGHT"
 }
 
-# function fetchClientIDProvider() {
-#   #CLIENT_ID_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q )
-# }
 

@@ -1,0 +1,4 @@
+.provisioned
+generated/*
+logs/*
+user/*

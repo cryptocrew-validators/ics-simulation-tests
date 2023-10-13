@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.define "provider-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
-      node.vm.network "private_network", ip: "192.168.56.1#{i}"
+      node.vm.network "private_network", type: "hostonly", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
         v.memory = 2048
         v.cpus = 2
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.define "consumer-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" #ubuntu/focal64
-      node.vm.network "private_network", ip: "192.168.57.1#{i}"
+      node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
         v.memory = 2048
         v.cpus = 2

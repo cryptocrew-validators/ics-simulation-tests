@@ -4,7 +4,7 @@ set -e
 function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""
   for i in $(seq 1 $NUM_VALIDATORS); do
-    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.56.1${i}:26656"
+    NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
     PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
   done
   PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER:1}"
@@ -12,44 +12,45 @@ function configPeers() {
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
-    vagrant ssh provider-chain-validator${i} -- "grep 'persistent_peers' $PROVIDER_HOME/config/config.toml"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/addr_book_strict = .*/addr_book_strict = false/g\" $PROVIDER_HOME/config/config.toml'"
+ 
   done
 }
 
 # Start all virtual machines, collect gentxs & start provider chain
 function startProviderChain() {
   sleep 1
-  # echo "Preparing provider-chain with $NUM_VALIDATORS validators."
-  # echo "Getting peerlists, editing configs..."
-  # configPeers
+  echo "Preparing provider-chain with $NUM_VALIDATORS validators."
+  echo "Getting peerlists, editing configs..."
+  configPeers
   
   # Copy gentxs to the first validator of provider chain, collect gentxs
   echo "Copying gentxs to provider-chain-validator1..."
-  VAL_ACCOUNTS=()
+  VAL_ACCOUNTS_PROVIDER=()
   for i in $(seq 2 $NUM_VALIDATORS); do
     GENTX_FILENAME=$(vagrant ssh provider-chain-validator${i} -- "bash -c 'ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
-    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME gentx${i}.json
-    vagrant scp gentx${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME files/generated/gentx_provider${i}.json
+    vagrant scp files/generated/gentx_provider${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
     
-    ACCOUNT=$(cat gentx${i}.json | jq -r '.body.messages[0].delegator_address')
-    VAL_ACCOUNTS+=($ACCOUNT)
+    ACCOUNT=$(cat files/generated/gentx_provider${i}.json | jq -r '.body.messages[0].delegator_address')
+    VAL_ACCOUNTS_PROVIDER+=($ACCOUNT)
     echo "[provider-chain-validator${i}] ${VAL_ACCOUNTS[i-2]} (account: provider-chain-validator${i})"
   done
 
-  # Check if genesis accounts have already been added, if not: collect gentxs
+  #Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- cat $PROVIDER_HOME/config/genesis.json)
-  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[0]}"* ]] ; then
-    echo "Adding genesis accounts..."
-
-    # Add validator accounts & relayer account
-    for i in $(seq 2 $NUM_VALIDATORS); do
-      echo ${VAL_ACCOUNTS[i-2]}
-      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
-    done
+  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS_PROVIDER[0]}"* ]] ; then
     
+    # Add validator accounts & relayer account
+    echo "Adding genesis accounts..."
     RELAYER_ACCOUNT_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --json keys list --chain provider-chain | grep result | jq -r '.result.default.account'")
     echo "Provider relayer account:  $RELAYER_ACCOUNT_PROVIDER"
     vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account $RELAYER_ACCOUNT_PROVIDER 1500000000000icsstake --keyring-backend test
+
+    for i in $(seq 2 $NUM_VALIDATORS); do
+      echo ${VAL_ACCOUNTS_PROVIDER[i-2]}
+      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS_PROVIDER[i-2]} 1500000000000icsstake --keyring-backend test
+    done
 
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
@@ -57,37 +58,23 @@ function startProviderChain() {
   fi
 
   # Distribute provider genesis
-  echo "Distributing provider-chain genesis file..."
-  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json genesis.json
+  echo "Distributing provider chain genesis file..."
+  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json files/generated/genesis_provider.json
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp genesis.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
+    vagrant scp files/generated/genesis_provider.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
   done
-  
-  echo "Preparing provider-chain with $NUM_VALIDATORS validators."
-  echo "Getting peerlists, editing configs..."
-  configPeers
 
   echo ">>> STARTING PROVIDER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
     vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
-    vagrant ssh provider-chain-validator${i} -- "pkill $PROVIDER_APP"
-
-    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tendermint unsafe-reset-all"
-    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
-    
-    # for j in {1..10}; do
-    #   vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tendermint unsafe-reset-all"
-    #   vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
-    # done
-
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
 }
 
-# Wait for provider to finalize a block
+# Wait for the provider chain to finalize a block
 function waitForProviderChain() {
-  echo "Waiting for Provider Chain to finalize a block..."
+  echo "Waiting for provider chain to finalize a block..."
   PROVIDER_LATEST_HEIGHT=""
   while [[ ! $PROVIDER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $PROVIDER_LATEST_HEIGHT -lt 1 ]]; do
     PROVIDER_LATEST_HEIGHT=$(vagrant ssh provider-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')

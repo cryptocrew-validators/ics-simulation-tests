@@ -117,7 +117,7 @@ function genTx() {
   if [[ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION" == "true" ]]; then
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
-    $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000$CONSUMER_FEE_DENOM --chain-id "$CHAIN_ID" --keyring-backend test
+    $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000"$CONSUMER_FEE_DENOM" --chain-id "$CHAIN_ID" --keyring-backend test
   fi
 }
 

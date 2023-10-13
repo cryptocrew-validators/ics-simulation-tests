@@ -29,9 +29,9 @@ function loadEnv {
 function call_and_log() {
   local function_name=$1
   local argument=$2
-  echo "--- Running $function_name $argument" | tee -a ./tests/result.log
-  $function_name $argument 2>&1 | tee -a ./tests/result.log
-  echo "--- Finished $function_name $argument" | tee -a ./tests/result.log
+  echo "--- Running $function_name $argument" | tee -a ./files/logs/result.log
+  $function_name $argument 2>&1 | tee -a ./files/logs/result.log
+  echo "--- Finished $function_name $argument" | tee -a ./files/logs/result.log
 }
 
 function main() {
@@ -41,15 +41,13 @@ function main() {
   # Dependencies
   . ./src/provision.sh
   . ./src/provider.sh
-  . ./src/consumerGenesis.sh
   . ./src/proposal.sh
   . ./src/testKeyAssignment.sh
-  . ./src/consumer.sh
   . ./src/relayer.sh
-  . ./src/sovereign.sh  
+  . ./src/consumer.sh  
   . ./src/migrate.sh
   . ./src/cleanup.sh
-  
+
   # Clear the log file
   > result.log
   
@@ -57,20 +55,17 @@ function main() {
   provisionVms
 
   # Run tests
+  if $CLEAR_FILES_ON_START ; then
+    call_and_log clearFilesAndLogs
+  fi
   call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
-  # call_and_log manipulateConsumerGenesis
-  
-  # call_and_log testKeyAssignment "1-prelaunch-newkey"
-  # call_and_log waitForSpawnTime
-  if $CONSUMER_MIGRATION ; then
-    call_and_log startSovereignChain
-    call_and_log waitForSovereignChain
+  if $KEY_ASSIGNMENT ; then
+    call_and_log assignConsumerKey "1-prelaunch-newkey" 
   fi
-  # call_and_log prepareConsumerChain
-  # call_and_log startConsumerChain
-  # call_and_log waitForConsumerChain
+  call_and_log startSovereignChain
+  call_and_log waitForSovereignChain
   call_and_log proposeUpgradeSovereign
   call_and_log voteSoftwareUpgradeProposal
   call_and_log waitForProposalUpgrade
@@ -78,38 +73,38 @@ function main() {
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposalConsumer
   call_and_log switchBinaries
+  call_and_log waitForSpawnTime
+  sleep 10 # wait for provider module to recognize that the spawn time has passed
   call_and_log fetchCCVState
   call_and_log applyCCVState
   call_and_log waitForUpgradeHeight
   call_and_log restartChain
+  sleep 5 # wait for consumer chain to finalize post-upgrade block
+  if $KEY_ASSIGNMENT ; then
+    call_and_log copyConsumerKey "1-prelaunch-newkey"
+  fi
+  call_and_log getClientIDs
   call_and_log distributeProviderValidatorKeys
-  sleep 15 # wait for consumer chain to finalize post-upgrade block
   call_and_log restartChain
-  sleep 15 # wait for consumer chain to update client state
   call_and_log createIbcPaths
   call_and_log startRelayer
   
+  if $KEY_ASSIGNMENT ; then
+    sleep 30 # sleeps to offer more time to watch output, can be removed
+    call_and_log validateAssignedKey "1-prelaunch-newkey"
+    call_and_log assignConsumerKey "2-postlaunch-newkey"
+    call_and_log validateAssignedKey "2-postlaunch-newkey"
+    sleep 30 # sleeps to offer more time to watch output, can be removed
+    call_and_log assignConsumerKey "3-postlaunch-samekey"
+    sleep 30 # sleeps to offer more time to watch output, can be removed
+    call_and_log assignConsumerKey "3-postlaunch-samekey"
+  fi
 
-  # sleep 30 # sleeps to offer more time to watch output, can be removed
-
-  # call_and_log validateAssignedKey "1-prelaunch-newkey"
-  # call_and_log testKeyAssignment "2-postlaunch-newkey"
-  # call_and_log validateAssignedKey "2-postlaunch-newkey"
-
-  # sleep 30 # sleeps to offer more time to watch output, can be removed
-
-  # call_and_log testKeyAssignment "3-postlaunch-samekey"
-  
-  # sleep 30 # sleeps to offer more time to watch output, can be removed
-  
-  # call_and_log validateAssignedKey "3-postlaunch-samekey"
-
-  # call_and_log getLogs
-  # call_and_log cleanUp
-  # copyGeneratedFiles
+  call_and_log getLogs
+  call_and_log cleanUp
+  #copyGeneratedFiles
 }
 
 main
 
 echo "All tests passed!"
-
