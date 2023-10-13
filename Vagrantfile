@@ -25,12 +25,15 @@ Vagrant.configure("2") do |config|
 
   # Create the provider-chain validators
   (1..chain_num_validators).each do |i|
+    config.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--audio", "none"]
+    end
     config.vm.define "provider-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
-      node.vm.network "private_network", ip: "192.168.33.1#{i}"
+      node.vm.network "private_network", type: "hostonly", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 4096
-        v.cpus = 4
+        v.memory = 2048
+        v.cpus = 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
@@ -48,12 +51,15 @@ Vagrant.configure("2") do |config|
 
   # Create the consumer-chain validators
   (1..chain_num_validators).each do |i|
+    config.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--audio", "none"]
+    end
     config.vm.define "consumer-chain-validator#{i}" do |node|
       node.vm.box = "ubuntu/jammy64" #ubuntu/focal64
-      node.vm.network "private_network", ip: "192.168.34.1#{i}"
+      node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 4096
-        v.cpus = 4
+        v.memory = 2048
+        v.cpus = 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}

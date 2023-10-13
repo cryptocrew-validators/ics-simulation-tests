@@ -1,7 +1,7 @@
 set -e
 
 # KeyAssignment test function
-function testKeyAssignment() {
+function assignConsumerKey() {
   echo "Assigning Key: $1"
   TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
   echo $TMP_DIR_EXISTS
@@ -18,27 +18,33 @@ function testKeyAssignment() {
     fi
   fi
 
-  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json priv_validator_key1_UPDATED_"$1".json
+  echo "Fetching consumer pub key from consumer-chain" 
+  CONSUMER_PUBKEY=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP tendermint show-validator --home $CONSUMER_HOME")
+  echo "CONSUMER_PUBKEY: $CONSUMER_PUBKEY"
 
-  UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
-  UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
-  echo "New PubKey: $UPDATED_PUBKEY_VALUE"
+  echo "Assigning consumer pub key to validator on provider-chain"
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tx provider assign-consensus-key consumer-chain '$CONSUMER_PUBKEY' --from provider-chain-validator1 --keyring-backend test --chain-id provider-chain --home $PROVIDER_HOME -y"
+  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json files/generated/priv_validator_key1_UPDATED_"$1".json
 
-  echo "Assigning updated key on provider-chain-validator1"
-  vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME tx provider assign-consensus-key consumer-chain "'"$UPDATED_PUBKEY"'" --from provider-chain-validator1 $PROVIDER_FLAGS
-
-  sleep 2
-  echo "Copying key $1 to consumer-chain-validator1"
-  vagrant scp priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json 
-  sleep 2
+  echo "Confirming that the key has been assigned..."
+  PROVIDER_VALCONSADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tendermint show-address --home $PROVIDER_HOME")
+  CONSUMER_ADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP query provider validator-consumer-key consumer-chain $PROVIDER_VALCONSADDR")
+  echo "Assigned address: $CONSUMER_ADDR"
 }
 
+function copyConsumerKey() {
+  echo "Copying key $1 to consumer-chain-validator1"
+  vagrant scp files/generated/priv_validator_key1_UPDATED_"$1".json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json
+}
+
+# Checks if the key has actually been assigned on the consumer chain
 function validateAssignedKey() {
   set -e
   echo "Restarting $CONSUMER_APP on consumer-chain-validator1..."
   vagrant ssh consumer-chain-validator1 -- "sudo pkill $CONSUMER_APP"
   sleep 1
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/consumer.log 2>&1 &"
+  echo "Restarted consumer-chain-validator1."
 
   echo "Validating key assignment consumer-chain-validator1: $1"
 
@@ -52,8 +58,7 @@ function validateAssignedKey() {
     VOTING_POWER=$(echo $VALIDATOR_INFO | jq -r ".voting_power")
     sleep 2
   done
-  echo "Restarted consumer-chain-validator1."
-
+  
   echo "New pubkey: $CONSUMER_PUBKEY"
   echo "Assigned pubkey: $UPDATED_PUBKEY_VALUE"
   if [[ "$CONSUMER_PUBKEY" != "$UPDATED_PUBKEY_VALUE" ]]; then
@@ -77,7 +82,7 @@ function validateAssignedKey() {
 
   if [[ "$VOTING_POWER" == "0" ]]; then
     echo "Valset update not received on consumer-chain within 60 seconds!"
-    echo "Check the relayer log on provider-chain-validator1: /var/log/relayer.sh"
+    echo "Check the relayer log on provider-chain-validator1: /var/log/hermes.log"
     echo "If you can find the valset update in the relayer log, it has not been properly propagated on the consumer-chain! This could point to a possible issue with the consumer-chain software."
     exit 1
   else

@@ -19,24 +19,27 @@ function proposeConsumerAdditionProposal() {
     PROP_CCV_TIMEOUT_PERIOD=2419200000000000
     PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
     PROP_UNBONDING_PERIOD=1728000000000000
+
+    # Copying user provided consumer addition proposal
+    cp files/user/consumer_addition_proposal.json files/generated/consumer_addition_proposal.json
   else
 
     # Download original proposal and constuct proposal file
     echo "Downloading ORIGINAL consumer addition proposal..."
-    curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > original_prop.json
-    # PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
-    # PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
+    curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > files/generated/original_consumer_addition_proposal.json
+    # PROP_TITLE=$(jq -r '.proposal.content.title' files/generated/original_consumer_addition_proposal.json)
+    # PROP_DESCRIPTION=$(jq -r '.proposal.content.description' files/generated/original_consumer_addition_proposal.json)
 
-    PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json)
-    PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
-    PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
-    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json)
-    PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
+    PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' files/generated/original_consumer_addition_proposal.json)
+    PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' files/generated/original_consumer_addition_proposal.json)
+    PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' files/generated/original_consumer_addition_proposal.json)
+    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' files/generated/original_consumer_addition_proposal.json)
+    PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' files/generated/original_consumer_addition_proposal.json)
 
     # Extract durations in seconds
-    UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period | rtrimstr("s")' original_prop.json)
-    CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period | rtrimstr("s")' original_prop.json)
-    TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' original_prop.json)
+    UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period | rtrimstr("s")' files/generated/original_consumer_addition_proposal.json)
+    CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period | rtrimstr("s")' files/generated/original_consumer_addition_proposal.json)
+    TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' files/generated/original_consumer_addition_proposal.json)
 
     # times-string would be better but currently gaiad wants nanoseconds here
     PROP_UNBONDING_PERIOD=$((UNBONDING_PERIOD_SECONDS * 1000000000))
@@ -44,13 +47,14 @@ function proposeConsumerAdditionProposal() {
     PROP_TRANSFER_TIMEOUT_PERIOD=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
   fi
 
-  cat > prop.json <<EOT
+  cat > files/generated/consumer_addition_proposal.json <<EOT
 {
   "title": "$PROP_TITLE",
   "description": "$PROP_DESCRIPTION",
   "chain_id": "consumer-chain",
   "initial_height": {
-      "revision_height": 1
+      "revision_number": 0,
+      "revision_height": 43
   },
   "genesis_hash": "$PROP_CONSUMER_BINARY_SHA256",
   "binary_hash": "$PROP_CONSUMER_RAW_GENESIS_SHA256",
@@ -65,9 +69,9 @@ function proposeConsumerAdditionProposal() {
   "deposit": "10000000icsstake"
 }
 EOT
-  cat prop.json
+  cat files/generated/consumer_addition_proposal.json
   
-  vagrant scp prop.json provider-chain-validator1:/home/vagrant/prop.json
+  vagrant scp files/generated/consumer_addition_proposal.json provider-chain-validator1:/home/vagrant/prop.json
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
@@ -87,7 +91,7 @@ function voteConsumerAdditionProposal() {
 }
 
 # Wait for proposal to pass
-function waitForProposal() {
+function waitForProposalConsumer() {
   echo "Waiting for consumer addition proposal to pass on provider-chain..."
   PROPOSAL_STATUS=""
   while [[ $PROPOSAL_STATUS != "PROPOSAL_STATUS_PASSED" ]]; do
@@ -97,3 +101,4 @@ function waitForProposal() {
 
   echo "Consumer addition proposal passed"
 }
+

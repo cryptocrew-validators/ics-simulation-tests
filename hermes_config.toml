@@ -10,7 +10,6 @@ misbehaviour = false
 [mode.connections]
 enabled = false
 
-
 [mode.channels]
 enabled = false
 
@@ -30,12 +29,11 @@ enabled = true
 host = '0.0.0.0'
 port = 3001
 
-
 [[chains]]
 id = 'provider-chain'
 rpc_addr = 'http://192.168.33.11:26657'
 grpc_addr = 'http://192.168.33.11:9090'
-websocket_addr = 'ws://192.168.33.11:26657/websocket'
+event_source = { mode = 'push', url = 'ws://192.168.33.11:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
 account_prefix = 'cosmos'
 key_name = 'default'
@@ -52,20 +50,19 @@ max_block_time = '10s'
 trusting_period = '80m'
 trust_threshold = { numerator = '1', denominator = '3' }
 
-
 [[chains]]
 id = 'consumer-chain'
-rpc_addr = 'http://192.168.34.12:26657'
-grpc_addr = 'http://192.168.34.12:9090'
-websocket_addr = 'ws://192.168.34.12:26657/websocket'
+rpc_addr = 'http://192.168.33.21:26657'
+grpc_addr = 'http://192.168.33.21:9090'
+event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
-account_prefix = 'neutron'
+account_prefix = 'stride'
 key_name = 'default'
 address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'untrn' }
+gas_price = { price = 0.025, denom = 'stake' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
@@ -73,3 +70,4 @@ clock_drift = '15s'
 max_block_time = '10s'
 trusting_period = '80m'
 trust_threshold = { numerator = '1', denominator = '3' }
+ccv_consumer_chain = true

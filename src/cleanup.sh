@@ -1,13 +1,24 @@
 set -e
 
+
+function clearFilesAndLogs() {
+  echo "Clearing generated files and logs..."
+  rm files/generated/*
+  rm files/logs/*
+  echo "All generated files and logs removed."
+}
+
 function getLogs() {
   echo "Getting logs..."
-  vagrant scp provider-chain-validator1:/var/log/hermes.log ./tests/hermes.log
+  vagrant scp provider-chain-validator1:/var/log/hermes.log files/logs/hermes.log
+
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp provider-chain-validator${i}:/var/log/chain.log ./tests/chainlog_provider-chain-validator${i}.log
-    echo "Wrote chainlog_provider-chain-validator${i}.log"
-    vagrant scp consumer-chain-validator${i}:/var/log/chain.log ./tests/chainlog_consumer-chain-validator${i}.log
-    echo "Wrote chainlog_consumer-chain-validator${i}.log"
+    vagrant scp provider-chain-validator${i}:/var/log/chain.log files/logs/chainlog_provider-chain-validator${i}.log
+    echo "Wrote log of provider chain to: files/logs/chainlog_provider-chain-validator${i}.log"
+    vagrant scp consumer-chain-validator${i}:/var/log/sovereign.log files/logs/sovereignlog_consumer-chain-validator${i}.log
+    echo "Wrote log of sovereign chain to: files/logs/sovereignlog_consumer-chain-validator${i}.log"
+    vagrant scp consumer-chain-validator${i}:/var/log/consumer.log files/logs/consumerlog_consumer-chain-validator${i}.log
+    echo "Wrote log of consumer chain to: files/logs/consumerlog_consumer-chain-validator${i}.log"
   done
 }
 
@@ -25,7 +36,7 @@ function cleanUp() {
   done
 }
 
-# copy all generated files to ./tests
+# copy all generated files to files/generated
 function copyGeneratedFiles() {
   echo "Copying generated files to ./tests/*"
   find ./ -maxdepth 1 -type f ! \( -name destroy.sh -o -name result.log -o -name .env -o -name .provisioned -o -name .first_run -o -name .first_run -o -name .gitignore -o -name README.md -o -name hermes_config.toml -o -name setup.sh -o -name test.sh -o -name Vagrantfile \) -exec mv {} ./tests \;
