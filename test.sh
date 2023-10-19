@@ -8,7 +8,6 @@ CONSUMER_FLAGS="--chain-id consumer-chain --gas 1000000 --gas-prices 0.25stake -
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
-
 set -e
 
 if ! (command -v sponge > /dev/null 2>&1); then
@@ -61,9 +60,6 @@ function main() {
   call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
-  if $KEY_ASSIGNMENT ; then
-    call_and_log assignConsumerKey "1-prelaunch-newkey" 
-  fi
   call_and_log startSovereignChain
   call_and_log waitForSovereignChain
   call_and_log proposeUpgradeSovereign
@@ -72,6 +68,9 @@ function main() {
   call_and_log proposeConsumerAdditionProposal
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposalConsumer
+  if $KEY_ASSIGNMENT ; then
+    call_and_log assignConsumerKey "1-prelaunch-newkey" 
+  fi
   call_and_log switchBinaries
   call_and_log waitForSpawnTime
   sleep 10 # wait for provider module to recognize that the spawn time has passed
@@ -80,10 +79,7 @@ function main() {
   call_and_log waitForUpgradeHeight
   call_and_log restartChain
   sleep 5 # wait for consumer chain to finalize post-upgrade block
-  if $KEY_ASSIGNMENT ; then
-    call_and_log copyConsumerKey "1-prelaunch-newkey"
-  fi
-  call_and_log getClientIDs
+  getClientIDs
   call_and_log distributeProviderValidatorKeys
   call_and_log restartChain
   call_and_log createIbcPaths
@@ -91,18 +87,12 @@ function main() {
   
   if $KEY_ASSIGNMENT ; then
     sleep 30 # sleeps to offer more time to watch output, can be removed
-    call_and_log validateAssignedKey "1-prelaunch-newkey"
     call_and_log assignConsumerKey "2-postlaunch-newkey"
-    call_and_log validateAssignedKey "2-postlaunch-newkey"
     sleep 30 # sleeps to offer more time to watch output, can be removed
-    call_and_log assignConsumerKey "3-postlaunch-samekey"
-    sleep 30 # sleeps to offer more time to watch output, can be removed
-    call_and_log assignConsumerKey "3-postlaunch-samekey"
   fi
 
   call_and_log getLogs
   call_and_log cleanUp
-  #copyGeneratedFiles
 }
 
 main

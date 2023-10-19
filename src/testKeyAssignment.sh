@@ -3,18 +3,19 @@ set -e
 # KeyAssignment test function
 function assignConsumerKey() {
   echo "Assigning Key: $1"
-  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo '/home/vagrant/tmp directory exists' || echo '/home/vagrant/tmp directory does not exist, creating...'")
+  TMP_HOME=/home/vagrant/tmp
+  TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d $TMP_HOME ] && echo '$TMP_HOME directory exists' || echo '$TMP_HOME directory does not exist, creating...'")
   echo $TMP_DIR_EXISTS
   if [[ "$1" == *"newkey"* ]]; then
     if [[ "$TMP_DIR_EXISTS" == *"exists"* ]]; then
-      vagrant ssh provider-chain-validator1 -- "rm -rf /home/vagrant/tmp"
+      vagrant ssh provider-chain-validator1 -- "rm -rf $TMP_HOME"
     fi
     echo "Generating NEW key for KeyAssignment test on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP init --chain-id provider-chain --home /home/vagrant/tmp tempnode && sudo chmod -R 766 /home/vagrant/tmp"
+    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP init --chain-id provider-chain --home $TMP_HOME tempnode && sudo chmod -R 766 $TMP_HOME"
   elif [[ "$1" == *"samekey"* ]]; then
     echo "Using the PREVIOUS (SAME) key for KeyAssignment test on provider-chain-validator1, checking location..."
     if [[ "$TMP_DIR_EXISTS" == *"does not exist"* ]]; then
-      vagrant ssh provider-chain-validator1 -- "mkdir /home/vagrant/tmp && cp -r $PROVIDER_HOME* /home/vagrant/tmp && sudo chmod -R 766 /home/vagrant/tmp"
+      vagrant ssh provider-chain-validator1 -- "mkdir $TMP_HOME && cp -r $PROVIDER_HOME* $TMP_HOME && sudo chmod -R 766 $TMP_HOME"
     fi
   fi
 
@@ -24,12 +25,14 @@ function assignConsumerKey() {
 
   echo "Assigning consumer pub key to validator on provider-chain"
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tx provider assign-consensus-key consumer-chain '$CONSUMER_PUBKEY' --from provider-chain-validator1 --keyring-backend test --chain-id provider-chain --home $PROVIDER_HOME -y"
-  vagrant scp provider-chain-validator1:/home/vagrant/tmp/config/priv_validator_key.json files/generated/priv_validator_key1_UPDATED_"$1".json
+  sleep 5
 
   echo "Confirming that the key has been assigned..."
-  PROVIDER_VALCONSADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tendermint show-address --home $PROVIDER_HOME")
+  PROVIDER_VALCONSADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tendermint show-address --home $TMP_HOME")
+  CONSUMER_VALCONSADDR=$(vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP tendermint show-address --home $CONSUMER_HOME")
   CONSUMER_ADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP query provider validator-consumer-key consumer-chain $PROVIDER_VALCONSADDR")
-  echo "Assigned address: $CONSUMER_ADDR"
+  echo "CONSUMER_VALCONSADDR: $CONSUMER_VALCONSADDR"
+  echo "$CONSUMER_ADDR"
 }
 
 function copyConsumerKey() {
@@ -48,7 +51,7 @@ function validateAssignedKey() {
 
   echo "Validating key assignment consumer-chain-validator1: $1"
 
-  UPDATED_PUBKEY_VALUE=$(cat priv_validator_key1_UPDATED_"$1".json | jq -r '.pub_key.value')
+  UPDATED_PUBKEY_VALUE=$(cat files/generated/provider_priv_validator_key1.json | jq -r '.pub_key.value')
   UPDATED_PUBKEY='{"@type":"/cosmos.crypto.ed25519.PubKey","key":"'$UPDATED_PUBKEY_VALUE'"}'
   
   CONSUMER_PUBKEY=""

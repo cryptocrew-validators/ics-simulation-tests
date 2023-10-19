@@ -105,7 +105,7 @@ function distributeProviderValidatorKeys() {
     j=1
   fi
 
-  for i in $(seq $j $NUM_VALIDATORS); do
+  for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/priv_validator_key.json files/generated/provider_priv_validator_key${i}.json
   done
   for i in $(seq $j $NUM_VALIDATORS); do
