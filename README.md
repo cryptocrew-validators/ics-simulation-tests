@@ -1,18 +1,34 @@
 # Interchain Simulation Tests
 
-This repository contains a test suite for interchain staking between a provider chain (Gaia) and a consumer chain (Neutron). The test simulates the process of creating a consumer chain and the validator key-assignment feature.
+This repository contains a test suite for a simulated process of bootstrapping an ICS consumer chain that is being secured by a provider chain.
 
-It bootstraps a local provider testnet with N validators, proposes a `consumer-addition-proposal`, tests the `key-assignment` feature and launches the `consumer-chain`
+--> Find the sovereign-to-consumer migration on the `[ics-consumer-migration](https://github.com/cryptocrew-validators/ics-simulation-tests/tree/ics-consumer-migration)` branch.
 
-A test journal is written to `./tests/result.log`
+For clarification purposes:
+*   Provider Chain = a blockchain that provides security to a consumer chain by sharing it's validator set
+*   Consumer Chain = a blockchain which is being secured by the validator set of a provider chain
 
-## Requirements
+The test suite bootstraps a local provider testnet.
+The provider chains proposes a `consumer-addition-proposal`. Additionally, `key-assignment` features can be tested.
 
-- min 16 core CPU, 64GB RAM
+A test journal is written to `files/logs/result.log`
+
+## Hardware Requirements
+For a recommended setup with 4 consumer nodes and 4 provider nodes, the following requirements apply:
+- at least 32GB RAM and a Quad Core CPU
+- (The test suite can be run with less than 4 validators, but then weird behaviour may appear.)
+
+## Sofware Requirements
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [jq](https://stedolan.github.io/jq/download)
 - [moreutils](https://joeyh.name/code/moreutils)
+
+## Prerequisites
+If the test suite is run with the default IP-Address ranges for the virtual machines,
+the `/etc/vbox/networks.conf` file must be altered to include the following line:  
+`* 0.0.0.0/0 ::/0`  
+If the file does not exist, it needs to be created first.
 
 ## Setup
 
@@ -21,11 +37,15 @@ A test journal is written to `./tests/result.log`
 ```bash
 git clone https://github.com/clemensgg/ics-simulation-tests
 cd ics-simulation-tests
+git switch ics-consumer-migration
 ```
 
 ## Configuration
 
 Modify the `.env` file to set up the required environment variables. These variables determine the number of validators and the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources
+
+If you wish to use your own consumer addition proposal, it needs to be put into `files/user`.
+
 
 ## Running the Test
 
@@ -50,7 +70,7 @@ The script will perform the following steps:
 10. Test key assignment post consumer chain launch.
 11. **Upon successful completion, you should see the message "All tests passed!".**
 
-Watch node output on each validator: 
+Watch node output on validators: 
 ```sh
 tail -f /var/log/chain.log
 ```
