@@ -2,7 +2,7 @@
 
 This repository contains a test suite for a simulated process of bootstrapping an ICS consumer chain that is being secured by a provider chain.
 
---> Find the sovereign-to-consumer migration on the `[ics-consumer-migration](https://github.com/cryptocrew-validators/ics-simulation-tests/tree/ics-consumer-migration)` branch.
+--> Find the sovereign-to-consumer migration on the [`ics-consumer-migration`](https://github.com/cryptocrew-validators/ics-simulation-tests/tree/ics-consumer-migration) branch.
 
 For clarification purposes:
 *   Provider Chain = a blockchain that provides security to a consumer chain by sharing it's validator set
