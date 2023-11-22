@@ -162,6 +162,12 @@ function updateOwnerships() {
   sudo chown -R vagrant:vagrant $DAEMON_HOME
 }
 
+function manipulateNobleGenesis() {
+  if [[ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION" == "true" ]]; then
+    jq 'del(.app_state.tokenfactory)' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+  fi
+}
+
 main() {
   loadEnv
   setNodeVars
@@ -174,6 +180,7 @@ main() {
   manipulateGenesis
   genTx
   installRelayer
+  manipulateNobleGenesis #Specifically for noble
   updateOwnerships
 }
 

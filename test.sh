@@ -60,6 +60,7 @@ function main() {
   call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
+  call_and_log distributeAuthority #Specifically for noble 
   call_and_log startSovereignChain
   call_and_log waitForSovereignChain
   call_and_log proposeUpgradeSovereign
