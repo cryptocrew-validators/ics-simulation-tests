@@ -37,6 +37,9 @@ EOT
   echo "Software upgrade proposal submitted"
 }
 
+function CreateUpgradeTx() {
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx upgrade software-upgrade krypton --upgrade-height $CONSUMER_UPGRADE_HEIGHT --from consumer-chain-validator1 --keyring-backend test --chain-id consumer-chain --yes"
+}
 
 # Vote yes on the software upgrade proposal from all sovereign validators
 function voteSoftwareUpgradeProposal() {

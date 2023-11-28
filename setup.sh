@@ -71,7 +71,7 @@ function installNode() {
 
 function buildNewBinary() {
   cd $LOCAL_REPO
-  git checkout v12.1.0
+  git checkout v1.0.0-ics
   echo "Installing new binary"
   make install
 
@@ -162,11 +162,11 @@ function updateOwnerships() {
   sudo chown -R vagrant:vagrant $DAEMON_HOME
 }
 
-function manipulateNobleGenesis() {
-  if [[ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION" == "true" ]]; then
-    jq 'del(.app_state.tokenfactory)' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-  fi
-}
+# function manipulateNobleGenesis() {
+#   if [[ "$CHAIN_ID" == "consumer-chain" && "$CONSUMER_MIGRATION" == "true" ]]; then
+#     jq 'del(.app_state.tokenfactory)' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+#   fi
+# }
 
 main() {
   loadEnv

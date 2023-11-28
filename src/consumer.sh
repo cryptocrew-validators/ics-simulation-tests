@@ -19,9 +19,11 @@ function configPeersSovereign() {
 function distributeAuthority() {
     AUTHORITY_KEY=$(vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME keys show consumer-chain-validator1 -a --keyring-backend test)
     for i in $(seq 1 $NUM_VALIDATORS); do
-      vagrant ssh consumer-chain-validator${i} -- "bash -c 'jq \".[\\\"app_state\\\"][\\\"ibc-authority\\\"][\\\"params\\\"].authority = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"params\\\"].params.authority = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"upgrade\\\"].params.authority = \\\"$AUTHORITY_KEY\\\"\" $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json'"
+      vagrant ssh consumer-chain-validator${i} -- "bash -c 'jq \".[\\\"app_state\\\"][\\\"ibc-authority\\\"][\\\"params\\\"].authority = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"params\\\"].params.authority = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"upgrade\\\"].params.authority = \\\"$AUTHORITY_KEY\\\"\" $CONSUMER_HOME/config/genesis.json | sponge $CONSUMER_HOME/config/genesis.json'"
+      vagrant ssh consumer-chain-validator${i} -- "bash -c 'jq \".[\\\"app_state\\\"][\\\"tokenfactory\\\"][\\\"masterMinter\\\"].address = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"tokenfactory\\\"][\\\"pauser\\\"].address = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"tokenfactory\\\"][\\\"blacklister\\\"].address = \\\"$AUTHORITY_KEY\\\" | .[\\\"app_state\\\"][\\\"tokenfactors\\\"][\\\"owner\\\"].address = \\\"$AUTHORITY_KEY\\\"\" $CONSUMER_HOME/config/genesis.json | sponge $CONSUMER_HOME/config/genesis.json'"
     done
 }
+
 
 # Start all virtual machines, collect gentxs & start sovereign chain
 function startSovereignChain() {

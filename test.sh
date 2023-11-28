@@ -60,18 +60,11 @@ function main() {
   call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
-  call_and_log distributeAuthority #Specifically for noble 
   call_and_log startSovereignChain
   call_and_log waitForSovereignChain
-  call_and_log proposeUpgradeSovereign
-  call_and_log voteSoftwareUpgradeProposal
-  call_and_log waitForProposalUpgrade
   call_and_log proposeConsumerAdditionProposal
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposalConsumer
-  if $KEY_ASSIGNMENT ; then
-    call_and_log assignConsumerKey "1-prelaunch-newkey" 
-  fi
   call_and_log switchBinaries
   call_and_log waitForSpawnTime
   sleep 10 # wait for provider module to recognize that the spawn time has passed
@@ -86,14 +79,14 @@ function main() {
   call_and_log createIbcPaths
   call_and_log startRelayer
   
-  if $KEY_ASSIGNMENT ; then
-    sleep 30 # sleeps to offer more time to watch output, can be removed
-    call_and_log assignConsumerKey "2-postlaunch-newkey"
-    sleep 30 # sleeps to offer more time to watch output, can be removed
-  fi
+  # if $KEY_ASSIGNMENT ; then
+  #   sleep 30 # sleeps to offer more time to watch output, can be removed
+  #   call_and_log assignConsumerKey "2-postlaunch-newkey"
+  #   sleep 30 # sleeps to offer more time to watch output, can be removed
+  # fi
 
-  call_and_log getLogs
-  call_and_log cleanUp
+  # call_and_log getLogs
+  # call_and_log cleanUp
 }
 
 main
