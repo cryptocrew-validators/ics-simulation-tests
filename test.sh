@@ -41,12 +41,12 @@ function main() {
   . ./src/provision.sh
   . ./src/provider.sh
   . ./src/proposal.sh
-  . ./src/testKeyAssignment.sh
+  . ./src/keyAssignment.sh
   . ./src/relayer.sh
   . ./src/consumer.sh  
   . ./src/migrate.sh
   . ./src/cleanup.sh
-
+  . ./src/additional.sh
   # Clear the log file
   > result.log
   
@@ -60,7 +60,6 @@ function main() {
   call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
-  call_and_log distributeAuthority #Specifically for noble 
   call_and_log startSovereignChain
   call_and_log waitForSovereignChain
   call_and_log proposeUpgradeSovereign
@@ -70,7 +69,7 @@ function main() {
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposalConsumer
   if $KEY_ASSIGNMENT ; then
-    call_and_log assignConsumerKey "1-prelaunch-newkey" 
+    call_and_log assignConsumerKey
   fi
   call_and_log switchBinaries
   call_and_log waitForSpawnTime
@@ -85,15 +84,11 @@ function main() {
   call_and_log restartChain
   call_and_log createIbcPaths
   call_and_log startRelayer
-  
-  if $KEY_ASSIGNMENT ; then
-    sleep 30 # sleeps to offer more time to watch output, can be removed
-    call_and_log assignConsumerKey "2-postlaunch-newkey"
-    sleep 30 # sleeps to offer more time to watch output, can be removed
-  fi
-
+  call_and_log delegate
+  call_and_log jailConsumer
+  call_and_log jailProvider
   call_and_log getLogs
-  call_and_log cleanUp
+  #call_and_log cleanUp
 }
 
 main
