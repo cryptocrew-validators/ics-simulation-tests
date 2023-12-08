@@ -104,6 +104,7 @@ function manipulateGenesis() {
       jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
       jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
       jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      #jq '.app_state.stakeibc.params.safety_max_slash_percent = "0"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     fi
   fi
 }

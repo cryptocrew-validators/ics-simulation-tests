@@ -69,7 +69,7 @@ function main() {
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposalConsumer
   if $KEY_ASSIGNMENT ; then
-    call_and_log assignConsumerKey
+    call_and_log assignConsumerKey "provider-newkey-1"
   fi
   call_and_log switchBinaries
   call_and_log waitForSpawnTime
@@ -84,8 +84,11 @@ function main() {
   call_and_log restartChain
   call_and_log createIbcPaths
   call_and_log startRelayer
+  if $KEY_ASSIGNMENT ; then
+    call_and_log validateAssignedKey "provider-newkey-1"
+  fi
   call_and_log delegate
-  call_and_log jailConsumer
+  #call_and_log jailConsumer
   call_and_log jailProvider
   call_and_log getLogs
   #call_and_log cleanUp
