@@ -13,9 +13,10 @@ The sovereign chain proposes a `software-upgrade-proposal` that converts them to
 A test journal is written to `files/logs/result.log`
 
 ## Hardware Requirements
-For a recommended setup with 4 consumer nodes and 4 provider nodes, the following requirements apply:
-- at least 32GB RAM and a Quad Core CPU
-- (The test suite can be run with less than 4 validators, but then weird behaviour may appear.)
+For a recommended setup with 5 consumer nodes and 5 provider nodes, the following requirements apply:
+- 16GB RAM and a 4-core CPU (Minimum)
+- 32GB RAM and an 8-core CPU (Recommended)
+- (The test suite can be run with less than 5 validators, but then weird behaviour may appear.)
 ## Sofware Requirements
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -43,6 +44,14 @@ git switch ics-consumer-migration
 Modify the `.env` file to set up the required environment variables. These variables determine the number of validators and the provider and consumer chains' repositories, versions, applications, home directories, Go sources, and genesis sources
 
 If you wish to use your own consumer addition proposal, it needs to be put into `files/user`.
+
+To lessen the strain on your internet connection and to speed up the setup process, it is recommended to use a caching server on your host machine.
+In the `.env` file, change the variable `CACHE_SERVER` to `true`. Squid caching server needs to be installed on your machine.
+On debian, you can install it with this command:
+
+`apt install squid`
+
+An example configuration file can be found in config/squid_example.conf.
 
 
 ## Running the Test

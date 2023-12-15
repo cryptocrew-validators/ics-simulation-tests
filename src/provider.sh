@@ -67,7 +67,7 @@ function startProviderChain() {
   echo ">>> STARTING PROVIDER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
 }
@@ -75,10 +75,22 @@ function startProviderChain() {
 # Wait for the provider chain to finalize a block
 function waitForProviderChain() {
   echo "Waiting for provider chain to finalize a block..."
+
+  MAX_ITERATIONS=30
+  ITERATION=0
   PROVIDER_LATEST_HEIGHT=""
-  while [[ ! $PROVIDER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $PROVIDER_LATEST_HEIGHT -lt 1 ]]; do
+
+  while [[ ! $PROVIDER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $PROVIDER_LATEST_HEIGHT -lt 1 ]] && [[ $ITERATION -lt $MAX_ITERATIONS ]]; do
     PROVIDER_LATEST_HEIGHT=$(vagrant ssh provider-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
+    ITERATION=$((ITERATION+1))
   done
-  echo ">>> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+
+  if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
+    echo ">>> PROVIDER CHAIN launch failed. Max iterations reached."
+    TEST_PROVIDER_LAUNCH="false"
+  else
+    echo ">>> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+    TEST_PROVIDER_LAUNCH="true"
+  fi
 }

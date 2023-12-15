@@ -15,6 +15,7 @@ function delegate() {
 
     MAX_ITERATIONS=30
     ITERATION=0
+
     while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_POST <= $VOTING_POWER_PRE)); do
         VOTING_POWER_POST=$(checkVotingPower "consumer-chain-validator1")
         sleep 2
@@ -22,11 +23,13 @@ function delegate() {
     done
 
     if (($ITERATION == $MAX_ITERATIONS)); then
-        echo "Could not confirm Voting Power update on consumer chain after 60 seconds."
+        echo ">>> Delegation failed, could not confirm Voting Power update on consumer chain after 60 seconds."
+        TEST_DELEGATION_CONSUMER="false"
     else
-        echo "Delegation has successfully arrive on consumer chain." 
+        echo ">>> Delegation has successfully arrive on consumer chain." 
         echo "Voting Power before delegation: $VOTING_POWER_PRE"
         echo "Voting Power after delegation: $VOTING_POWER_POST"
+        TEST_DELEGATION_CONSUMER="true"
     fi
 }
 
@@ -47,6 +50,7 @@ function jailConsumer() {
     MAX_ITERATIONS=30
     ITERATION=0
     VOTING_POWER=$(checkVotingPower "consumer-chain-validator1")
+
     while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER != 0)); do
         VOTING_POWER=$(checkVotingPower "consumer-chain-validator1")
         ITERATION=$((ITERATION+1))
@@ -78,6 +82,7 @@ function jailProvider() {
     ITERATION=0
     VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")
     VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator2")
+
     while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_PROVIDER != 0)); do
         VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")
         ITERATION=$((ITERATION+1))
@@ -85,14 +90,17 @@ function jailProvider() {
     done
 
     if (($VOTING_POWER_PROVIDER == 0)); then
-        echo "Validator has been jailed on provider chain."
+        echo ">>> Validator has been successfully jailed on provider chain."
+        TEST_JAIL_PROVIDER="true"
     else
-        echo "Could not confirm that validator has been jailed within 60 seconds on provider chain."
+        echo ">>> Jailing failed, could not confirm that validator has been jailed within 60 seconds on provider chain."
+        TEST_JAIL_PROVIDER="false"
     fi
 
     echo "Waiting for validator set change to arrive on consumer chain..."
     MAX_ITERATIONS=30
     ITERATION=0
+
     while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_CONSUMER != 0)); do
         VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator2")
         ITERATION=$((ITERATION+1))
@@ -100,9 +108,11 @@ function jailProvider() {
     done
 
     if (($VOTING_POWER_CONSUMER == 0)); then
-        echo "Validator has been jailed on consumer chain."
+        echo ">>> Validator has been successfully jailed on consumer chain."
+        TEST_JAIL_CONSUMER="true"
     else
-        echo "Could not confirm that validator has been jailed within 60 seconds on consumer chain."
+        echo ">>> Jailing failed, could not confirm that validator has been jailed within 60 seconds on consumer chain."
+        TEST_JAIL_PROVIDER="false"
     fi
     
 }

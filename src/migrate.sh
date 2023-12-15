@@ -89,9 +89,29 @@ function applyCCVState() {
 function restartChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "pkill $CONSUMER_APP"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer.log"
   done
+
+  echo "Waiting for consumer chain to finalize a block..."
+  
+  MAX_ITERATIONS=30
+  ITERATION=0
+  CONSUMER_LATEST_HEIGHT=""
+
+  while [[ ! $CONSUMER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $CONSUMER_LATEST_HEIGHT -lt $CONSUMER_UPGRADE_HEIGHT ]] && [[ $ITERATION -lt $MAX_ITERATIONS ]]; do
+    CONSUMER_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
+    sleep 2
+    ITERATION=$((ITERATION+1))
+  done
+
+  if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
+    echo ">>> CONSUMER CHAIN launch failed. Max iterations reached."
+    TEST_CONSUMER_MIGRATION="false"
+  else
+    echo ">>> CONSUMER CHAIN launch was successful. Latest block height: $CONSUMER_LATEST_HEIGHT"
+    TEST_CONSUMER_MIGRATION="true"
+  fi
 }
 
 # Fetching the private validator keys from the provider chain validators and giving them to the consumer chain validators

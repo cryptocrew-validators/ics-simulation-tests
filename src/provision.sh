@@ -18,7 +18,7 @@ function firstRun() {
     vagrant box update
     vagrant plugin install vagrant-scp
     echo "Starting first run, provisioning with: vagrant -up"
-    echo "Please note: This operation will take at least 10 minutes..."
+    echo "Please note: This operation will take some time..."
     vagrant up
 
     touch $FIRST_RUN_FLAG_FILE || true

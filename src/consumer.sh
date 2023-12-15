@@ -67,7 +67,7 @@ function startSovereignChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/sovereign.log && sudo chmod 666 /var/log/sovereign.log"
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/consumer.log && sudo chmod 666 /var/log/consumer.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/sovereign.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/sovereign.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/sovereign.log"
   done
 }
@@ -75,12 +75,24 @@ function startSovereignChain() {
 # Wait for sovereign to finalize a block
 function waitForSovereignChain() {
   echo "Waiting for Sovereign Chain to finalize a block..."
+
+  MAX_ITERATIONS=30
+  ITERATION=0
   SOVEREIGN_LATEST_HEIGHT=""
-  while [[ ! $SOVEREIGN_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $SOVEREIGN_LATEST_HEIGHT -lt 1 ]]; do
+
+  while [[ ! $SOVEREIGN_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $SOVEREIGN_LATEST_HEIGHT -lt 1 ]] && [[ $ITERATION -lt $MAX_ITERATIONS ]]; do
     SOVEREIGN_LATEST_HEIGHT=$(vagrant ssh consumer-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
+    ITERATION=$((ITERATION+1))
   done
-  echo ">>> SOVEREIGN CHAIN successfully launched. Latest block height: $SOVEREIGN_LATEST_HEIGHT"
+  
+  if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
+    echo ">>> SOVEREIGN CHAIN launch failed. Max iterations reached."
+    TEST_SOVEREIGN_LAUNCH="false"
+  else
+    echo ">>> SOVEREIGN CHAIN successfully launched. Latest block height: $SOVEREIGN_LATEST_HEIGHT"
+    TEST_SOVEREIGN_LAUNCH="true"
+  fi
 }
 
 # Wait for spawn_time to be reached
