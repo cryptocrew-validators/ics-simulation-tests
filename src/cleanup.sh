@@ -1,13 +1,30 @@
 set -e
 
+function clearFilesAndLogs() {
+    echo "Clearing generated files and logs..."
+
+    # Enable nullglob for this function
+    shopt -s nullglob
+
+    # Remove files in files/generated and files/logs
+    rm -f files/generated/*
+    rm -f files/logs/*
+
+    # Disable nullglob after use
+    shopt -u nullglob
+
+    echo "All generated files and logs have been removed."
+}
+
 function getLogs() {
   echo "Getting logs..."
-  vagrant scp provider-chain-validator1:/var/log/hermes.log ./tests/hermes.log
+  vagrant scp provider-chain-validator1:/var/log/hermes.log files/logs/hermes.log
+
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp provider-chain-validator${i}:/var/log/chain.log ./tests/chainlog_provider-chain-validator${i}.log
-    echo "Wrote chainlog_provider-chain-validator${i}.log"
-    vagrant scp consumer-chain-validator${i}:/var/log/chain.log ./tests/chainlog_consumer-chain-validator${i}.log
-    echo "Wrote chainlog_consumer-chain-validator${i}.log"
+    vagrant scp provider-chain-validator${i}:/var/log/chain.log files/logs/chainlog_provider-chain-validator${i}.log
+    echo "Wrote log of provider chain to: files/logs/chainlog_provider-chain-validator${i}.log"
+    vagrant scp consumer-chain-validator${i}:/var/log/chain.log files/logs/consumerlog_consumer-chain-validator${i}.log
+    echo "Wrote log of consumer chain to: files/logs/consumerlog_consumer-chain-validator${i}.log"
   done
 }
 

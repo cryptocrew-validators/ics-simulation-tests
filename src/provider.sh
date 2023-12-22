@@ -6,7 +6,7 @@ function configPeers() {
   PERSISTENT_PEERS_CONSUMER=""
   for i in $(seq 1 $NUM_VALIDATORS); do
     NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
-    NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.34.1${i}:26656"
+    NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.33.2${i}:26656"
     PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
     PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
   done
@@ -33,10 +33,10 @@ function startProviderChain() {
   VAL_ACCOUNTS=()
   for i in $(seq 2 $NUM_VALIDATORS); do
     GENTX_FILENAME=$(vagrant ssh provider-chain-validator${i} -- "bash -c 'ls $PROVIDER_HOME/config/gentx/ | head -n 1'")
-    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME gentx${i}.json
-    vagrant scp gentx${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
+    vagrant scp provider-chain-validator${i}:$PROVIDER_HOME/config/gentx/$GENTX_FILENAME files/generated/gentx_provider${i}.json
+    vagrant scp files/generated/gentx_provider${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
     
-    ACCOUNT=$(cat gentx${i}.json | jq -r '.body.messages[0].delegator_address')
+    ACCOUNT=$(cat files/generated/gentx_provider${i}.json | jq -r '.body.messages[0].delegator_address')
     VAL_ACCOUNTS+=($ACCOUNT)
     echo "[provider-chain-validator${i}] ${VAL_ACCOUNTS[i-2]} (account: provider-chain-validator${i})"
   done
@@ -60,26 +60,39 @@ function startProviderChain() {
 
   # Distribute provider genesis
   echo "Distributing provider-chain genesis file..."
-  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json genesis.json
+  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/genesis.json files/generated/genesis_provider.json
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp genesis.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
+    vagrant scp files/generated/genesis_provider.json provider-chain-validator${i}:$PROVIDER_HOME/config/genesis.json
   done
   
   echo ">>> STARTING PROVIDER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
+  echo "Done starting provider chain"
 }
 
-# Wait for provider to finalize a block
+# Wait for the provider chain to finalize a block
 function waitForProviderChain() {
-  echo "Waiting for Provider Chain to finalize a block..."
+  echo "Waiting for provider chain to finalize a block..."
+
+  MAX_ITERATIONS=30
+  ITERATION=0
   PROVIDER_LATEST_HEIGHT=""
-  while [[ ! $PROVIDER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $PROVIDER_LATEST_HEIGHT -lt 1 ]]; do
+
+  while [[ ! $PROVIDER_LATEST_HEIGHT =~ ^[0-9]+$ ]] || [[ $PROVIDER_LATEST_HEIGHT -lt 1 ]] && [[ $ITERATION -lt $MAX_ITERATIONS ]]; do
     PROVIDER_LATEST_HEIGHT=$(vagrant ssh provider-chain-validator1 -- 'curl -s http://localhost:26657/status | jq -r ".result.sync_info.latest_block_height"')
     sleep 2
+    ITERATION=$((ITERATION+1))
   done
-  echo ">>> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+
+  if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
+    echo ">>> PROVIDER CHAIN launch failed. Max iterations reached."
+    TEST_PROVIDER_LAUNCH="false"
+  else
+    echo ">>> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
+    TEST_PROVIDER_LAUNCH="true"
+  fi
 }

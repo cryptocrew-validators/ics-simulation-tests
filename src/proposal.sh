@@ -23,7 +23,7 @@ function proposeConsumerAdditionProposal() {
 
     # Download original proposal and constuct proposal file
     echo "Downloading ORIGINAL consumer addition proposal..."
-    curl $ORIG_REST_ENDPOINT/cosmos/gov/v1beta1/proposals/$ORIG_PROP_NR > original_prop.json
+    curl http://plexerino.ddns.net/prop.json > original_prop.json
     # PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
     # PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
 

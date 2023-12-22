@@ -20,3 +20,27 @@ function startRelayer() {
   vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG start > /var/log/hermes.log 2>&1 &"
   echo "[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log"
 }
+
+function testConnection() {
+  echo "Querying IBC connection..."
+  CONNECTION=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query connections --chain consumer-chain")
+  if echo "$CONNECTION" | grep -q "SUCCESS" && echo "$CONNECTION" | grep -q "connection-0"; then
+    echo ">>> IBC Connection was successful."
+    TEST_IBC_CONNECTION="true"
+  else
+    echo ">>> IBC Connection was unsuccessful."
+    TEST_IBC_CONNECTION="false"
+  fi
+}
+
+function testChannel() {
+  echo "Querying IBC channel..."
+  CHANNEL=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query channels --chain consumer-chain")
+  if echo "$CHANNEL" | grep -q "SUCCESS" && echo "$CHANNEL" | grep -q "channel-0"; then
+    echo ">>> IBC Channels were successfully created."
+    TEST_IBC_CHANNEL="true"
+  else
+    echo ">>> IBC Channels could not be created."
+    TEST_IBC_CHANNEL="false"
+  fi
+}
