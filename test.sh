@@ -136,13 +136,13 @@ function main() {
 
   # Dependencies
   sourceDependencies
-  
-  # Provision
-  provisionVms
 
   if $CLEAR_FILES_ON_START ; then
     clearFilesAndLogs
   fi
+  
+  # Provision
+  provisionVms
 
   echo "Starting tests..."
   echo "For more info during the run, follow the log with:"
