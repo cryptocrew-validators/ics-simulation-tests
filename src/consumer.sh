@@ -2,7 +2,7 @@ set -e
 
 # Wait for spawn_time to be reached
 function waitForSpawnTime() {
-  PROP_SPAWN_TIME=$(cat prop.json | jq -r '.spawn_time')
+  PROP_SPAWN_TIME=$(cat prop.json | jq -r '.messages[0].content.spawn_time')
   echo "Waiting for spawn time to be reached: $PROP_SPAWN_TIME"
   CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
   CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)
@@ -60,7 +60,7 @@ function startConsumerChain() {
   echo ">>> STARTING CONSUMER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --api.enable true --grpc.enable true --grpc.address "0.0.0.0:9090" > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
@@ -115,7 +115,7 @@ function manipulateConsumerGenesis() {
 
   # Add relayer account and balances
   echo "Adding relayer account & balances"
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
+  #vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y || true"
   CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
   
   cat > files/generated/relayer_account_consumer.json <<EOT

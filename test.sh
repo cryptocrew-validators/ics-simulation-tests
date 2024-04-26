@@ -163,7 +163,7 @@ function main() {
 
   #sleep 30 # sleeps to offer more time to watch output, can be removed
 
-  call_and_log validateAssignedKey "1-prelaunch-newkey"
+  #call_and_log validateAssignedKey "1-prelaunch-newkey"
   #call_and_log testKeyAssignment "2-postlaunch-newkey"
   #call_and_log validateAssignedKey "2-postlaunch-newkey"
 

@@ -16,8 +16,8 @@ function configPeers() {
   echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
 
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
-    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/^persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sed -i \"s/^persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
   done
 }
 
@@ -49,13 +49,13 @@ function startProviderChain() {
     # Add validator accounts & relayer account
     for i in $(seq 2 $NUM_VALIDATORS); do
       echo ${VAL_ACCOUNTS[i-2]}
-      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
+      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
     done
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
 
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis collect-gentxs
   fi
 
   # Distribute provider genesis
@@ -68,7 +68,7 @@ function startProviderChain() {
   echo ">>> STARTING PROVIDER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 > /var/log/chain.log 2>&1 &"
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.enable true --grpc.address "0.0.0.0:9090" > /var/log/chain.log 2>&1 &"
     echo "[provider-chain-validator${i}] started $PROVIDER_APP: watch output at /var/log/chain.log"
   done
   echo "Done starting provider chain"
