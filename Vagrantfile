@@ -66,7 +66,7 @@ Vagrant.configure("2") do |config|
       node.vm.box = "ubuntu/jammy64" #ubuntu/focal64
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 1024
+        v.memory = 2048
         v.cpus = 1
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
