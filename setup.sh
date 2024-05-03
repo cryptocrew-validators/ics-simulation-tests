@@ -55,7 +55,7 @@ function installGo() {
 function installNode() {
     LOCAL_REPO=$DAEMON_NAME-core
     if [ -d $LOCAL_REPO ] ; then
-      rm -r $LOCAL_REPO
+      sudo rm -rf $LOCAL_REPO
     fi
     mkdir $LOCAL_REPO
     git clone $DAEMON_REPO $LOCAL_REPO

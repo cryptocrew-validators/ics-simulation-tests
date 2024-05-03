@@ -10,7 +10,7 @@ File.foreach('.env') do |line|
   if key == 'NUM_VALIDATORS'
     chain_num_validators = value.to_i
   elsif key == 'CACHE_SERVER'
-    cache_server = value.downcase == 'true'
+    cache_server	@elysd version = value.downcase == 'true'
   end
 end
 
@@ -31,8 +31,8 @@ Vagrant.configure("2") do |config|
       node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 1024
-        v.cpus = 1
+        v.memory = 4096
+        v.cpus = 3
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
         v.memory = 2048
-        v.cpus = 1
+        v.cpus = 3
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
