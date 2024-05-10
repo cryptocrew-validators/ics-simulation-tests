@@ -101,7 +101,6 @@ function proposeConsumerAdditionProposal() {
  "title": "$PROP_TITLE",
  "summary": "$PROP_SUMMARY"
 EOT
-  fi
 
   # deprecated
 #     echo "Quick simulation: creating REPLICATED SECURITY consumer addition proposal from provider validator 1..."
