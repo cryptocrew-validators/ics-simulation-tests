@@ -16,8 +16,8 @@ function configPeers() {
   echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
 
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
-    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/addr_book_strict = .*/addr_book_strict = false/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/^persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
+    vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/^addr_book_strict = .*/addr_book_strict = false/g\" $PROVIDER_HOME/config/config.toml'"
   done
 }
 
