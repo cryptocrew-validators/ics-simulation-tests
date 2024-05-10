@@ -60,7 +60,7 @@ function startConsumerChain() {
   echo ">>> STARTING CONSUMER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --api.enable true --grpc.enable true --grpc.address 0.0.0.0:9090 > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --api.enable true --grpc.enable true --grpc.address 0.0.0.0:9090 --minimum-gas-prices 0$CONSUMER_FEE_DENOM > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
