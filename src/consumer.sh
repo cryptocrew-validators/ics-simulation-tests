@@ -115,7 +115,7 @@ function manipulateConsumerGenesis() {
 
   # Add relayer account and balances
   echo "Adding relayer account & balances"
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y > /dev/null"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y > /dev/null || true"
   CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
   
   cat > files/generated/relayer_account_consumer.json <<EOT
@@ -139,8 +139,6 @@ EOT
   ]
 }
 EOT
-
-
 
   cat files/generated/relayer_account_consumer.json
   cat files/generated/relayer_balance_consumer.json
