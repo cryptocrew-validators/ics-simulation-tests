@@ -100,6 +100,7 @@ function proposeConsumerAdditionProposal() {
  "deposit": "10000000icsstake",
  "title": "$PROP_TITLE",
  "summary": "$PROP_SUMMARY"
+}
 EOT
 
   # deprecated
