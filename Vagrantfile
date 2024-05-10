@@ -10,7 +10,7 @@ File.foreach('.env') do |line|
   if key == 'NUM_VALIDATORS'
     chain_num_validators = value.to_i
   elsif key == 'CACHE_SERVER'
-    cache_server	@elysd version = value.downcase == 'true'
+    cache_server = value.downcase == 'true'
   end
 end
 

@@ -121,6 +121,8 @@ function installRelayer() {
       tar -C /home/vagrant/.hermes/bin/ -xzf $(basename $HERMES_SOURCE)
     fi
 
+    sudo sed -i "s#account_prefix = 'consumer'#account_prefix = '$CONSUMER_BECH32_PREFIX'#g" /home/vagrant/.hermes/config.toml
+    sudo sed -i "s#denom = 'ustake'#denom = '$CONSUMER_BECH32_PREFIX'#g" /home/vagrant/.hermes/config.toml
     sudo chmod 777 /home/vagrant/.hermes/bin/hermes
     sudo chown -R vagrant:vagrant /home/vagrant/.hermes  
   fi
