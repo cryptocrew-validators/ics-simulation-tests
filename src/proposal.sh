@@ -86,7 +86,7 @@ function proposeConsumerAdditionProposal() {
             "content": {
                 "@type": "/interchain_security.ccv.provider.v1.ConsumerAdditionProposal",
                 "title": "$PROP_TITLE",
-                "summary": "$PROP_DESCRIPTION",
+                "description": "$PROP_DESCRIPTION",
                 "chain_id": "consumer-chain",
                 "initial_height": {
                     "revision_number": "0",
@@ -110,7 +110,7 @@ function proposeConsumerAdditionProposal() {
  "metadata": "ipfs://CID",
  "deposit": "10000000icsstake",
  "title": "$PROP_TITLE",
- "summary": "$PROP_SUMMARY"
+ "summary": "$PROP_DESCRIPTION"
 }
 EOT
 
@@ -138,7 +138,7 @@ EOT
 # }
 # EOT
 #   fi
-  cat files/generated/prop.json
+  # cat files/generated/prop.json
   
   vagrant scp files/generated/prop.json provider-chain-validator1:/home/vagrant/prop.json
 
