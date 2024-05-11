@@ -60,7 +60,7 @@ event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batc
 rpc_timeout = '10s'
 account_prefix = 'consumer'
 key_name = 'default'
-address_type = { derivation = 'consumer' }
+address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
