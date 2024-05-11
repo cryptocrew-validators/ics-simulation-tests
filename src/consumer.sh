@@ -49,6 +49,9 @@ function prepareConsumerChain() {
   # jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > genesis_consumer.json
   jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/generated/raw_genesis_consumer.json > files/generated/genesis_consumer.json
   
+  # jq '.epochs.monitoringp.consumerChainID = "consumer-chain"' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
+
+
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp files/generated/genesis_consumer.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
@@ -96,8 +99,8 @@ function prepareConsumerRawGenesis() {
       echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
       wget -4 -q $CONSUMER_GENESIS_SOURCE -O files/generated/raw_genesis_consumer.json
     else
-      echo "No consumer genesis source provided. Provide either files/user/raw_genesis.json or CONSUMER_GENESIS_SOURCE in env!"
-      exit 1
+      echo "No Consumer genesis state provided, using default (init) state from consumer-chain-validator1"
+      vagrant scp consumer-chain-validator1:$CONSUMER_HOME/config/genesis.json files/generated/raw_genesis_consumer.json
     fi
   else
     echo "Using provided genesis.json file at files/user/genesis.json"
