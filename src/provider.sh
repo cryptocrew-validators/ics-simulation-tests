@@ -43,7 +43,7 @@ function startProviderChain() {
 
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh provider-chain-validator1 -- cat $PROVIDER_HOME/config/genesis.json)
-  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[1]}"* ]] ; then
+  # if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS[1]}"* ]] ; then
     echo "Adding genesis accounts..."
 
     # Add validator accounts & relayer account
@@ -56,7 +56,7 @@ function startProviderChain() {
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
     vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis collect-gentxs
-  fi
+  # fi
 
   # Distribute provider genesis
   echo "Distributing provider-chain genesis file..."
