@@ -88,8 +88,28 @@ function waitForConsumerChain() {
   fi
 }
 
+function prepareConsumerRawGenesis() {
+  echo "Preparing Consumer genesis"
+  if [ ! -f "files/user/genesis.json" ]; then
+    # Download and manipulate consumer genesis file
+    if [ ! -z "$CONSUMER_GENESIS_SOURCE" ]; then
+      echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
+      wget -4 -q $CONSUMER_GENESIS_SOURCE -O files/generated/raw_genesis_consumer.json
+    else
+      echo "No consumer genesis source provided. Provide either files/user/raw_genesis.json or CONSUMER_GENESIS_SOURCE in env!"
+      exit 1
+    fi
+  else
+    echo "Using provided genesis.json file at files/user/genesis.json"
+    cp files/user/genesis.json files/generated/raw_genesis_consumer.json
+  fi
+}
+
 function manipulateConsumerGenesis() {
+  prepareConsumerRawGenesis
+
   echo "Manipulating consumer raw_genesis file"
+  cat files/generated/raw_genesis_consumer.json
 
   # Update supply to empty array to pass genesis supply check
   echo "Setting supply to []"

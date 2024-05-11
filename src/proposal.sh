@@ -1,22 +1,5 @@
 set -e
 
-function prepareConsumerRawGenesis() {
-  echo "Preparing Consumer genesis"
-  if [ ! -f "files/user/genesis.json" ]; then
-    # Download and manipulate consumer genesis file
-    if [ ! -z "$CONSUMER_GENESIS_SOURCE" ]; then
-      echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
-      wget -4 -q $CONSUMER_GENESIS_SOURCE -O /files/generated/raw_genesis_consumer.json
-    else
-      echo "No consumer genesis source provided. Provide either /files/user/raw_genesis.json or CONSUMER_GENESIS_SOURCE in env!"
-      exit 1
-    fi
-  else
-    echo "Using provided genesis.json file at /files/user/genesis.json"
-    cp files/user/genesis.json /files/generated/raw_genesis_consumer.json
-  fi
-}
-
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
   # PROP_TITLE="Create the Consumer chain"
@@ -33,12 +16,8 @@ function proposeConsumerAdditionProposal() {
     # PROP_HISTORICAL_ENTRIES=10
 
     # times-string would be better but currently gaiad wants nanoseconds here
-    # PROP_CCV_TIMEOUT_PERIOD=2419200000000000
-    # PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
-    # PROP_UNBONDING_PERIOD=1728000000000000
-  # else
 
-    prepareConsumerRawGenesis
+  # else
 
     # use default values for proposal
     if [ -z "$CONSUMER_ICS_TYPE" ]; then
@@ -49,13 +28,13 @@ function proposeConsumerAdditionProposal() {
     PROP_TITLE="consumer-addition-proposal"
     PROP_DESCRIPTION="launch the $CONSUMER_ICS_TYPE consumer chain"
     PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-    PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum /files/generated/raw_genesis_consumer.json | awk '{ print $1 }')
+    PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum files/generated/raw_genesis_consumer.json | awk '{ print $1 }')
     PROP_CONSUMER_REDISTRIBUTION_FRACTION="0.75"
     PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION="100"
     PROP_HISTORICAL_ENTRIES="10000"
-    UNBONDING_PERIOD_SECONDS="10800s"
-    CCV_TIMEOUT_PERIOD_SECONDS="2419200s"
-    TRANSFER_TIMEOUT_PERIOD_SECONDS="1800s"
+    PROP_UNBONDING_PERIOD="10800s"
+    PROP_CCV_TIMEOUT_PERIOD="2419200s"
+    PROP_TRANSFER_TIMEOUT_PERIOD="1800s"
 
     # Or: download original proposal and constuct proposal file
     if [ ! -z "$ORIG_PROP_SOURCE" ]; then
@@ -71,9 +50,9 @@ function proposeConsumerAdditionProposal() {
       PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
 
       # Extract durations in seconds
-      UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period' original_prop.json)
-      CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period' original_prop.json)
-      TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period' original_prop.json)
+      PROP_UNBONDING_PERIOD=$(jq -r '.proposal.content.unbonding_period' original_prop.json)
+      PROP_CCV_TIMEOUT_PERIOD=$(jq -r '.proposal.content.ccv_timeout_period' original_prop.json)
+      PROP_TRANSFER_TIMEOUT_PERIOD=$(jq -r '.proposal.content.transfer_timeout_period' original_prop.json)
     fi
 
     # times-string would be better but currently gaiad wants nanoseconds here
@@ -99,7 +78,7 @@ function proposeConsumerAdditionProposal() {
     echo "Quick simulation: creating PSS OPT-IN consumer addition proposal from provider validator 1..."
   fi
 
-  cat > prop.json <<EOT
+  cat > files/generated/prop.json <<EOT
 {
  "messages": [
         {
@@ -159,9 +138,9 @@ EOT
 # }
 # EOT
 #   fi
-  cat prop.json
+  cat files/generated/prop.json
   
-  vagrant scp prop.json provider-chain-validator1:/home/vagrant/prop.json
+  vagrant scp files/generated/prop.json provider-chain-validator1:/home/vagrant/prop.json
 
   # Create and submit the consumer addition proposal
   echo "Submitting consumer addition proposal from provider validator 1..."
