@@ -1,0 +1,82 @@
+{
+  "tokenomics": {
+    "airdropList": [
+      {
+        "amount": 9999999,
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "intent": "AtomStakers"
+      },
+      {
+        "amount": 9999999,
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "intent": "RowanStakersLP"
+      },
+      {
+        "amount": 9999999,
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "intent": "Juno"
+      },
+      {
+        "amount": 9999999,
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "intent": "Osmo"
+      },
+      {
+        "amount": 9999999,
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "intent": "Evmos"
+      }
+    ],
+    "genesisInflation": {
+      "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+      "inflation": {
+        "communityFund": 9999999,
+        "icsStakingRewards": 9999999,
+        "lmRewards": 9999999,
+        "strategicReserve": 9999999,
+        "teamTokensVested": 9999999
+      },
+      "seedVesting": 9999999,
+      "strategicSalesVesting": 9999999
+    },
+    "params": {},
+    "timeBasedInflationList": [
+      {
+        "description": "1st Year Inflation",
+        "endBlockHeight": 6307200,
+        "inflation": {
+          "communityFund": 9999999,
+          "icsStakingRewards": 9999999,
+          "lmRewards": 9999999,
+          "strategicReserve": 9999999,
+          "teamTokensVested": 9999999
+        },
+        "startBlockHeight": 1
+      },
+      {
+        "description": "2nd Year Inflation",
+        "endBlockHeight": 12614401,
+        "inflation": {
+          "communityFund": 9999999,
+          "icsStakingRewards": 9999999,
+          "lmRewards": 9999999,
+          "strategicReserve": 9999999,
+          "teamTokensVested": 9999999
+        },
+        "startBlockHeight": 6307201
+      },
+      {
+        "description": "3rd Year Inflation",
+        "endBlockHeight": 18921602,
+        "inflation": {
+          "communityFund": 9999999,
+          "icsStakingRewards": 9999999,
+          "lmRewards": 9999999,
+          "strategicReserve": 9999999,
+          "teamTokensVested": 9999999
+        },
+        "startBlockHeight": 12614402
+      }
+    ]
+  }
+}
