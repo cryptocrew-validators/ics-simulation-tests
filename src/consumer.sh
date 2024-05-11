@@ -46,12 +46,12 @@ function prepareConsumerChain() {
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # Finalize consumer-chain genesis
-  # jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > final_genesis.json
-  jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/downloads/raw_genesis.json > files/generated/final_genesis.json
+  # jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > genesis_consumer.json
+  jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/generated/raw_genesis_consumer.json > files/generated/genesis_consumer.json
   
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp files/generated/final_genesis.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
+    vagrant scp files/generated/genesis_consumer.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
 }
 
@@ -91,27 +91,18 @@ function waitForConsumerChain() {
 function manipulateConsumerGenesis() {
   echo "Manipulating consumer raw_genesis file"
 
-  if [ ! -f "files/user/genesis.json" ]; then
-    # Download and manipulate consumer genesis file
-    echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
-    wget -4 -q $CONSUMER_GENESIS_SOURCE -O files/downloads/raw_genesis.json
-  else
-    cp files/user/genesis.json files/downloads/raw_genesis.json
-    echo "Using local genesis.json file"
-  fi
-
   # Update supply to empty array to pass genesis supply check
   echo "Setting supply to []"
-  jq '.app_state.bank.supply = []' files/downloads/raw_genesis.json | sponge files/downloads/raw_genesis.json
+  jq '.app_state.bank.supply = []' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
 
   # Update chain_id to consumer-chain
   echo "Setting chain_id: consumer-chain"
-  jq --arg chainid "consumer-chain" '.chain_id = $chainid' files/downloads/raw_genesis.json | sponge files/downloads/raw_genesis.json
+  jq --arg chainid "consumer-chain" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
   
   # Update genesis_time to 1min in the past
   GENESIS_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))"')
   echo "Setting genesis time: $GENESIS_TIME" 
-  jq --arg time "$GENESIS_TIME" '.genesis_time = $time' files/downloads/raw_genesis.json | sponge files/downloads/raw_genesis.json
+  jq --arg time "$GENESIS_TIME" '.genesis_time = $time' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
 
   # Add relayer account and balances
   echo "Adding relayer account & balances"
@@ -142,7 +133,7 @@ EOT
 
   cat files/generated/relayer_account_consumer.json
   cat files/generated/relayer_balance_consumer.json
-  jq '.app_state.auth.accounts += [input]' files/downloads/raw_genesis.json files/generated/relayer_account_consumer.json > files/generated/raw_genesis_modified.json && mv files/generated/raw_genesis_modified.json files/downloads/raw_genesis.json
-  jq '.app_state.bank.balances += [input]' files/downloads/raw_genesis.json files/generated/relayer_balance_consumer.json > files/generated/raw_genesis_modified.json && mv files/generated/raw_genesis_modified.json files/downloads/raw_genesis.json
+  jq '.app_state.auth.accounts += [input]' files/generated/raw_genesis_consumer.json files/generated/relayer_account_consumer.json > files/generated/raw_genesis_modified.json && mv files/generated/raw_genesis_modified.json files/generated/raw_genesis_consumer.json
+  jq '.app_state.bank.balances += [input]' files/generated/raw_genesis_consumer.json files/generated/relayer_balance_consumer.json > files/generated/raw_genesis_modified.json && mv files/generated/raw_genesis_modified.json files/generated/raw_genesis_consumer.json
   rm files/generated/relayer_account_consumer.json files/generated/relayer_balance_consumer.json
 }

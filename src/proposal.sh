@@ -1,57 +1,88 @@
 set -e
 
+function prepareConsumerRawGenesis() {
+  echo "Preparing Consumer genesis"
+  if [ ! -f "files/user/genesis.json" ]; then
+    # Download and manipulate consumer genesis file
+    if [ ! -z "$CONSUMER_GENESIS_SOURCE" ]; then
+      echo "Downloading consumer genesis file from $CONSUMER_GENESIS_SOURCE"
+      wget -4 -q $CONSUMER_GENESIS_SOURCE -O /files/generated/raw_genesis_consumer.json
+    else
+      echo "No consumer genesis source provided. Provide either /files/user/raw_genesis.json or CONSUMER_GENESIS_SOURCE in env!"
+      exit 1
+    fi
+  else
+    echo "Using provided genesis.json file at /files/user/genesis.json"
+    cp files/user/genesis.json /files/generated/raw_genesis_consumer.json
+  fi
+}
+
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
-  PROP_TITLE="Create the Consumer chain"
-  PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
-  PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
-  PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-  PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
-  PROP_SOFT_OPT_OUT_THRESHOLD=0.05
-  if [ -z "$ORIG_PROP_NR" ]; then
+  # PROP_TITLE="Create the Consumer chain"
+  # PROP_DESCRIPTION='This is the proposal to create the consumer chain \"consumer-chain\".'
+  
+  # PROP_CONSUMER_BINARY_SHA256=
+  # PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum raw_genesis.json | awk '{ print $1 }')
+  # PROP_SOFT_OPT_OUT_THRESHOLD=0.05
+  # if [ -z "$ORIG_PROP_NR" ]; then
     
     # Prepare proposal file
-    PROP_CONSUMER_REDISTRIBUTION_FRACTION=0.75
-    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=150
-    PROP_HISTORICAL_ENTRIES=10
+    # PROP_CONSUMER_REDISTRIBUTION_FRACTION=0.75
+    # PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=150
+    # PROP_HISTORICAL_ENTRIES=10
 
     # times-string would be better but currently gaiad wants nanoseconds here
-    PROP_CCV_TIMEOUT_PERIOD=2419200000000000
-    PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
-    PROP_UNBONDING_PERIOD=1728000000000000
-  else
+    # PROP_CCV_TIMEOUT_PERIOD=2419200000000000
+    # PROP_TRANSFER_TIMEOUT_PERIOD=600000000000
+    # PROP_UNBONDING_PERIOD=1728000000000000
+  # else
+
+    prepareConsumerRawGenesis
 
     # use default values for proposal
     if [ -z "$CONSUMER_ICS_TYPE" ]; then
       CONSUMER_ICS_TYPE="rs"
     fi
+
+    PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
     PROP_TITLE="consumer-addition-proposal"
     PROP_DESCRIPTION="launch the $CONSUMER_ICS_TYPE consumer chain"
+    PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
+    PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum /files/generated/raw_genesis_consumer.json | awk '{ print $1 }')
+    PROP_CONSUMER_REDISTRIBUTION_FRACTION="0.75"
+    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION="100"
+    PROP_HISTORICAL_ENTRIES="10000"
+    UNBONDING_PERIOD_SECONDS="10800s"
+    CCV_TIMEOUT_PERIOD_SECONDS="2419200s"
+    TRANSFER_TIMEOUT_PERIOD_SECONDS="1800s"
 
     # Or: download original proposal and constuct proposal file
-    if [ -z "$ORIG_PROP_SOURCE" ]; then
+    if [ ! -z "$ORIG_PROP_SOURCE" ]; then
       echo "Downloading ORIGINAL consumer addition proposal..."
       curl -s $ORIG_PROP_SOURCE > original_prop.json
       PROP_TITLE=$(jq -r '.proposal.content.title' original_prop.json)
       PROP_DESCRIPTION=$(jq -r '.proposal.content.description' original_prop.json)
+
+      PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json) 
+      PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json)
+      PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json)
+      PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json )
+      PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json)
+
+      # Extract durations in seconds
+      UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period' original_prop.json)
+      CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period' original_prop.json)
+      TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period' original_prop.json)
     fi
 
-    PROP_CONSUMER_BINARY_SHA256=$(jq -r '.proposal.content.binary_hash' original_prop.json || echo "default-binary-hash-value") 
-    PROP_CONSUMER_RAW_GENESIS_SHA256=$(jq -r '.proposal.content.genesis_hash' original_prop.json || echo "default-genesis-hash-value")
-    PROP_CONSUMER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.consumer_redistribution_fraction' original_prop.json || echo "0.75")
-    PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION=$(jq -r '.proposal.content.blocks_per_distribution_transmission' original_prop.json || echo "100")
-    PROP_HISTORICAL_ENTRIES=$(jq -r '.proposal.content.historical_entries' original_prop.json || echo "10000")
-
-    # Extract durations in seconds
-    UNBONDING_PERIOD_SECONDS=$(jq -r '.proposal.content.unbonding_period | rtrimstr("s")' original_prop.json || echo "10800")
-    CCV_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.ccv_timeout_period | rtrimstr("s")' original_prop.json || echo "2419200")
-    TRANSFER_TIMEOUT_PERIOD_SECONDS=$(jq -r '.proposal.content.transfer_timeout_period | rtrimstr("s")' original_prop.json || echo "1800")
-
     # times-string would be better but currently gaiad wants nanoseconds here
-    PROP_UNBONDING_PERIOD=$((UNBONDING_PERIOD_SECONDS * 1000000000))
-    PROP_CCV_TIMEOUT_PERIOD=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
-    PROP_TRANSFER_TIMEOUT_PERIOD=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
-  fi
+    # SDK47: Error: can't unmarshal Any nested proto *v1.MsgExecLegacyContent: can't unmarshal Any nested proto *types.ConsumerAdditionProposal: 
+    # bad Duration: time: missing unit in duration "1728000000000000"
+    # PROP_UNBONDING_PERIOD=$((UNBONDING_PERIOD_SECONDS * 1000000000))
+    # PROP_CCV_TIMEOUT_PERIOD=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
+    # PROP_TRANSFER_TIMEOUT_PERIOD=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
+  # fi
   if [[ "$CONSUMER_ICS_TYPE" == "rs" ]]; then
     echo "CONSUMER_ICS_TYPE set to RS -> defaulting to PSS TOP-95 chain"
     CONSUMER_ICS_TYPE=pss
@@ -67,6 +98,7 @@ function proposeConsumerAdditionProposal() {
   if [[ "$CONSUMER_TOPN_VALUE" == 0 ]]; then
     echo "Quick simulation: creating PSS OPT-IN consumer addition proposal from provider validator 1..."
   fi
+
   cat > prop.json <<EOT
 {
  "messages": [
