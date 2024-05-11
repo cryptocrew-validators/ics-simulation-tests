@@ -2,3 +2,8 @@
 .first_run
 .vagrant/*
 result.log
+
+files/downloads/*
+files/generated/*
+files/logs/*
+files/user/*
