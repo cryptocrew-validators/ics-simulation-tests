@@ -70,6 +70,10 @@ function prepareConsumerChain() {
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' files/generated/raw_genesis_consumer.json files/generated/ccv.json > files/generated/genesis_consumer.json
   jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
+  # needed for elys tokenomics module
+  ELYS_TOKENOMICS_STATE=$(cat files/user/elys_tokenomics_state.json | jq -r '.tokenomics')
+  jq ".app_state.tokenomics = $ELYS_TOKENOMICS_STATE" files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
+
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp files/generated/genesis_consumer.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
