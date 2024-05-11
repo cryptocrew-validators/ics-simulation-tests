@@ -49,13 +49,13 @@ function startProviderChain() {
     # Add validator accounts & relayer account
     for i in $(seq 2 $NUM_VALIDATORS); do
       echo ${VAL_ACCOUNTS[i-2]}
-      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
+      vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis add-genesis-account ${VAL_ACCOUNTS[i-2]} 1500000000000icsstake --keyring-backend test
     done
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis add-genesis-account cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7 1500000000000icsstake --keyring-backend test
 
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME collect-gentxs
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis collect-gentxs
   fi
 
   # Distribute provider genesis
@@ -90,7 +90,9 @@ function waitForProviderChain() {
 
   if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
     echo ">>> PROVIDER CHAIN launch failed. Max iterations reached."
+    echo "exiting"
     TEST_PROVIDER_LAUNCH="false"
+    exit 1
   else
     echo ">>> PROVIDER CHAIN successfully launched. Latest block height: $PROVIDER_LATEST_HEIGHT"
     TEST_PROVIDER_LAUNCH="true"
