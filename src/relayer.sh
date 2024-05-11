@@ -4,7 +4,7 @@ set -e
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|account_prefix = 'consumer'|account_prefix = '$CONSUMER_BECH32_PREFIX'|g\" /home/vagrant/.hermes/config.toml"
-  vagrant ssh provider-chain-validator1 -- "sed -i \"s|denom = 'ustake'|denom = '$CONSUMER_BECH32_PREFIX'|g\" /home/vagrant/.hermes/config.toml"
+  vagrant ssh provider-chain-validator1 -- "sed -i \"s|denom = 'ustake'|denom = '$CONSUMER_FEE_DENOM'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "echo $RELAYER_MNEMONIC > .mn && $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true && $HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn || true"
 }
 
