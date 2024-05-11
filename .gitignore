@@ -6,4 +6,8 @@ result.log
 files/downloads/*
 files/generated/*
 files/logs/*
-files/user/*
+
+!files/downloads/.first_commit
+!files/generated/.first_commit
+!files/logs/.first_commit
+!files/user/.first_commit
