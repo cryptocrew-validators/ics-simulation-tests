@@ -46,11 +46,10 @@ function prepareConsumerChain() {
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # Finalize consumer-chain genesis
+  echo "Merging CCV state into raw_genesis state, enabling ccvconsumer.params"
   # jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' raw_genesis.json ccv.json > genesis_consumer.json
   jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/generated/raw_genesis_consumer.json > files/generated/genesis_consumer.json
-  
-  # jq '.epochs.monitoringp.consumerChainID = "consumer-chain"' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
-
+  jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
@@ -112,7 +111,7 @@ function manipulateConsumerGenesis() {
   prepareConsumerRawGenesis
 
   echo "Manipulating consumer raw_genesis file"
-  cat files/generated/raw_genesis_consumer.json
+  # cat files/generated/raw_genesis_consumer.json
 
   # Update supply to empty array to pass genesis supply check
   echo "Setting supply to []"
