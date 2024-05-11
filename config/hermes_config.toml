@@ -49,7 +49,7 @@ max_tx_size = 179999
 clock_drift = '15s'
 max_block_time = '10s'
 trusting_period = '80m'
-trust_threshold = { numerator = '1', denominator = '3' }
+trust_threshold = { numerator = '2', denominator = '3' }
 
 
 [[chains]]
@@ -71,5 +71,5 @@ max_tx_size = 179999
 clock_drift = '15s'
 max_block_time = '10s'
 trusting_period = '80m'
-trust_threshold = { numerator = '1', denominator = '3' }
+trust_threshold = { numerator = '2', denominator = '3' }
 ccv_consumer_chain = true
