@@ -21,9 +21,27 @@ function waitForSpawnTime() {
   echo "Spawn time reached!"
 }
 
+function configPeersConsumer() {
+  echo "Configuring Consumer chain peers"
+  PERSISTENT_PEERS_CONSUMER=""
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.33.2${i}:26656"
+    PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
+  done
+  PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER:1}"
+  echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
+
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sed -i \"s/^persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_CONSUMER\\\"/g\" $CONSUMER_HOME/config/config.toml'"
+    vagrant ssh consumer-chain-validator${i} -- "bash -c 'sed -i \"s/^addr_book_strict = .*/addr_book_strict = false/g\" $CONSUMER_HOME/config/config.toml'" 
+  done
+}
+
 # Prepare consumer chain: copy private validator keys and finalizing genesis
 function prepareConsumerChain() {
   echo "Preparing consumer chain..."
+
+  configPeersConsumer
 
   # Check if we also need to include provider-chain-validat1 key, or if a KeyAssignment test has been run before (key has already been copied in this case)
   TMP_DIR_EXISTS=$(vagrant ssh provider-chain-validator1 -- "[ -d /home/vagrant/tmp ] && echo 'tmp directory exists' || echo 'tmp directory does not exist'")

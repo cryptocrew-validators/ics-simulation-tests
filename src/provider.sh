@@ -3,17 +3,12 @@ set -e
 # Get peerlists for both provider and consumer chain, edit config
 function configPeers() {
   PERSISTENT_PEERS_PROVIDER=""
-  PERSISTENT_PEERS_CONSUMER=""
   for i in $(seq 1 $NUM_VALIDATORS); do
     NODE_ID_PROVIDER="$(vagrant ssh provider-chain-validator${i} -- $PROVIDER_APP --home $PROVIDER_HOME tendermint show-node-id)@192.168.33.1${i}:26656"
-    NODE_ID_CONSUMER="$(vagrant ssh consumer-chain-validator${i} -- $CONSUMER_APP --home $CONSUMER_HOME tendermint show-node-id)@192.168.33.2${i}:26656"
     PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER},${NODE_ID_PROVIDER}"
-    PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER},${NODE_ID_CONSUMER}"
   done
   PERSISTENT_PEERS_PROVIDER="${PERSISTENT_PEERS_PROVIDER:1}"
-  PERSISTENT_PEERS_CONSUMER="${PERSISTENT_PEERS_CONSUMER:1}"
   echo '[provider-chain] persistent_peers = "'$PERSISTENT_PEERS_PROVIDER'"'
-  echo '[consumer-chain] persistent_peers = "'$PERSISTENT_PEERS_CONSUMER'"'
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh provider-chain-validator${i} -- "bash -c 'sed -i \"s/^persistent_peers = .*/persistent_peers = \\\"$PERSISTENT_PEERS_PROVIDER\\\"/g\" $PROVIDER_HOME/config/config.toml'"
