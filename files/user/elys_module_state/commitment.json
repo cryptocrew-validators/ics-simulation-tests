@@ -1,0 +1,49 @@
+{
+  "commitment": {
+    "params": {
+      "vesting_infos": [
+        {
+          "base_denom": "ueden",
+          "vesting_denom": "uelys",
+          "num_blocks": "1555200",
+          "vest_now_factor": "90",
+          "num_max_vestings": "10000"
+        }
+      ],
+      "total_committed": [
+        {
+          "denom": "amm/pool/1",
+          "amount": "1430200000000000000000"
+        },
+        {
+          "denom": "amm/pool/2",
+          "amount": "4425973628934761464322439"
+        },
+        {
+          "denom": "amm/pool/3",
+          "amount": "330107133881883025544417"
+        },
+        {
+          "denom": "amm/pool/4",
+          "amount": "1350545372996875978895276"
+        },
+        {
+          "denom": "amm/pool/5",
+          "amount": "575109959343427873616472"
+        },
+        {
+          "denom": "stablestake/share",
+          "amount": "2306394807388"
+        },
+        {
+          "denom": "ueden",
+          "amount": "397097013918"
+        },
+        {
+          "denom": "uedenb",
+          "amount": "1395779166475"
+        }
+      ]
+    }
+  }  
+}
