@@ -74,6 +74,10 @@ function prepareConsumerChain() {
   ELYS_TOKENOMICS_STATE=$(cat files/user/elys_tokenomics_state.json | jq -r '.tokenomics')
   jq ".app_state.tokenomics = $ELYS_TOKENOMICS_STATE" files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
+  ELYS_ASSETPROFILE_STATE=$(cat files/user/elys_assetprofile_state.json | jq -r '.assetprofile')
+  jq ".app_state.assetprofile = $ELYS_ASSETPROFILE_STATE" files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
+
+
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp files/generated/genesis_consumer.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
