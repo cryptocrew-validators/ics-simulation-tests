@@ -49,7 +49,7 @@
         "base_denom": "uusdc",
         "commit_enabled": true,
         "decimals": "6",
-        "denom": "",
+        "denom": "uusdc",
         "display_name": "USDC",
         "display_symbol": "uUSDC",
         "external_symbol": "uUSDC",
