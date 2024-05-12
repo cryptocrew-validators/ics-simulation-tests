@@ -50,7 +50,7 @@ function startProviderChain() {
 
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on provider-chain-validator1"
-    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home genesis collect-gentxs || true
+    vagrant ssh provider-chain-validator1 -- $PROVIDER_APP --home $PROVIDER_HOME genesis collect-gentxs || true
   # fi
 
   # Set blocks_per_epoch to 5 for testing purposes
