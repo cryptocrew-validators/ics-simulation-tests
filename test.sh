@@ -159,21 +159,19 @@ function main() {
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  #call_and_log jailProvider
+  call_and_log jailProvider
 
   #sleep 30 # sleeps to offer more time to watch output, can be removed
 
-  call_and_log validateAssignedKey "1-prelaunch-newkey"
-  #call_and_log testKeyAssignment "2-postlaunch-newkey"
-  #call_and_log validateAssignedKey "2-postlaunch-newkey"
+  if $KEY_ASSIGNMENT ; then
+    call_and_log validateAssignedKey "1-prelaunch-newkey"
+    
+    call_and_log testKeyAssignment "2-postlaunch-newkey"
+    call_and_log validateAssignedKey "2-postlaunch-newkey"
 
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
-
-  #call_and_log testKeyAssignment "3-postlaunch-samekey"
-  
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
-  
-  #call_and_log validateAssignedKey "3-postlaunch-samekey"
+    call_and_log testKeyAssignment "3-postlaunch-samekey"
+    call_and_log validateAssignedKey "3-postlaunch-samekey"
+  fi
 
   call_and_log getLogs
   #call_and_log cleanUp
