@@ -71,17 +71,17 @@ function prepareConsumerChain() {
   jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
 
-  # import elys module state
-  echo "Importing Elys testnet module state"
-  MODULE_DIR="files/user/elys_module_state"
-  TARGET_FILE="files/generated/genesis_consumer.json"
-  for module_file in $MODULE_DIR/*.json; do
-    module_name=$(basename "$module_file" .json)
-    module_state=$(cat "$module_file" | jq -r --arg MODULE "$module_name" '.[$MODULE]')
-    jq --argjson state "$module_state" --arg MODULE "$module_name" '.app_state[$MODULE] = $state' "$TARGET_FILE" | sponge "$TARGET_FILE"
-    echo "-> added: $module_name"
-  done
-  echo "All modules have been updated in $TARGET_FILE."
+  # # import elys module state
+  # echo "Importing Elys testnet module state"
+  # MODULE_DIR="files/user/elys_module_state"
+  # TARGET_FILE="files/generated/genesis_consumer.json"
+  # for module_file in $MODULE_DIR/*.json; do
+  #   module_name=$(basename "$module_file" .json)
+  #   module_state=$(cat "$module_file" | jq -r --arg MODULE "$module_name" '.[$MODULE]')
+  #   jq --argjson state "$module_state" --arg MODULE "$module_name" '.app_state[$MODULE] = $state' "$TARGET_FILE" | sponge "$TARGET_FILE"
+  #   echo "-> added: $module_name"
+  # done
+  # echo "All modules have been updated in $TARGET_FILE."
 
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
@@ -160,8 +160,8 @@ function manipulateConsumerGenesis() {
 
   # Add relayer account and balances
   echo "Adding relayer account & balances"
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP keys delete relayer --keyring-backend test -y > /dev/null || true"
-  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP keys add relayer --recover --keyring-backend test --output json")
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME keys delete relayer --keyring-backend test -y > /dev/null || true"
+  CONSUMER_RELAYER_ACCOUNT_ADDRESS=$(vagrant ssh consumer-chain-validator1 -- "echo "$RELAYER_MNEMONIC" | $CONSUMER_APP --home $CONSUMER_HOME keys add relayer --recover --keyring-backend test --output json")
   
   cat > files/generated/relayer_account_consumer.json <<EOT
 {

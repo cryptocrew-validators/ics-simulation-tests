@@ -77,7 +77,7 @@ function initNode() {
     # needed for lorenzo
     $DAEMON_NAME testnet init-files \
     --v                     1 \
-    --output-dir            $HOME/.lorenzo \
+    --output-dir            /home/vagrant/.lorenzo \
     --starting-ip-address   192.168.10.2 \
     --keyring-backend       test \
     --chain-id              consumer-chain \
