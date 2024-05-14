@@ -63,18 +63,10 @@ function prepareConsumerChain() {
   CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
-  # Finalize consumer-chain genesis
-  echo "Merging CCV state into raw_genesis state, enabling ccvconsumer.params"
-  # jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/generated/raw_genesis_consumer.json > files/generated/genesis_consumer.json
-  
-  jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' files/generated/raw_genesis_consumer.json files/generated/ccv.json > files/generated/genesis_consumer.json
-  jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
-
-
-  # import elys module state
+  # import module state
   echo "Importing Elys testnet module state"
-  MODULE_DIR="files/user/elys_module_state"
-  TARGET_FILE="files/generated/genesis_consumer.json"
+  MODULE_DIR="files/user/module_state"
+  TARGET_FILE="files/generated/raw_genesis_consumer.json"
   for module_file in $MODULE_DIR/*.json; do
     module_name=$(basename "$module_file" .json)
     module_state=$(cat "$module_file" | jq -r --arg MODULE "$module_name" '.[$MODULE]')
@@ -82,6 +74,13 @@ function prepareConsumerChain() {
     echo "-> added: $module_name"
   done
   echo "All modules have been updated in $TARGET_FILE."
+
+  # Finalize consumer-chain genesis
+  echo "Merging CCV state into raw_genesis state, enabling ccvconsumer.params"
+  # jq --slurpfile new_ccvconsumer <(cat files/generated/ccv.json) '.app_state.ccvconsumer.params as $params | .app_state.ccvconsumer = ($new_ccvconsumer[0] | .params = $params)' files/generated/raw_genesis_consumer.json > files/generated/genesis_consumer.json
+  
+  jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' files/generated/raw_genesis_consumer.json files/generated/ccv.json > files/generated/genesis_consumer.json
+  jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
