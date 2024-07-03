@@ -60,7 +60,7 @@ function prepareConsumerChain() {
   
   # Query CCV consumer state on provider-chain-validator1
   echo "Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json..."
-  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
+  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis $CONSUMER_CHAIN_ID -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # Finalize consumer-chain genesis
@@ -153,9 +153,9 @@ function manipulateConsumerGenesis() {
   echo "Setting supply to []"
   jq '.app_state.bank.supply = []' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
 
-  # Update chain_id to consumer-chain
-  echo "Setting chain_id: consumer-chain"
-  jq --arg chainid "consumer-chain" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
+  # Make sure consumer chain id is set
+  echo "Setting chain_id: $CONSUMER_CHAIN_ID"
+  jq --arg chainid "$CONSUMER_CHAIN_ID" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
   
   # Update genesis_time to 1min in the past
   GENESIS_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))"')
@@ -169,7 +169,7 @@ function manipulateConsumerGenesis() {
   
   cat > files/generated/relayer_account_consumer.json <<EOT
 {
-  "@type": "/cosmos.auth.v1beta1.BaseAccount",
+  "@type": "/ethermint.types.v1.EthAccount",
   "address": "$(echo $CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
   "pub_key": null,
   "account_number": "1",
@@ -183,7 +183,7 @@ EOT
   "coins": [
     {
       "denom": "$CONSUMER_FEE_DENOM",
-      "amount": "150000000"
+      "amount": "150000000000000000000"
     }
   ]
 }

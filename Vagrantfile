@@ -1,6 +1,7 @@
 chain_num_validators = nil
 consumer_migration = false
 consumer_migration_state_export = nil
+consumer_chain_id = nil
 cache_server = false
 vagrant_num_cpu = nil
 vagrant_memory = nil
@@ -17,6 +18,8 @@ File.foreach('.env') do |line|
     vagrant_num_cpu = value.to_i
   elsif key == 'VAGRANT_MEMORY'
     vagrant_memory = value.to_i
+  elsif key == 'CONSUMER_CHAIN_ID'
+    consumer_chain_id = value.downcase
   end
 end
 
@@ -76,7 +79,7 @@ Vagrant.configure("2") do |config|
         v.cpus = vagrant_num_cpu || 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
-      node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
+      node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => consumer_chain_id}
       
       if cache_server
         node.vm.provision "shell", inline: <<-SHELL

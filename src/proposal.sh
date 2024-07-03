@@ -87,7 +87,7 @@ function proposeConsumerAdditionProposal() {
                 "@type": "/interchain_security.ccv.provider.v1.ConsumerAdditionProposal",
                 "title": "$PROP_TITLE",
                 "description": "$PROP_DESCRIPTION",
-                "chain_id": "consumer-chain",
+                "chain_id": "$CONSUMER_CHAIN_ID",
                 "initial_height": {
                     "revision_number": "0",
                     "revision_height": "1"

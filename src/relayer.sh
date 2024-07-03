@@ -6,7 +6,7 @@ function prepareRelayer() {
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|account_prefix = 'consumer'|account_prefix = '$CONSUMER_BECH32_PREFIX'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|denom = 'ustake'|denom = '$CONSUMER_FEE_DENOM'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "echo $RELAYER_MNEMONIC > .mn && $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true"
-  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG keys add --chain consumer-chain --mnemonic-file .mn --hd-path \"m/44'/60'/0'/0/0\" || true"
+  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG keys add --chain $CONSUMER_CHAIN_ID --mnemonic-file .mn --hd-path \"m/44'/60'/0'/0/0\" || true"
 }
 
 # Create the cross-chain-validation and transfer IBC-paths
@@ -26,7 +26,7 @@ function startRelayer() {
 
 function testConnection() {
   echo "Querying IBC connection..."
-  CONNECTION=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query connections --chain consumer-chain")
+  CONNECTION=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query connections --chain $CONSUMER_CHAIN_ID")
   if echo "$CONNECTION" | grep -q "SUCCESS" && echo "$CONNECTION" | grep -q "connection-0"; then
     echo ">>> IBC Connection was successful."
     TEST_IBC_CONNECTION="true"
@@ -38,7 +38,7 @@ function testConnection() {
 
 function testChannel() {
   echo "Querying IBC channel..."
-  CHANNEL=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query channels --chain consumer-chain")
+  CHANNEL=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN query channels --chain $CONSUMER_CHAIN_ID")
   if echo "$CHANNEL" | grep -q "SUCCESS" && echo "$CHANNEL" | grep -q "channel-0"; then
     echo ">>> IBC Channels were successfully created."
     TEST_IBC_CHANNEL="true"
