@@ -2,6 +2,8 @@ chain_num_validators = nil
 consumer_migration = false
 consumer_migration_state_export = nil
 cache_server = false
+vagrant_num_cpu = nil
+vagrant_memory = nil
 
 File.foreach('.env') do |line|
   next if line.strip.start_with?('#')
@@ -11,6 +13,10 @@ File.foreach('.env') do |line|
     chain_num_validators = value.to_i
   elsif key == 'CACHE_SERVER'
     cache_server = value.downcase == 'true'
+  elsif key == 'VAGRANT_NUM_CPU'
+    vagrant_num_cpu = value.to_i
+  elsif key == 'VAGRANT_MEMORY'
+    vagrant_memory = value.to_i
   end
 end
 
@@ -31,14 +37,14 @@ Vagrant.configure("2") do |config|
       node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.1#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 4096
-        v.cpus = 3
+        v.memory = vagrant_memory || 2048
+        v.cpus = vagrant_num_cpu || 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
 
       if cache_server
-        config.vm.provision "shell", inline: <<-SHELL
+        node.vm.provision "shell", inline: <<-SHELL
           echo 'Acquire::http::Proxy "http://192.168.33.1:3128";' | sudo tee /etc/apt/apt.conf.d/01proxy
           echo 'export http_proxy="http://192.168.33.1:3128"' | sudo tee -a /etc/environment
           echo 'export https_proxy="http://192.168.33.1:3128"' | sudo tee -a /etc/environment
@@ -63,17 +69,17 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--audio", "none"]
     end
     config.vm.define "consumer-chain-validator#{i}" do |node|
-      node.vm.box = "ubuntu/jammy64" #ubuntu/focal64
+      node.vm.box = "ubuntu/jammy64" # ubuntu/focal64
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
-        v.memory = 2048
-        v.cpus = 3
+        v.memory = vagrant_memory || 2048
+        v.cpus = vagrant_num_cpu || 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
       
       if cache_server
-        config.vm.provision "shell", inline: <<-SHELL
+        node.vm.provision "shell", inline: <<-SHELL
           echo 'Acquire::http::Proxy "http://192.168.33.1:3128";' | sudo tee /etc/apt/apt.conf.d/01proxy
           echo 'export http_proxy="http://192.168.33.1:3128"' | sudo tee -a /etc/environment
           echo 'export https_proxy="http://192.168.33.1:3128"' | sudo tee -a /etc/environment
