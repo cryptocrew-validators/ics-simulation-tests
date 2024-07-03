@@ -71,19 +71,7 @@ function installNode() {
 
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
-  if [ "$CHAIN_ID" == "provider-chain" ]; then
-    $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
-  else
-    # needed for lorenzo
-    $DAEMON_NAME testnet init-files \
-    --v                     1 \
-    --output-dir            /home/vagrant/.lorenzo \
-    --starting-ip-address   192.168.10.2 \
-    --keyring-backend       test \
-    --chain-id              consumer-chain \
-    --btc-network           testnet \
-    --base-btc-header       '{"header": "0000202052d6336f639d03ec6f27638fd34e93d5ba4a971463a8142d0a00000000000000d1cbfdb66dd4131b77114812896e9e9f579e97afeea215fcf7563d77cc89e1103928f865434e2c193514ebdc","hash": "0000000000000023878a8e2ea4ab9d93a5cf7fb07d417dc8a899b9acb33e045f","height": "2582496","work": "96937883"}'
-  fi
+  $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
 }
 
 function manipulateGenesis() {
