@@ -16,11 +16,12 @@ function delegate() {
     MAX_ITERATIONS=30
     ITERATION=0
 
-    while [[ $ITERATION < $MAX_ITERATIONS ]] && [[ $VOTING_POWER_POST <= $VOTING_POWER_PRE ]]; do
-        VOTING_POWER_POST=$(checkVotingPower "consumer-chain-validator1")
-        sleep 2
-        ITERATION=$((ITERATION+1))
-    done
+    while [[ $ITERATION -lt $MAX_ITERATIONS ]] && [[ $VOTING_POWER_POST -le $VOTING_POWER_PRE ]]; do
+    VOTING_POWER_POST=$(checkVotingPower "consumer-chain-validator1")
+    sleep 2
+    ITERATION=$((ITERATION + 1))
+done
+
 
     if [[ $ITERATION == $MAX_ITERATIONS ]]; then
         echo ">>> Delegation failed, could not confirm Voting Power update on consumer chain after 60 seconds."
