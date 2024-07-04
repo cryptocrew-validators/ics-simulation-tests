@@ -12,8 +12,8 @@ function prepareRelayer() {
 # Create the cross-chain-validation and transfer IBC-paths
 function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
-  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create connection --a-chain consumer-chain --a-client 07-tendermint-0 --b-client 07-tendermint-0"
-  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create channel --a-chain consumer-chain --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
+  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create connection --a-chain $CONSUMER_CHAIN_ID --a-client 07-tendermint-0 --b-client 07-tendermint-0"
+  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create channel --a-chain $CONSUMER_CHAIN_ID --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
 }
 
 # Start IBC Relayer

@@ -53,17 +53,17 @@ trust_threshold = { numerator = '2', denominator = '3' }
 
 # ethermint consumer chain
 [[chains]]
-id = 'consumer-chain'
+id = 'evmos_9000-1'
 rpc_addr = 'http://192.168.33.21:26657'
 grpc_addr = 'http://192.168.33.21:9090'
 event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
-account_prefix = 'consumer'
+account_prefix = 'evmos'
 key_name = 'default'
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'ustake' }
+gas_price = { price = 0.025, denom = 'aevmos' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999

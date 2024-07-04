@@ -17,16 +17,10 @@ function proposeConsumerAdditionProposal() {
 
     # times-string would be better but currently gaiad wants nanoseconds here
 
-  # else
-
-    # use default values for proposal
-    if [ -z "$CONSUMER_ICS_TYPE" ]; then
-      CONSUMER_ICS_TYPE="rs"
-    fi
 
     PROP_SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
     PROP_TITLE="consumer-addition-proposal"
-    PROP_DESCRIPTION="launch the $CONSUMER_ICS_TYPE consumer chain"
+    PROP_DESCRIPTION="launch the consumer chain"
     PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
     PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum files/generated/raw_genesis_consumer.json | awk '{ print $1 }')
     PROP_CONSUMER_REDISTRIBUTION_FRACTION="0.75"
@@ -62,11 +56,6 @@ function proposeConsumerAdditionProposal() {
     # PROP_CCV_TIMEOUT_PERIOD=$((CCV_TIMEOUT_PERIOD_SECONDS * 1000000000))
     # PROP_TRANSFER_TIMEOUT_PERIOD=$((TRANSFER_TIMEOUT_PERIOD_SECONDS * 1000000000))
   # fi
-  if [[ "$CONSUMER_ICS_TYPE" == "rs" ]]; then
-    echo "CONSUMER_ICS_TYPE set to RS -> defaulting to PSS TOP-95 chain"
-    CONSUMER_ICS_TYPE=pss
-    CONSUMER_TOPN_VALUE=95
-  fi
   if [ -z "$CONSUMER_TOPN_VALUE" ]; then
     echo "CONSUMER_TOPN_VALUE not set for top-n PSS consumer chain, defaulting to 80"
     CONSUMER_TOPN_VALUE=80

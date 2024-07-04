@@ -83,6 +83,21 @@ function manipulateGenesis() {
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+  elif [[ "$CHAIN_ID" == "$CONSUMER_CHAIN_ID" && "$CONSUMER_MIGRATION" == "true" ]]; then
+    if [ -f /home/vagrant/migration_state_export.json ] ; then
+      echo "found state export for sovereign chain, creating genesis..."
+      rm $DAEMON_HOME/config/genesis.json
+      jq '.app_state.staking.validators = []' migration_state_export.json > $DAEMON_HOME/config/genesis.json
+    else
+      jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      jq '.app_state["gov"]["params"]["min_deposit"][0]["denom"]="aevmos"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+	    jq '.app_state["evm"]["params"]["evm_denom"]="aevmos"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+	    jq '.app_state["inflation"]["params"]["mint_denom"]="aevmos"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      jq '.app_state["staking"]["params"]["bond_denom"]="aevmos"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+      #jq '.app_state.stakeibc.params.safety_max_slash_percent = "0"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    fi
   fi
 }
 
@@ -91,6 +106,11 @@ function genTx() {
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME genesis add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
     $DAEMON_NAME --home $DAEMON_HOME genesis gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
+  fi
+  if [[ "$CHAIN_ID" == "$CONSUMER_CHAIN_ID" && "$CONSUMER_MIGRATION" == "true" ]]; then
+    $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
+    $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+    $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 924644876288"$CONSUMER_FEE_DENOM" --chain-id "$CHAIN_ID" --keyring-backend test
   fi
 }
 

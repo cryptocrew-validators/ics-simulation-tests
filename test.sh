@@ -55,6 +55,7 @@ function sourceDependencies() {
   . ./src/keyAssignment.sh
   . ./src/relayer.sh
   . ./src/consumer.sh 
+  . ./src/migrate.sh
   . ./src/cleanup.sh
   . ./src/additional.sh
 }
@@ -69,7 +70,15 @@ function showResults() {
     TESTS_FAILED=$((TESTS_FAILED+1))
   fi
   
-  if [ "$TEST_CONSUMER_LAUNCH" == "true" ]; then
+ if [ "$TEST_SOVEREIGN_LAUNCH" == "true" ]; then
+    echo "Sovereign chain launch: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  else
+    echo "Sovereign chain launch: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_CONSUMER_MIGRATION" == "true" ]; then
     echo "Consumer chain launch: OK"
     TESTS_PASSED=$((TESTS_PASSED+1))
   else
@@ -127,11 +136,11 @@ function main() {
 
   # Dependencies
   sourceDependencies
-  
+
   if $CLEAR_FILES_ON_START ; then
     clearFilesAndLogs
   fi
-
+  
   # Provision
   provisionVms
 
@@ -139,40 +148,38 @@ function main() {
   echo "For more info during the run, follow the log with:"
   echo "tail -f $(pwd)/files/logs/result.log"
 
-  # Run tests
+  #Run tests
+  call_and_log prepareRelayer
   call_and_log startProviderChain
   call_and_log waitForProviderChain
-  call_and_log manipulateConsumerGenesis
+  call_and_log startSovereignChain
+  call_and_log waitForSovereignChain
+  call_and_log proposeUpgradeSovereign
+  call_and_log voteSoftwareUpgradeProposal
+  call_and_log waitForProposalUpgrade
   call_and_log proposeConsumerAdditionProposal
   call_and_log voteConsumerAdditionProposal
-  call_and_log waitForProposal
+  call_and_log waitForProposalConsumer
   if $KEY_ASSIGNMENT ; then
-    call_and_log assignConsumerKey "1-prelaunch-newkey"
+    call_and_log assignConsumerKey "provider-newkey-1"
   fi
+  call_and_log switchBinaries
   call_and_log waitForSpawnTime
-  call_and_log prepareConsumerChain
-  call_and_log startConsumerChain
-  call_and_log waitForConsumerChain
-  call_and_log prepareRelayer
+  sleep 10 # wait for provider module to recognize that the spawn time has passed
+  call_and_log fetchCCVState
+  call_and_log applyCCVState
+  call_and_log waitForUpgradeHeight
+  call_and_log restartChain
+  sleep 5 # wait for consumer chain to finalize post-upgrade block
+  call_and_log getClientIDs
+  call_and_log distributeProviderValidatorKeys
+  call_and_log restartChain
   call_and_log createIbcPaths
   call_and_log testConnection
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  # call_and_log jailProvider
-
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
-
-  if $KEY_ASSIGNMENT ; then
-    call_and_log validateAssignedKey "1-prelaunch-newkey"
-    
-    call_and_log testKeyAssignment "2-postlaunch-newkey"
-    call_and_log validateAssignedKey "2-postlaunch-newkey"
-
-    call_and_log testKeyAssignment "3-postlaunch-samekey"
-    call_and_log validateAssignedKey "3-postlaunch-samekey"
-  fi
-
+  call_and_log jailProvider
   call_and_log getLogs
   #call_and_log cleanUp
 

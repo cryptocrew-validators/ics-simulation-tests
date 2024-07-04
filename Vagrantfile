@@ -46,6 +46,12 @@ Vagrant.configure("2") do |config|
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "provider-chain"}
 
+      config.vm.provision :shell, inline: <<-SHELL
+        sed -ie 's/^PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        sed -ie 's/^#MaxAuthTries.*/MaxAuthTries 100/g' /etc/ssh/sshd_config
+        service sshd reload
+        echo "--> Server reporting for duty."
+      SHELL
       if cache_server
         node.vm.provision "shell", inline: <<-SHELL
           echo 'Acquire::http::Proxy "http://192.168.33.1:3128";' | sudo tee /etc/apt/apt.conf.d/01proxy
@@ -81,6 +87,12 @@ Vagrant.configure("2") do |config|
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => consumer_chain_id}
       
+      config.vm.provision :shell, inline: <<-SHELL
+        sed -ie 's/^PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+        sed -ie 's/^#MaxAuthTries.*/MaxAuthTries 100/g' /etc/ssh/sshd_config
+        service sshd reload
+        echo "--> Server reporting for duty."
+      SHELL
       if cache_server
         node.vm.provision "shell", inline: <<-SHELL
           echo 'Acquire::http::Proxy "http://192.168.33.1:3128";' | sudo tee /etc/apt/apt.conf.d/01proxy
