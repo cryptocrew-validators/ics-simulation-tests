@@ -6,11 +6,11 @@ function proposeUpgradeSovereign() {
     
  cat > files/generated/upgrade_proposal.json <<EOT
 
-  {
+ {
  "messages": [
   {
    "@type": "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
-   "authority": "stride10d07y265gmmuvt4z0w9aw880jnsr700jefnezl",
+   "authority": "evmos10d07y265gmmuvt4z0w9aw880jnsr700jcrztvm",
    "plan": {
     "name": "$CONSUMER_UPGRADE_NAME",
     "time": "0001-01-01T00:00:00Z",
@@ -21,7 +21,7 @@ function proposeUpgradeSovereign() {
   }
  ],
  "metadata": "ipfs://CID",
- "deposit": "10000000$CONSUMER_FEE_DENOM",
+ "deposit": "20000000$CONSUMER_FEE_DENOM",
  "title": "$CONSUMER_UPGRADE_TITLE",
  "summary": "$CONSUMER_UPGRADE_SUMMARY"
 }
@@ -33,7 +33,7 @@ EOT
 
   # Create and submit the upgrade proposal
   echo "Submitting software upgrade proposal from consumer-chain-validator1..."
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from consumer-chain-validator1 $CONSUMER_FLAGS"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from $CONSUMER_CHAIN_ID-validator1 --keyring-backend test --gas 400000 --gas-prices 1000000000aevmos -y"
   echo "Software upgrade proposal submitted"
 }
 
@@ -45,7 +45,7 @@ function voteSoftwareUpgradeProposal() {
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     echo "Voting 'yes' from consumer-chain-validator${i}..."
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from consumer-chain-validator${i} $CONSUMER_FLAGS"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from $CONSUMER_CHAIN_ID-validator${i} --keyring-backend test --gas 400000 --gas-prices 1000000000aevmos -y"
   done
 }
 
@@ -71,7 +71,7 @@ function switchBinaries() {
 
 # Generate and distribute ccv state
 function fetchCCVState() {
-  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis consumer-chain -o json > $PROVIDER_HOME/config/ccv-state.json"
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis $CONSUMER_CHAIN_ID -o json > $PROVIDER_HOME/config/ccv-state.json"
   vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv-state.json files/generated/ccv-state.json
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp files/generated/ccv-state.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv-state.json

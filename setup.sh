@@ -69,6 +69,19 @@ function installNode() {
     cd ..
 }
 
+function buildNewBinary() {
+  cd $LOCAL_REPO
+  git checkout $CONSUMER_MIGRATION_UPDATE_VERSION
+  echo "Installing new binary"
+  make install
+
+  sudo mv /home/vagrant/go/bin/$DAEMON_NAME /usr/local/bin/newbin
+  sudo chown vagrant:vagrant /usr/local/bin/newbin
+  sudo chmod 777 /usr/local/bin/newbin
+  sudo chmod -R 777 /usr/local/bin
+  cd ..
+}
+
 function initNode() {
   NODE_MONIKER="${CHAIN_ID}-validator${NODE_INDEX}"
   $DAEMON_NAME init "$NODE_MONIKER" --chain-id "$CHAIN_ID" --home $DAEMON_HOME
@@ -158,6 +171,9 @@ main() {
   setNodeVars
   installGo
   installNode
+  if [[ "$CHAIN_ID" == "$CONSUMER_CHAIN_ID" && "$CONSUMER_MIGRATION" == "true" ]]; then
+    buildNewBinary
+  fi
   initNode
   manipulateGenesis
   genTx

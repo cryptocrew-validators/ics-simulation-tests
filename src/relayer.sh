@@ -1,12 +1,20 @@
 set -e
 
-# Preperare IBC relayer
+# Prepare IBC relayer
 function prepareRelayer() {
   echo "Preparing hermes IBC relayer..."
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|account_prefix = 'consumer'|account_prefix = '$CONSUMER_BECH32_PREFIX'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|denom = 'ustake'|denom = '$CONSUMER_FEE_DENOM'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "echo $RELAYER_MNEMONIC > .mn && $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true"
   vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG keys add --chain $CONSUMER_CHAIN_ID --mnemonic-file .mn --hd-path \"m/44'/60'/0'/0/0\" || true"
+}
+
+function getClientIDs() {
+  echo "Fetching client IDs for both chains..."
+  CLIENT_ID_PROVIDER=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider list-consumer-chains -o .json | jq -r '.chains[0].client_id' | sed 's/\x1b\[[0-9;]*m//g'")
+  CLIENT_ID_CONSUMER=$(vagrant ssh consumer-chain-validator1 -- "grep -oP 'client-id=\K[^ ]+' /var/log/consumer.log | head -n 1 | sed 's/\x1b\[[0-9;]*m//g'")
+  echo "Provider client ID: $CLIENT_ID_PROVIDER"
+  echo "Consumer client ID: $CLIENT_ID_CONSUMER"
 }
 
 # Create the cross-chain-validation and transfer IBC-paths

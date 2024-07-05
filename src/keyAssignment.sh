@@ -28,7 +28,7 @@ function assignConsumerKey() {
   echo "CONSUMER_PUBKEY: $CONSUMER_PUBKEY"
 
   echo "Assigning consumer pub key to validator on provider-chain... "
-  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tx provider assign-consensus-key consumer-chain '$CONSUMER_PUBKEY' --from provider-chain-validator1 --keyring-backend test --chain-id provider-chain --home $PROVIDER_HOME -y"
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tx provider assign-consensus-key consumer-chain '$CONSUMER_PUBKEY' --from $CHAIN_ID-validator1 --keyring-backend test --chain-id provider-chain --home $PROVIDER_HOME -y"
   echo "Key has been assigned." 
   # echo "Confirming that the key has been assigned..."
   # PROVIDER_VALCONSADDR=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP tendermint show-address --home $PROVIDER_HOME")
