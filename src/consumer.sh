@@ -92,6 +92,7 @@ function prepareConsumerChain() {
     vagrant scp files/generated/genesis_consumer.json consumer-chain-validator${i}:$CONSUMER_HOME/config/genesis.json
   done
 }
+
 # Start all virtual machines, collect gentxs & start sovereign chain
 function startSovereignChain() {
   sleep 1
@@ -114,23 +115,23 @@ function startSovereignChain() {
 
   # Check if genesis accounts have already been added, if not: collect gentxs
   GENESIS_JSON=$(vagrant ssh consumer-chain-validator1 -- cat $CONSUMER_HOME/config/genesis.json)
-  if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS_SOVEREIGN[0]}"* ]] ; then
+  # if [[ ! "$GENESIS_JSON" == *"${VAL_ACCOUNTS_SOVEREIGN[0]}"* ]] ; then
     echo "Adding genesis accounts..."
 
     # Add validator accounts & relayer account
     RELAYER_ACCOUNT_CONSUMER=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --json keys list --chain "$CONSUMER_CHAIN_ID" | grep result | jq -r '.result.default.account'")
     echo "Consumer relayer account: $RELAYER_ACCOUNT_CONSUMER"
-    vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account $RELAYER_ACCOUNT_CONSUMER 1500000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+    vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account $RELAYER_ACCOUNT_CONSUMER 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
     
     for i in $(seq 2 $NUM_VALIDATORS); do
       echo ${VAL_ACCOUNTS_SOVEREIGN[i-2]}
-      vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account ${VAL_ACCOUNTS_SOVEREIGN[i-2]} 1500000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+      vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account ${VAL_ACCOUNTS_SOVEREIGN[i-2]} 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
     done
   
     # Collect gentxs & finalize provider-chain genesis
     echo "Collecting gentxs on consumer-chain-validator1"
     vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME collect-gentxs
-  fi
+  # fi
 
   # Distribute sovereign genesis
   echo "Distributing sovereign-chain genesis file..."
@@ -143,7 +144,7 @@ function startSovereignChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/sovereign.log && sudo chmod 666 /var/log/sovereign.log"
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/consumer.log && sudo chmod 666 /var/log/consumer.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/sovereign.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090 --minimum-gas-prices 0${CONSUMER_FEE_DENOM} > /var/log/sovereign.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/sovereign.log"
   done
 }

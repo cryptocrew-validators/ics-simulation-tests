@@ -63,7 +63,7 @@ key_name = 'default'
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'aevmos' }
+gas_price = { price = 250000000, denom = 'aevmos' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
