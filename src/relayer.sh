@@ -6,7 +6,7 @@ function prepareRelayer() {
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|account_prefix = 'consumer'|account_prefix = '$CONSUMER_BECH32_PREFIX'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "sed -i \"s|denom = 'ustake'|denom = '$CONSUMER_FEE_DENOM'|g\" /home/vagrant/.hermes/config.toml"
   vagrant ssh provider-chain-validator1 -- "echo $RELAYER_MNEMONIC > .mn && $HERMES_BIN --config $HERMES_CONFIG keys add --chain provider-chain --mnemonic-file .mn || true"
-  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG keys add --chain $CONSUMER_CHAIN_ID --mnemonic-file .mn --hd-path \"m/44'/60'/0'/0/0\" || true"
+  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG keys add --chain $CONSUMER_CHAIN_ID --mnemonic-file .mn --hd-path \"m/44'/118'/0'/0/0\" || true"
 }
 
 function getClientIDs() {

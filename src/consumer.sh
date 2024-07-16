@@ -248,7 +248,7 @@ function manipulateConsumerGenesis() {
   
   cat > files/generated/relayer_account_consumer.json <<EOT
 {
-  "@type": "/ethermint.types.v1.EthAccount",
+  "@type": "/cosmos.auth.v1beta1.BaseAccount",
   "address": "$(echo $CONSUMER_RELAYER_ACCOUNT_ADDRESS | jq -r '.address')",
   "pub_key": null,
   "account_number": "1",
@@ -262,7 +262,7 @@ EOT
   "coins": [
     {
       "denom": "$CONSUMER_FEE_DENOM",
-      "amount": "150000000000000000000"
+      "amount": "1500000000000"
     }
   ]
 }
