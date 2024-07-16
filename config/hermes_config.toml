@@ -53,7 +53,7 @@ trust_threshold = { numerator = '2', denominator = '3' }
 
 # ethermint consumer chain
 [[chains]]
-id = 'evmos_9000-1'
+id = 'comdex-test3'
 rpc_addr = 'http://192.168.33.21:26657'
 grpc_addr = 'http://192.168.33.21:9090'
 event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }
@@ -63,7 +63,7 @@ key_name = 'default'
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 250000000, denom = 'aevmos' }
+gas_price = { price = 0.025, denom = 'ucmdx' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
@@ -72,7 +72,3 @@ max_block_time = '10s'
 trusting_period = '80m'
 trust_threshold = { numerator = '2', denominator = '3' }
 ccv_consumer_chain = true
-[chains.address_type]
-derivation = 'ethermint'
-[chains.address_type.proto_type]
-pk_type = '/ethermint.crypto.v1.ethsecp256k1.PubKey'
