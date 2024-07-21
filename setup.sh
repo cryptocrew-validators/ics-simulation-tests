@@ -93,7 +93,7 @@ function manipulateGenesis() {
     jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-  
+    jq '.app_state.gov.params.expedited_voting_period = "59s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   elif [[ "$CHAIN_ID" == "$CONSUMER_CHAIN_ID" && "$CONSUMER_MIGRATION" == "true" ]]; then
