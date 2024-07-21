@@ -7,7 +7,7 @@ function proposeConsumerAdditionProposal() {
   PROP_TITLE="consumer-addition-proposal"
   PROP_DESCRIPTION="launch the consumer chain"
   PROP_CONSUMER_BINARY_SHA256=$(vagrant ssh consumer-chain-validator1 -- "sha256sum /usr/local/bin/$CONSUMER_APP" | awk '{ print $1 }')
-  PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum files/generated/raw_genesis_consumer.json | awk '{ print $1 }')
+  PROP_CONSUMER_RAW_GENESIS_SHA256=$(sha256sum files/generated/genesis_sovereign.json | awk '{ print $1 }')
   PROP_CONSUMER_REDISTRIBUTION_FRACTION="0.75"
   PROP_BLOCKS_PER_REDISTRIBUTION_FRACTION="100"
   PROP_HISTORICAL_ENTRIES="10000"
