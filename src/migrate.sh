@@ -91,7 +91,7 @@ function applyCCVState() {
 function restartChain() {
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "pkill $CONSUMER_APP"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level $CHAIN_LOG_LEVEL --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090 --minimum-gas-prices 0${CONSUMER_FEE_DENOM} > /var/log/consumer.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/consumer.log"
   done
 
@@ -110,9 +110,11 @@ function restartChain() {
   if [[ $ITERATION -eq $MAX_ITERATIONS ]]; then
     echo ">>> CONSUMER CHAIN launch failed. Max iterations reached."
     TEST_CONSUMER_MIGRATION="false"
+    exit 1
   else
     echo ">>> CONSUMER CHAIN launch was successful. Latest block height: $CONSUMER_LATEST_HEIGHT"
     TEST_CONSUMER_MIGRATION="true"
+    exit 1
   fi
 }
 
