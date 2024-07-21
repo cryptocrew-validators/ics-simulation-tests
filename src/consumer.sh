@@ -121,11 +121,11 @@ function startSovereignChain() {
     # Add validator accounts & relayer account
     RELAYER_ACCOUNT_CONSUMER=$(vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --json keys list --chain "$CONSUMER_CHAIN_ID" | grep result | jq -r '.result.default.account'")
     echo "Consumer relayer account: $RELAYER_ACCOUNT_CONSUMER"
-    vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account $RELAYER_ACCOUNT_CONSUMER 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+    vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account $RELAYER_ACCOUNT_CONSUMER 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test || true
     
     for i in $(seq 2 $NUM_VALIDATORS); do
       echo ${VAL_ACCOUNTS_SOVEREIGN[i-2]}
-      vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account ${VAL_ACCOUNTS_SOVEREIGN[i-2]} 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test
+      vagrant ssh consumer-chain-validator1 -- $CONSUMER_APP --home $CONSUMER_HOME add-genesis-account ${VAL_ACCOUNTS_SOVEREIGN[i-2]} 15000000000000000000000"$CONSUMER_FEE_DENOM" --keyring-backend test || true
     done
   
     # Collect gentxs & finalize provider-chain genesis
