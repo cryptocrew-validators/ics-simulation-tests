@@ -33,7 +33,7 @@ EOT
 
   # Create and submit the upgrade proposal
   echo "Submitting software upgrade proposal from consumer-chain-validator1..."
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from $CONSUMER_CHAIN_ID-validator1 --keyring-backend test --gas 400000 --gas-prices 1000000000aevmos -y"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from $CONSUMER_CHAIN_ID-validator1 --keyring-backend test --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} -y"
   echo "Software upgrade proposal submitted"
 }
 
@@ -45,7 +45,7 @@ function voteSoftwareUpgradeProposal() {
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     echo "Voting 'yes' from consumer-chain-validator${i}..."
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from $CONSUMER_CHAIN_ID-validator${i} --keyring-backend test --gas 400000 --gas-prices 1000000000aevmos -y"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from $CONSUMER_CHAIN_ID-validator${i} --keyring-backend test --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} -y"
   done
 }
 
@@ -71,18 +71,20 @@ function switchBinaries() {
 
 # Generate and distribute ccv state
 function fetchCCVState() {
-  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis $CONSUMER_CHAIN_ID -o json > $PROVIDER_HOME/config/ccv-state.json"
-  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv-state.json files/generated/ccv-state.json
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis $CONSUMER_CHAIN_ID -o json > $PROVIDER_HOME/config/ccv.json"
+  vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv.json files/generated/ccv.json
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant scp files/generated/ccv-state.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv-state.json
+    vagrant scp files/generated/ccv.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv.json
   done
 
 }
 # Create ccv.json by adding ccv state to genesis file
 function applyCCVState() {
-  for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv-state.json > $CONSUMER_HOME/config/ccv.json"
-  done
+  echo "not applying CCV state because of migration"
+  # no need because ccv.json is used in migration
+  # for i in $(seq 1 $NUM_VALIDATORS); do
+  #   vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv.json > $CONSUMER_HOME/config/ccv.json"
+  # done
 }
 
 # Restarting the sovereign chain (now consumer chain), after ccv.json has been added and the binary has been switched
