@@ -51,14 +51,14 @@ max_block_time = '10s'
 trusting_period = '80m'
 trust_threshold = { numerator = '2', denominator = '3' }
 
-# ethermint consumer chain
+# cosmos-sdk consumer chain
 [[chains]]
 id = 'comdex-test3'
 rpc_addr = 'http://192.168.33.21:26657'
 grpc_addr = 'http://192.168.33.21:9090'
 event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
-account_prefix = 'evmos'
+account_prefix = 'comdex'
 key_name = 'default'
 store_prefix = 'ibc'
 default_gas = 1800000
