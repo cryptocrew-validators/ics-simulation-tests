@@ -71,8 +71,11 @@ function switchBinaries() {
 
 # Generate and distribute ccv state
 function fetchCCVState() {
+  echo "fetchig ccv state from provider chain and saving to $PROVIDER_HOME/config/ccv.json"
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME q provider consumer-genesis $CONSUMER_CHAIN_ID -o json > $PROVIDER_HOME/config/ccv.json"
+  echo "downloading ccv.json to files/generated/ccv.json"
   vagrant scp provider-chain-validator1:$PROVIDER_HOME/config/ccv.json files/generated/ccv.json
+  echo "distributing ccv.json to consumer-chain validators $CONSUMER_HOME/config/ccv.json"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp files/generated/ccv.json consumer-chain-validator${i}:$CONSUMER_HOME/config/ccv.json
   done
@@ -80,8 +83,13 @@ function fetchCCVState() {
 }
 # Create ccv.json by adding ccv state to genesis file
 function applyCCVState() {
-  echo "not applying CCV state because of migration"
+  # echo "not applying CCV state because of migration"
   # no need because ccv.json is used in migration
+  echo "DEBUG ccv.json on consumer validators"
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    vagrant ssh consumer-chain-validator${i} -- "echo $(cat $CONSUMER_HOME/config/ccv.json) | jq"
+  done
+  # echo "applying ccv state"
   # for i in $(seq 1 $NUM_VALIDATORS); do
   #   vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv.json > $CONSUMER_HOME/config/ccv.json"
   # done
