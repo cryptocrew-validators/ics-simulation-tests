@@ -42,7 +42,7 @@ address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'icsstake' }
+gas_price = { price = 1.1, denom = 'icsstake' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
