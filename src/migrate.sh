@@ -83,16 +83,15 @@ function fetchCCVState() {
 }
 # Create ccv.json by adding ccv state to genesis file
 function applyCCVState() {
-  # echo "not applying CCV state because of migration"
-  # no need because ccv.json is used in migration
-  echo "DEBUG ccv.json on consumer validators"
+  echo "applying ccv state"
   for i in $(seq 1 $NUM_VALIDATORS); do
-    vagrant ssh consumer-chain-validator${i} -- "echo $(cat $CONSUMER_HOME/config/ccv.json) | jq"
+  vagrant ssh consumer-chain-validator${i} -- "
+    jq -s '
+      .[0] * {app_state: {ccvconsumer: .[1]}} 
+    ' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv.json > $CONSUMER_HOME/config/temp.json && \
+    mv $CONSUMER_HOME/config/ccv.json $CONSUMER_HOME/config/ccv_raw.json && mv $CONSUMER_HOME/config/temp.json $CONSUMER_HOME/config/ccv.json
+  "
   done
-  # echo "applying ccv state"
-  # for i in $(seq 1 $NUM_VALIDATORS); do
-  #   vagrant ssh consumer-chain-validator${i} -- "jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' $CONSUMER_HOME/config/genesis.json $CONSUMER_HOME/config/ccv.json > $CONSUMER_HOME/config/ccv.json"
-  # done
 }
 
 # Restarting the sovereign chain (now consumer chain), after ccv.json has been added and the binary has been switched
