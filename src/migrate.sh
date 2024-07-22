@@ -121,7 +121,6 @@ function restartChain() {
   else
     echo ">>> CONSUMER CHAIN launch was successful. Latest block height: $CONSUMER_LATEST_HEIGHT"
     TEST_CONSUMER_MIGRATION="true"
-    exit 1
   fi
 }
 
