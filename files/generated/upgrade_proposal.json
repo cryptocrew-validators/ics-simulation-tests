@@ -1,0 +1,21 @@
+
+ {
+ "messages": [
+  {
+   "@type": "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
+   "authority": "comdex10d07y265gmmuvt4z0w9aw880jnsr700jad380y",
+   "plan": {
+    "name": "v15.0.0",
+    "time": "0001-01-01T00:00:00Z",
+    "height": "30",
+    "info": "",
+    "upgraded_client_state": null
+   }
+  }
+ ],
+ "metadata": "ipfs://CID",
+ "deposit": "20000000ucmdx",
+ "title": "v15.0.0",
+ "summary": "upgrading to consumer chain"
+}
+

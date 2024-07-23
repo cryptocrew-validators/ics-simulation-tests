@@ -1,0 +1,681 @@
+[90m9:25AM[0m [32mINF[0m [1mstarting node with ABCI Tendermint in-process[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mmultiAppConn [36mmodule=[0mproxy [36mmsg=[0m"Starting multiAppConn service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mconnection=[0mquery [36mimpl=[0mlocalClient [36mmodule=[0mabci-client [36mmsg=[0m"Starting localClient service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mconnection=[0msnapshot [36mimpl=[0mlocalClient [36mmodule=[0mabci-client [36mmsg=[0m"Starting localClient service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mconnection=[0mmempool [36mimpl=[0mlocalClient [36mmodule=[0mabci-client [36mmsg=[0m"Starting localClient service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mconnection=[0mconsensus [36mimpl=[0mlocalClient [36mmodule=[0mabci-client [36mmsg=[0m"Starting localClient service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mEventBus [36mmodule=[0mevents [36mmsg=[0m"Starting EventBus service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mPubSub [36mmodule=[0mpubsub [36mmsg=[0m"Starting PubSub service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mIndexerService [36mmodule=[0mtxindex [36mmsg=[0m"Starting IndexerService service"
+[90m9:25AM[0m [32mINF[0m [1mABCI Handshake App Info[0m [36mhash=[0m [36mheight=[0m0 [36mmodule=[0mconsensus [36mprotocol-version=[0m0 [36msoftware-version=[0mv14.0.0
+[90m9:25AM[0m [32mINF[0m [1mABCI Replay Blocks[0m [36mappHeight=[0m0 [36mmodule=[0mconsensus [36mstateHeight=[0m0 [36mstoreHeight=[0m0
+[90m9:25AM[0m [32mINF[0m [1mInitChain[0m [36mchainID=[0mcomdex-test3 [36minitialHeight=[0m1 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1minitializing blockchain state from genesis.json[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcreated new capability[0m [36mmodule=[0mibc [36mname=[0mports/icahost
+[90m9:25AM[0m [32mINF[0m [1mport binded[0m [36mmodule=[0mx/ibc/port [36mport=[0micahost
+[90m9:25AM[0m [32mINF[0m [1mclaimed capability[0m [36mcapability=[0m1 [36mmodule=[0micahost [36mname=[0mports/icahost
+[90m9:25AM[0m [32mINF[0m [1mcreated new capability[0m [36mmodule=[0mibc [36mname=[0mports/transfer
+[90m9:25AM[0m [32mINF[0m [1mport binded[0m [36mmodule=[0mx/ibc/port [36mport=[0mtransfer
+[90m9:25AM[0m [32mINF[0m [1mclaimed capability[0m [36mcapability=[0m2 [36mmodule=[0mtransfer [36mname=[0mports/transfer
+[90m9:25AM[0m [32mINF[0m [1mcreated new capability[0m [36mmodule=[0mibc [36mname=[0mports/bandoracleV1
+[90m9:25AM[0m [32mINF[0m [1mport binded[0m [36mmodule=[0mx/ibc/port [36mport=[0mbandoracleV1
+[90m9:25AM[0m [32mINF[0m [1mclaimed capability[0m [36mcapability=[0m3 [36mmodule=[0mbandoracleV1 [36mname=[0mports/bandoracleV1
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m1/12 [36mmodule=[0mx/crisis [36mname=[0mstaking/module-accounts
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m2/12 [36mmodule=[0mx/crisis [36mname=[0mstaking/nonnegative-power
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m3/12 [36mmodule=[0mx/crisis [36mname=[0mstaking/positive-delegation
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m4/12 [36mmodule=[0mx/crisis [36mname=[0mstaking/delegator-shares
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m5/12 [36mmodule=[0mx/crisis [36mname=[0mtransfer/total-escrow-per-denom
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m6/12 [36mmodule=[0mx/crisis [36mname=[0mdistribution/nonnegative-outstanding
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m7/12 [36mmodule=[0mx/crisis [36mname=[0mdistribution/can-withdraw
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m8/12 [36mmodule=[0mx/crisis [36mname=[0mdistribution/reference-count
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m9/12 [36mmodule=[0mx/crisis [36mname=[0mdistribution/module-account
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m10/12 [36mmodule=[0mx/crisis [36mname=[0mbank/nonnegative-outstanding
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m11/12 [36mmodule=[0mx/crisis [36mname=[0mbank/total-supply
+[90m9:25AM[0m [32mINF[0m [1masserting crisis invariants[0m [36minv=[0m12/12 [36mmodule=[0mx/crisis [36mname=[0mgov/module-account
+[90m9:25AM[0m [32mINF[0m [1masserted all invariants[0m [36mduration=[0m0.762567 [36mheight=[0m0 [36mmodule=[0mx/crisis
+[90m9:25AM[0m [32mINF[0m [1mcreated new capability[0m [36mmodule=[0mibc [36mname=[0mports/icqhost
+[90m9:25AM[0m [32mINF[0m [1mport binded[0m [36mmodule=[0mx/ibc/port [36mport=[0micqhost
+[90m9:25AM[0m [32mINF[0m [1mclaimed capability[0m [36mcapability=[0m4 [36mmodule=[0minterchainquery [36mname=[0mports/icqhost
+[90m9:25AM[0m [32mINF[0m [1mCompleted ABCI Handshake - CometBFT and App are synced[0m [36mappHash=[0m"���B��\x1c\x14���șo�$'�A�d��L���\x1bxR�U" [36mappHeight=[0m0 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mVersion info[0m [36mabci=[0m1.0.0 [36mblock=[0m11 [36mcommit_hash=[0m [36mmodule=[0mserver [36mp2p=[0m8 [36mtendermint_version=[0m0.37.5
+[90m9:25AM[0m [32mINF[0m [1mThis node is a validator[0m [36maddr=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53 [36mmodule=[0mconsensus [36mpubKey=[0mPubKeyEd25519{FA9FA81E3742B97BA5AF52075AEDAAE564C6D57437CC92B45476ABD19928D6C8}
+[90m9:25AM[0m [32mINF[0m [1mP2P Node ID[0m [36mID=[0mdab84058bccc3202af4b6aaa5254711465364070 [36mfile=[0m/home/vagrant/.comdex/config/node_key.json [36mmodule=[0mp2p
+[90m9:25AM[0m [32mINF[0m [1mAdding persistent peers[0m [36maddrs=[0m[] [36mmodule=[0mp2p
+[90m9:25AM[0m [32mINF[0m [1mAdding unconditional peer ids[0m [36mids=[0m[] [36mmodule=[0mp2p
+[90m9:25AM[0m [32mINF[0m [1mAdd our address to book[0m [36maddr=[0mdab84058bccc3202af4b6aaa5254711465364070@0.0.0.0:26656 [36mbook=[0m/home/vagrant/.comdex/config/addrbook.json [36mmodule=[0mp2p
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mNode [36mmodule=[0mserver [36mmsg=[0m"Starting Node service"
+[90m9:25AM[0m [32mINF[0m [1mStarting pprof server[0m [36mladdr=[0mlocalhost:6060 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0m"P2P Switch" [36mmodule=[0mp2p [36mmsg=[0m"Starting P2P Switch service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mReactor [36mmodule=[0mblockchain [36mmsg=[0m"Starting Reactor service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mConsensusReactor [36mmodule=[0mconsensus [36mmsg=[0m"Starting Consensus service"
+[90m9:25AM[0m [32mINF[0m [1mReactor [0m [36mmodule=[0mconsensus [36mwaitSync=[0mfalse
+[90m9:25AM[0m [32mINF[0m [1mserve[0m [36mmodule=[0mrpc-server [36mmsg=[0m"Starting RPC HTTP server on [::]:26657"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mConsensusState [36mmodule=[0mconsensus [36mmsg=[0m"Starting State service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mbaseWAL [36mmodule=[0mconsensus [36mmsg=[0m"Starting baseWAL service" [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mGroup [36mmodule=[0mconsensus [36mmsg=[0m"Starting Group service" [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mTimeoutTicker [36mmodule=[0mconsensus [36mmsg=[0m"Starting TimeoutTicker service"
+[90m9:25AM[0m [32mINF[0m [1mSearching for height[0m [36mheight=[0m1 [36mmax=[0m0 [36mmin=[0m0 [36mmodule=[0mconsensus [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:25AM[0m [32mINF[0m [1mSearching for height[0m [36mheight=[0m0 [36mmax=[0m0 [36mmin=[0m0 [36mmodule=[0mconsensus [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:25AM[0m [32mINF[0m [1mFound[0m [36mheight=[0m0 [36mindex=[0m0 [36mmodule=[0mconsensus [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:25AM[0m [32mINF[0m [1mCatchup by replaying consensus messages[0m [36mheight=[0m1 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mReplay: Done[0m [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mEvidence [36mmodule=[0mevidence [36mmsg=[0m"Starting Evidence service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mStateSync [36mmodule=[0mstatesync [36mmsg=[0m"Starting StateSync service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mimpl=[0mPEX [36mmodule=[0mpex [36mmsg=[0m"Starting PEX service"
+[90m9:25AM[0m [32mINF[0m [1mservice start[0m [36mbook=[0m/home/vagrant/.comdex/config/addrbook.json [36mimpl=[0mAddrBook [36mmodule=[0mp2p [36mmsg=[0m"Starting AddrBook service"
+[90m9:25AM[0m [32mINF[0m [1mSaving AddrBook to file[0m [36mbook=[0m/home/vagrant/.comdex/config/addrbook.json [36mmodule=[0mp2p [36msize=[0m0
+[90m9:25AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:25AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4997.192594 [36mheight=[0m1 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{1/0 (1CD1D379498E9E70568B413814F98F7586F4B93FFAF85ECD7DC2923F1A2404B2:1:A90BD8C234E2, -1) D81CC5CDA20D @ 2024-07-23T09:25:08.60871787Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m1CD1D379498E9E70568B413814F98F7586F4B93FFAF85ECD7DC2923F1A2404B2 [36mheight=[0m1 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m1CD1D379498E9E70568B413814F98F7586F4B93FFAF85ECD7DC2923F1A2404B2 [36mheight=[0m1 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mE3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308958905169254stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m1 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B31363220323238203138392035302031353320323520392031323620313233203130312032392031363920323138203135203234372031372031323420373420343920383120323120313431203636203235332031333320333320323535203831203234352031303820313135203135355D3A317D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mA2E4BD329919097E7B651DA9DA0FF7117C4A3151158D42FD8521FF51F56C739B [36mheight=[0m1 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m1 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4982.031371 [36mheight=[0m2 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m2 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m2 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m2 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{2/0 (922A3215E6C7C45C8289C99BD900B41D8FAABF3C17456802C3A1F999914DF3E6:1:138A81607598, -1) F1066043876E @ 2024-07-23T09:25:13.614816301Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m922A3215E6C7C45C8289C99BD900B41D8FAABF3C17456802C3A1F999914DF3E6 [36mheight=[0m2 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m2 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m922A3215E6C7C45C8289C99BD900B41D8FAABF3C17456802C3A1F999914DF3E6 [36mheight=[0m2 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mA2E4BD329919097E7B651DA9DA0FF7117C4A3151158D42FD8521FF51F56C739B
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308958954120831stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m2 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B32352031322032343520313839203339203130392031323620323039203134332032313620323534203134332034312037392032343520323036203231322032343120323436203135382035372032303820313431203920313538203138332031383120313938203135392031383520313035203131355D3A327D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m190CF5BD276D7ED18FD8FE8F294FF5CED4F1F69E39D08D099EB7B5C69FB96973 [36mheight=[0m2 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m2 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4993.57954 [36mheight=[0m3 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":1,"mev":0} [36mheight=[0m3 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mupdating proposal with tx[0m [36mgas_limit=[0m400000 [36mhash=[0m73C88A07FA226E72AF7E956B25E6C4F485AE4A9285A303148423189B43428513 [36mindex=[0m0 [36mlane=[0mdefault [36mmodule=[0mserver [36mpriority=[0m0 [36msigners=[0m[{"Sequence":1,"Signer":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc"}] [36msize=[0m452
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m1 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m3 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m1 [36mtotal_gas_limit=[0m400000 [36mtotal_tx_bytes=[0m452
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":1,"mev":0} [36mheight=[0m3 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{3/0 (37E3DD82FF0D5E25F84A7E714211E0311B7A007B32D08433BF85BC7111414565:1:599AF76ADF4E, -1) E11ED494A712 @ 2024-07-23T09:25:18.622345609Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m37E3DD82FF0D5E25F84A7E714211E0311B7A007B32D08433BF85BC7111414565 [36mheight=[0m3 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m1
+[90m9:25AM[0m [32mINF[0m [1mlane processed[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_remaining=[0m1 [36mnum_txs_verified=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m1
+[90m9:25AM[0m [32mINF[0m [1mupdating proposal with tx[0m [36mgas_limit=[0m400000 [36mhash=[0m73C88A07FA226E72AF7E956B25E6C4F485AE4A9285A303148423189B43428513 [36mindex=[0m0 [36mlane=[0mdefault [36mmodule=[0mserver [36mpriority=[0m0 [36msigners=[0m[{"Sequence":1,"Signer":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc"}] [36msize=[0m452
+[90m9:25AM[0m [32mINF[0m [1mlane processed[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_remaining=[0m0 [36mnum_txs_verified=[0m1
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m3 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m1 [36mtotal_gas_limit=[0m400000 [36mtotal_tx_bytes=[0m452
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m37E3DD82FF0D5E25F84A7E714211E0311B7A007B32D08433BF85BC7111414565 [36mheight=[0m3 [36mmodule=[0mconsensus [36mnum_txs=[0m1 [36mroot=[0m190CF5BD276D7ED18FD8FE8F294FF5CED4F1F69E39D08D099EB7B5C69FB96973
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959003072408stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m3 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m1
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3737203231302033392034302031383320313830203232322031373020313033203135203131322038392033392035332031363820393420313638203133302031333820352034382032303320313533203731203233382031303020323033203137203138302031343220323133203135335D3A337D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m4DD22728B7B4DEAA670F70592735A85EA8828A0530CB9947EE64CB11B48ED599 [36mheight=[0m3 [36mmodule=[0mstate [36mnum_txs=[0m1
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m3 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.342446 [36mheight=[0m4 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":1,"mev":0} [36mheight=[0m4 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mupdating proposal with tx[0m [36mgas_limit=[0m400000 [36mhash=[0m7C01604347784D4076AA313B4BB044FD571E2C911E14811337D361343F5287ED [36mindex=[0m0 [36mlane=[0mdefault [36mmodule=[0mserver [36mpriority=[0m0 [36msigners=[0m[{"Sequence":2,"Signer":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc"}] [36msize=[0m253
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m1 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m4 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m1 [36mtotal_gas_limit=[0m400000 [36mtotal_tx_bytes=[0m253
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":1,"mev":0} [36mheight=[0m4 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{4/0 (F7E2445069C41D146E83A35ECD2D16342AED90FD71BAEB67DED3051A5625BBD5:1:C7FE0D5B8789, -1) 8973B8C98AD9 @ 2024-07-23T09:25:23.628336047Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mF7E2445069C41D146E83A35ECD2D16342AED90FD71BAEB67DED3051A5625BBD5 [36mheight=[0m4 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m1
+[90m9:25AM[0m [32mINF[0m [1mlane processed[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_remaining=[0m1 [36mnum_txs_verified=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m1
+[90m9:25AM[0m [32mINF[0m [1mupdating proposal with tx[0m [36mgas_limit=[0m400000 [36mhash=[0m7C01604347784D4076AA313B4BB044FD571E2C911E14811337D361343F5287ED [36mindex=[0m0 [36mlane=[0mdefault [36mmodule=[0mserver [36mpriority=[0m0 [36msigners=[0m[{"Sequence":2,"Signer":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc"}] [36msize=[0m253
+[90m9:25AM[0m [32mINF[0m [1mlane processed[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_remaining=[0m0 [36mnum_txs_verified=[0m1
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m4 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m1 [36mtotal_gas_limit=[0m400000 [36mtotal_tx_bytes=[0m253
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mF7E2445069C41D146E83A35ECD2D16342AED90FD71BAEB67DED3051A5625BBD5 [36mheight=[0m4 [36mmodule=[0mconsensus [36mnum_txs=[0m1 [36mroot=[0m4DD22728B7B4DEAA670F70592735A85EA8828A0530CB9947EE64CB11B48ED599
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959052023985stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m4 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m1
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B31393220383220353820313832203632203233362032303320393220313834203132352030203136382036362039332032352033322031353920323138203137382031343420313537203130382031343320313930203539203139372036382031343820323139203730203133332036305D3A347D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mC0523AB63EECCB5CB87D00A8425D19209FDAB2909D6C8FBE3BC54494DB46853C [36mheight=[0m4 [36mmodule=[0mstate [36mnum_txs=[0m1
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m4 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.336464 [36mheight=[0m5 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m5 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m5 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m5 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{5/0 (BF9C62CC7A7860FAA2F2B275A89ABE0B8F17602DC2580C6ADEC2264839A28242:1:26449FB2180C, -1) 86117E8F8D69 @ 2024-07-23T09:25:28.634418671Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mBF9C62CC7A7860FAA2F2B275A89ABE0B8F17602DC2580C6ADEC2264839A28242 [36mheight=[0m5 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m5 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mBF9C62CC7A7860FAA2F2B275A89ABE0B8F17602DC2580C6ADEC2264839A28242 [36mheight=[0m5 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mC0523AB63EECCB5CB87D00A8425D19209FDAB2909D6C8FBE3BC54494DB46853C
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959100975562stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m5 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B38302031393120323335203136352031373820383420323232203234352032333020363120393720323335203131203131372031303420323133203737203133203232342031323220323039203139203539203136352031323220313620313433203231362033392035352037382036395D3A357D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m50BFEBA5B254DEF5E63D61EB0B7568D54D0DE07AD1133BA57A108FD827374E45 [36mheight=[0m5 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m5 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:25AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.646674 [36mheight=[0m6 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m6 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m6 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m6 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{6/0 (10F008C523D91ED2EE7884B9AA65464D066E74DBEEFDC23A28111A399526AC0F:1:64669AC6D74E, -1) F894AEDDE81C @ 2024-07-23T09:25:33.639344978Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m10F008C523D91ED2EE7884B9AA65464D066E74DBEEFDC23A28111A399526AC0F [36mheight=[0m6 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m6 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m10F008C523D91ED2EE7884B9AA65464D066E74DBEEFDC23A28111A399526AC0F [36mheight=[0m6 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m50BFEBA5B254DEF5E63D61EB0B7568D54D0DE07AD1133BA57A108FD827374E45
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959149927139stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m6 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B323920363520323133203139382031303420323033203139342036203139332036372032343820323131203233203131203320313431203137392033312032303420313831203138382031373520313136203134312033322031343620323437203331203333203130302039352039395D3A367D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m1D41D5C668CBC206C143F8D3170B038DB31FCCB5BCAF748D2092F71F21645F63 [36mheight=[0m6 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m6 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4997.047636 [36mheight=[0m7 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m7 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m7 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m7 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{7/0 (4F81F69DEE575AD8A49137909788D24A892AC9AA9BE6E7A4F6037538D00B5B07:1:1D09EC092F14, -1) AD7E29A83116 @ 2024-07-23T09:25:38.642686047Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m4F81F69DEE575AD8A49137909788D24A892AC9AA9BE6E7A4F6037538D00B5B07 [36mheight=[0m7 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m7 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m4F81F69DEE575AD8A49137909788D24A892AC9AA9BE6E7A4F6037538D00B5B07 [36mheight=[0m7 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m1D41D5C668CBC206C143F8D3170B038DB31FCCB5BCAF748D2092F71F21645F63
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959198878715stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m7 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B32343820323431203437203731203131203138302035302033332038332038302039203230302031332036382032332031353020323133203232322038332031313820323231203134362031303220313536203130332031313520333420313520313238203937203933203131365D3A377D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mF8F12F470BB43221535009C80D441796D5DE5376DD92669C6773220F80615D74 [36mheight=[0m7 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m7 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.926237 [36mheight=[0m8 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m8 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m8 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m8 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{8/0 (4452A5DCC33D123295767F06CEC369CB458D5843C83FFAD8F92E1D1E229114AA:1:1001EB5AE48D, -1) 14DEE49F9225 @ 2024-07-23T09:25:43.655696295Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m4452A5DCC33D123295767F06CEC369CB458D5843C83FFAD8F92E1D1E229114AA [36mheight=[0m8 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m8 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m4452A5DCC33D123295767F06CEC369CB458D5843C83FFAD8F92E1D1E229114AA [36mheight=[0m8 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mF8F12F470BB43221535009C80D441796D5DE5376DD92669C6773220F80615D74
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959247830292stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m8 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B353520343820323530203139382032343820323532203231203230322031343420383420313333203235203636203920343820323330203130372031333720323236203135372032353020313420383520352032333820313132203437203230392039203132203339203133335D3A387D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m3730FAC6F8FC15CA90548519420930E66B89E29DFA0E5505EE702FD1090C2785 [36mheight=[0m8 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m8 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4993.36498 [36mheight=[0m9 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m9 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m9 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m9 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{9/0 (F61F4E060833CE6D19CD907341959CAEA21BC037FC263CED1970B5440D8956D1:1:0C6359688577, -1) 331129E2465D @ 2024-07-23T09:25:48.661896913Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mF61F4E060833CE6D19CD907341959CAEA21BC037FC263CED1970B5440D8956D1 [36mheight=[0m9 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m9 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mF61F4E060833CE6D19CD907341959CAEA21BC037FC263CED1970B5440D8956D1 [36mheight=[0m9 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m3730FAC6F8FC15CA90548519420930E66B89E29DFA0E5505EE702FD1090C2785
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959296781869stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m9 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B373720363420373520333420323439203231203136352035322031383120383720333020383020313833203130392032353520353020323232203733203135342033352032303920323139203137372031392032333620313735203920363620323439203535203933203132335D3A397D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m4D404B22F915A534B5571E50B76DFF32DE499A23D1DBB113ECAF0942F9375D7B [36mheight=[0m9 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m9 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.74674 [36mheight=[0m10 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m10 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m10 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m10 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{10/0 (D355C25DFE91032A6AF701EA0E9C4FE98534ED6AE7FC8EB68FDEA4C7FA33A1ED:1:5981D3C9F0FA, -1) 1080F88C03A2 @ 2024-07-23T09:25:53.665759753Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mD355C25DFE91032A6AF701EA0E9C4FE98534ED6AE7FC8EB68FDEA4C7FA33A1ED [36mheight=[0m10 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m10 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mD355C25DFE91032A6AF701EA0E9C4FE98534ED6AE7FC8EB68FDEA4C7FA33A1ED [36mheight=[0m10 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m4D404B22F915A534B5571E50B76DFF32DE499A23D1DBB113ECAF0942F9375D7B
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959345733446stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m10 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B37342035322035322032323220323531203334203138302031343320373520323030203230332032333920313037203136352032303820323439203830203220313730203136203135342031363620323120313835203734203431203137392031363620383720333320313636203130365D3A417D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m4A3434DEFB22B48F4BC8CBEF6BA5D0F95002AA109AA615B94A29B3A65721A66A [36mheight=[0m10 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m10 [36mmodule=[0mtxindex
+[90m9:25AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.899606 [36mheight=[0m11 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m11 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m11 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m11 [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{11/0 (6FA68916868426918216FCB8D58B769F01EB581E933E2DEB832F276F0098F8D1:1:FE159D0E2EB4, -1) 4C0323CBBD35 @ 2024-07-23T09:25:58.758240807Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:25AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m6FA68916868426918216FCB8D58B769F01EB581E933E2DEB832F276F0098F8D1 [36mheight=[0m11 [36mmodule=[0mconsensus
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:25AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m11 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:25AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m6FA68916868426918216FCB8D58B769F01EB581E933E2DEB832F276F0098F8D1 [36mheight=[0m11 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m4A3434DEFB22B48F4BC8CBEF6BA5D0F95002AA109AA615B94A29B3A65721A66A
+[90m9:25AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959394685023stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:25AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m11 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3630203133332032333120353520323220393020313720313436203134382031323620383820313932203137203832203420313038203135302031313820372031363120313733203132352031343520313931203832203232332032332032352031343520323234203132203135375D3A427D [36mmodule=[0mserver
+[90m9:25AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m3C85E737165A1192947E58C01152046C967607A1AD7D91BF52DF171991E00C9D [36mheight=[0m11 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:25AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m11 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:26AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4993.851099 [36mheight=[0m12 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m12 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m12 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m12 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{12/0 (24FEDB181127F08B35D8378C18162F45D4DCCDD643C0F6221C3C60F17F4FAC3D:1:1FFFDDD33062, -1) AD5F8014B685 @ 2024-07-23T09:26:03.763418525Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m24FEDB181127F08B35D8378C18162F45D4DCCDD643C0F6221C3C60F17F4FAC3D [36mheight=[0m12 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m12 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m24FEDB181127F08B35D8378C18162F45D4DCCDD643C0F6221C3C60F17F4FAC3D [36mheight=[0m12 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m3C85E737165A1192947E58C01152046C967607A1AD7D91BF52DF171991E00C9D
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959443636600stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m12 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3138342031332037352034203632203934203231352036372032333720302034312039352031303520323238203234342031332031303420313838203235203232372039302038203437203132302031333820373520313320313332203130302031373420313235203232315D3A437D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mB80D4B043E5ED743ED00295F69E4F40D68BC19E35A082F788A4B0D8464AE7DDD [36mheight=[0m12 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m12 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.434459 [36mheight=[0m13 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m13 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m13 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m13 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{13/0 (659CD9E55AE1EAF62DB1F19AAA00D1CE3E4E25545FC5837341AA90E04A10A60D:1:7FC53FB917A9, -1) 5B8B35D76A6B @ 2024-07-23T09:26:08.766636304Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m659CD9E55AE1EAF62DB1F19AAA00D1CE3E4E25545FC5837341AA90E04A10A60D [36mheight=[0m13 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m13 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m659CD9E55AE1EAF62DB1F19AAA00D1CE3E4E25545FC5837341AA90E04A10A60D [36mheight=[0m13 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mB80D4B043E5ED743ED00295F69E4F40D68BC19E35A082F788A4B0D8464AE7DDD
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959492588176stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m13 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3135332039362032333420313235203136203436203230342031333820313339203132362036362034332034203132322032333420313336203836203132342031392031333720313437203137312034392031393720313230203139382032303820313920393120323820313731203136305D3A447D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m9960EA7D102ECC8A8B7E422B047AEA88567C138993AB31C578C6D0135B1CABA0 [36mheight=[0m13 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m13 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.431715 [36mheight=[0m14 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m14 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m14 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m14 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{14/0 (1BADE46D998A6DC64C8DCC1F095523C043ED7CD86212B9F53ED655A7BDFD4C4A:1:FFAFFAA038D8, -1) B63F03C8D044 @ 2024-07-23T09:26:13.783352698Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m1BADE46D998A6DC64C8DCC1F095523C043ED7CD86212B9F53ED655A7BDFD4C4A [36mheight=[0m14 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m14 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m1BADE46D998A6DC64C8DCC1F095523C043ED7CD86212B9F53ED655A7BDFD4C4A [36mheight=[0m14 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m9960EA7D102ECC8A8B7E422B047AEA88567C138993AB31C578C6D0135B1CABA0
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959541539753stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m14 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B373420313720383420313839203420323139203136302038342036322032343820323037203834203137352031363820313038203620323133203437203537203134362031343420323333203337203131203138203233342035362031203234362031333120313233203233365D3A457D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m4A1154BD04DBA0543EF8CF54AFA86C06D52F399290E9250B12EA3801F6837BEC [36mheight=[0m14 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m14 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4995.057678 [36mheight=[0m15 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m15 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m15 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m15 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{15/0 (DE0532BEBBCFC87C8B4C19B05B4F370F3B1443B7580F0B406A02E33E217E7BB4:1:8894FC22EAE9, -1) A9B862AE7F07 @ 2024-07-23T09:26:18.78860147Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mDE0532BEBBCFC87C8B4C19B05B4F370F3B1443B7580F0B406A02E33E217E7BB4 [36mheight=[0m15 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m15 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mDE0532BEBBCFC87C8B4C19B05B4F370F3B1443B7580F0B406A02E33E217E7BB4 [36mheight=[0m15 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m4A1154BD04DBA0543EF8CF54AFA86C06D52F399290E9250B12EA3801F6837BEC
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959590491330stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mproposal tallied[0m [36mmodule=[0mx/gov [36mproposal=[0m1 [36mresults=[0mpassed
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m15 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B39312032313620323132203232332031363820383920363420323535203234332032333220313831203139352032313320323720323333203130302031333820383620313435203639203330203133203132312032313120313831203235302032353320313135203135392032323720313237203232395D3A467D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m5BD8D4DFA85940FFF3E8B5C3D51BE9648A5691451E0D79D3B5FAFD739FE37FE5 [36mheight=[0m15 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m15 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4995.594274 [36mheight=[0m16 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m16 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m16 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m16 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{16/0 (E103202B57C7DC3E2338EFA70F543AEEB5707B06D0726E6E30590037836FEF38:1:F9A88DACF86A, -1) 41E23F0431CC @ 2024-07-23T09:26:23.798283664Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mE103202B57C7DC3E2338EFA70F543AEEB5707B06D0726E6E30590037836FEF38 [36mheight=[0m16 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m16 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mE103202B57C7DC3E2338EFA70F543AEEB5707B06D0726E6E30590037836FEF38 [36mheight=[0m16 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m5BD8D4DFA85940FFF3E8B5C3D51BE9648A5691451E0D79D3B5FAFD739FE37FE5
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959639442907stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m16 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B32302032333720313432203533203133392032323820313939203232312032333920323031203838203133362031303520313839203234322035302031312036392032303120323033203537203130352031303720323133203136362035352032333420323339203233302031383520313531203134365D3A31307D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m14ED8E358BE4C7DDEFC9588869BDF2320B45C9CB39696BD5A637EAEFE6B99792 [36mheight=[0m16 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m16 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4992.07492 [36mheight=[0m17 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m17 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m17 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m17 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{17/0 (465715187E7293BD33018C1E5689758D67D7986082B7D8FB1A38B97172B86AEA:1:E9152F659216, -1) D1532AED54B8 @ 2024-07-23T09:26:28.821896911Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m465715187E7293BD33018C1E5689758D67D7986082B7D8FB1A38B97172B86AEA [36mheight=[0m17 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m17 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m465715187E7293BD33018C1E5689758D67D7986082B7D8FB1A38B97172B86AEA [36mheight=[0m17 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m14ED8E358BE4C7DDEFC9588869BDF2320B45C9CB39696BD5A637EAEFE6B99792
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959688394484stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m17 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B383120392031383420313534203139203536203635203235322039352031313220343020313330203534203130332031383520392031363920313220313836203330203130332031353420323433203939203137362031393420313431203232352031332031303520313036203232305D3A31317D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m5109B89A133841FC5F7028823667B909A90CBA1E679AF363B0C28DE10D696ADC [36mheight=[0m17 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m17 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:26AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.772301 [36mheight=[0m18 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m18 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m18 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m18 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{18/0 (2FC63D36A789E11B364F56E2BA38EFF27FAE21AB5FE447EDBFF37FE2D1E1468D:1:07C58233409E, -1) 878EFECC9941 @ 2024-07-23T09:26:33.829939502Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m2FC63D36A789E11B364F56E2BA38EFF27FAE21AB5FE447EDBFF37FE2D1E1468D [36mheight=[0m18 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m18 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m2FC63D36A789E11B364F56E2BA38EFF27FAE21AB5FE447EDBFF37FE2D1E1468D [36mheight=[0m18 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m5109B89A133841FC5F7028823667B909A90CBA1E679AF363B0C28DE10D696ADC
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959737346061stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m18 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B313739203732203232372035302036302037312032303420323033203830203131352031363820313338203138203138362032323020313733203137302034312032323320313534203131203231392039342036302031323820313439203234392031383120363320323034203139332033325D3A31327D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mB348E3323C47CCCB5073A88A12BADCADAA29DF9A0BDB5E3C8095F9B53FCCC120 [36mheight=[0m18 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m18 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.800368 [36mheight=[0m19 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m19 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m19 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m19 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{19/0 (654CD3B42380D78FFBF9A2F9D7253DFA95239ABFF6B9F3F53C3F927BDC4A94D0:1:A20B22243247, -1) B8004FAC3C09 @ 2024-07-23T09:26:38.909951459Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m654CD3B42380D78FFBF9A2F9D7253DFA95239ABFF6B9F3F53C3F927BDC4A94D0 [36mheight=[0m19 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m19 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m654CD3B42380D78FFBF9A2F9D7253DFA95239ABFF6B9F3F53C3F927BDC4A94D0 [36mheight=[0m19 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mB348E3323C47CCCB5073A88A12BADCADAA29DF9A0BDB5E3C8095F9B53FCCC120
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959786297637stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m19 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3337203133203232352031383620363820313637203232302032333620313536203134312031303420333720323431203132372032343520313831203132392038372032323920313133203320313520313735203133372038322031383220353020383720323120363720323331203138365D3A31337D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m250DE1BA44A7DCEC9C8D6825F17FF5B58157E571030FAF8952B632571543E7BA [36mheight=[0m19 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m19 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4993.697385 [36mheight=[0m20 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m20 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m20 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m20 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{20/0 (8A63EDAC74BA9721EB4FD50C047D544BD538679C50B1BC755BE83F1B6B2C7B3F:1:64AEA4098085, -1) 06169C67727C @ 2024-07-23T09:26:43.915306102Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m8A63EDAC74BA9721EB4FD50C047D544BD538679C50B1BC755BE83F1B6B2C7B3F [36mheight=[0m20 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m20 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m8A63EDAC74BA9721EB4FD50C047D544BD538679C50B1BC755BE83F1B6B2C7B3F [36mheight=[0m20 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m250DE1BA44A7DCEC9C8D6825F17FF5B58157E571030FAF8952B632571543E7BA
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959835249214stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m20 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3132352031353220313134203233342039382038382032313220313035203631203137352031373120323330203131372032333120323620313337203132322032333520323434203531203639203139322039322038362038203231392037382032332031353920343320323330203133395D3A31347D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m7D9872EA6258D4693DAFABE675E71A897AEBF43345C05C5608DB4E179F2BE68B [36mheight=[0m20 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m20 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.171446 [36mheight=[0m21 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m21 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m21 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m21 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{21/0 (7FA4EED7C2A8E15BA9E4EE2B2B2956F70C54A2728B8AD68C9AF2578C2F04C708:1:6C188748C7D8, -1) 5BAA8CFEF6A1 @ 2024-07-23T09:26:48.929777466Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m7FA4EED7C2A8E15BA9E4EE2B2B2956F70C54A2728B8AD68C9AF2578C2F04C708 [36mheight=[0m21 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m21 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m7FA4EED7C2A8E15BA9E4EE2B2B2956F70C54A2728B8AD68C9AF2578C2F04C708 [36mheight=[0m21 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m7D9872EA6258D4693DAFABE675E71A897AEBF43345C05C5608DB4E179F2BE68B
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959884200791stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m21 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B393420313439203234312034352035342031383320313139203120333520322037203131342039203532203235342031333620313237203735203130352032353320363620313531203234322038342037203135312037332032353020323130203532203233342035385D3A31357D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m5E95F12D36B77701230207720934FE887F4B69FD4297F254079749FAD234EA3A [36mheight=[0m21 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m21 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.682586 [36mheight=[0m22 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m22 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m22 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m22 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{22/0 (AE9FC1CD8E812DC36C6AD858B9B6233D00389732640AFB3FDAF36878CE2244C1:1:D905561FD408, -1) 5C76CD6D50C4 @ 2024-07-23T09:26:53.935751094Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mAE9FC1CD8E812DC36C6AD858B9B6233D00389732640AFB3FDAF36878CE2244C1 [36mheight=[0m22 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m22 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mAE9FC1CD8E812DC36C6AD858B9B6233D00389732640AFB3FDAF36878CE2244C1 [36mheight=[0m22 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m5E95F12D36B77701230207720934FE887F4B69FD4297F254079749FAD234EA3A
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959933152368stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m22 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B31323620323530203233312031353920353120323334203235342033382032333520323131203137322039332031363620362031322038362036362032313820313339203230382037322031353220313532203638203136362037392031383620323334203234302032333720313337203234345D3A31367D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m7EFAE79F33EAFE26EBD3AC5DA6060C5642DA8BD048989844A64FBAEAF0ED89F4 [36mheight=[0m22 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m22 [36mmodule=[0mtxindex
+[90m9:26AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.883547 [36mheight=[0m23 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m23 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m23 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m23 [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{23/0 (8C170FF007E099FB77B6421A4F8A32DAFA5E4F2F9899FDD5F263484A1FFAEB67:1:49A430C1DAF4, -1) 4D6F8F876C48 @ 2024-07-23T09:26:58.944354498Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:26AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m8C170FF007E099FB77B6421A4F8A32DAFA5E4F2F9899FDD5F263484A1FFAEB67 [36mheight=[0m23 [36mmodule=[0mconsensus
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:26AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m23 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:26AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m8C170FF007E099FB77B6421A4F8A32DAFA5E4F2F9899FDD5F263484A1FFAEB67 [36mheight=[0m23 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m7EFAE79F33EAFE26EBD3AC5DA6060C5642DA8BD048989844A64FBAEAF0ED89F4
+[90m9:26AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308959982103945stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:26AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m23 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B313739203637203935203534203535203133312032303720313438203139362031373820313031203134302033382038352033362032323320323139203234322031393720313537203134342031353720313834203437203539203239203231203635203335203637203339203234335D3A31377D [36mmodule=[0mserver
+[90m9:26AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mB3435F363783CF94C4B2658C265524DFDBF2C59D909DB82F3B1D1541234327F3 [36mheight=[0m23 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:26AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m23 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:27AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:27AM[0m [32mINF[0m [1mSaving AddrBook to file[0m [36mbook=[0m/home/vagrant/.comdex/config/addrbook.json [36mmodule=[0mp2p [36msize=[0m0
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4996.635409 [36mheight=[0m24 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m24 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m24 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m24 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{24/0 (CDADD02B45D4735B52475738427A31B244C1185C5820FBF066CBA8F6C2B08141:1:9D2AC447133F, -1) FE58909EC110 @ 2024-07-23T09:27:03.948813183Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mCDADD02B45D4735B52475738427A31B244C1185C5820FBF066CBA8F6C2B08141 [36mheight=[0m24 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m24 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mCDADD02B45D4735B52475738427A31B244C1185C5820FBF066CBA8F6C2B08141 [36mheight=[0m24 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mB3435F363783CF94C4B2658C265524DFDBF2C59D909DB82F3B1D1541234327F3
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960031055522stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m24 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B38382033362039203138392031363720373720393220323135203134392035203232302031373120323431203131342031313820313334203630203133322034392031343620313731203233322036342032342033302032303320383820323620323130203134342032323120305D3A31387D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m582409BDA74D5CD79505DCABF17276863C843192ABE840181ECB581AD290DD00 [36mheight=[0m24 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m24 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4980.721881 [36mheight=[0m25 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m25 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m25 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m25 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{25/0 (1CE7D2C69AC170BD7BDC83EE31E635CF079D50C206702D02D624DF3552BB74D1:1:970C5F1541FB, -1) B52230974F70 @ 2024-07-23T09:27:08.954845352Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m1CE7D2C69AC170BD7BDC83EE31E635CF079D50C206702D02D624DF3552BB74D1 [36mheight=[0m25 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m25 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m1CE7D2C69AC170BD7BDC83EE31E635CF079D50C206702D02D624DF3552BB74D1 [36mheight=[0m25 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m582409BDA74D5CD79505DCABF17276863C843192ABE840181ECB581AD290DD00
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960080007098stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m25 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3132392039372032333620373920313233203231352036332032313520313332203635203434203132392035203138392032343120313030203831203133342034362037362032333020323230203133322031363520313836203139392031322032343120313236203836203235203132335D3A31397D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m8161EC4F7BD73FD784412C8105BDF16451862E4CE6DC84A5BAC70CF17E56197B [36mheight=[0m25 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m25 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.411981 [36mheight=[0m26 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m26 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m26 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m26 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{26/0 (F7D0FA000683AB16260BAB3E126E2B3C973DB289669C2EA87C9230CD11673AA5:1:01694E42111B, -1) 5413A5D6252A @ 2024-07-23T09:27:14.118257085Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mF7D0FA000683AB16260BAB3E126E2B3C973DB289669C2EA87C9230CD11673AA5 [36mheight=[0m26 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m26 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mF7D0FA000683AB16260BAB3E126E2B3C973DB289669C2EA87C9230CD11673AA5 [36mheight=[0m26 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m8161EC4F7BD73FD784412C8105BDF16451862E4CE6DC84A5BAC70CF17E56197B
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960128958675stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m26 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3138203231203132203235342039322031373720313830203839203231342031342031313820323433203134352039392031383520333020393020313537203138372031363720323034203232312037382032203132392032352037362038382031343320313337203331203231305D3A31417D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m12150CFE5CB1B459D60E76F39163B91E5A9DBBA7CCDD4E0281194C588F891FD2 [36mheight=[0m26 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m26 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4995.431554 [36mheight=[0m27 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m27 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m27 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m27 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{27/0 (C61293E353BB120A1D2A1ACDB3369B5AE15289A242FEDE2AAB26882D6DC09F12:1:5B45F1D9E6BE, -1) D68ED90CCB92 @ 2024-07-23T09:27:19.123929394Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mC61293E353BB120A1D2A1ACDB3369B5AE15289A242FEDE2AAB26882D6DC09F12 [36mheight=[0m27 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m27 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mC61293E353BB120A1D2A1ACDB3369B5AE15289A242FEDE2AAB26882D6DC09F12 [36mheight=[0m27 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m12150CFE5CB1B459D60E76F39163B91E5A9DBBA7CCDD4E0281194C588F891FD2
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960177910252stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m27 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B313838203233392031343920312039382031313020323338203234332032343720313420323531203231332031323520323420383620313720313120323138203137312032353320323339203231203137372032343020352032343220313339203230312031333420313537203237203132355D3A31427D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mBCEF9501626EEEF3F70EFBD57D1856110BDAABFDEF15B1F005F28BC9869D1B7D [36mheight=[0m27 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m27 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.291262 [36mheight=[0m28 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m28 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m28 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m28 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{28/0 (C4602615EA9DE0F5F8FDF18F300EC31E3B5DF4B237EAC95EA59423441D66DCB7:1:5DB3865E2C86, -1) A98DD88C62B5 @ 2024-07-23T09:27:24.165774391Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mC4602615EA9DE0F5F8FDF18F300EC31E3B5DF4B237EAC95EA59423441D66DCB7 [36mheight=[0m28 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m28 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mC4602615EA9DE0F5F8FDF18F300EC31E3B5DF4B237EAC95EA59423441D66DCB7 [36mheight=[0m28 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mBCEF9501626EEEF3F70EFBD57D1856110BDAABFDEF15B1F005F28BC9869D1B7D
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960226861829stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m28 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3135332031203139203130382031363220372031323020313739203920313436203938203234332039203135382031383620313632203232382035332038392031323320323233203235342031353620313620373720363320313231203138312031393620323230203335203234325D3A31437D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0m9901136CA20778B3099262F3099EBAA2E435597BDFFE9C104D3F79B5C4DC23F2 [36mheight=[0m28 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m28 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4995.207348 [36mheight=[0m29 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m29 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m29 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m29 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{29/0 (59542026B875585D40FF8933ED7C949491E7C7ABD4847AEADEC4768F86517505:1:D4A5704B0618, -1) AA74923BF67B @ 2024-07-23T09:27:29.17630681Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0m59542026B875585D40FF8933ED7C949491E7C7ABD4847AEADEC4768F86517505 [36mheight=[0m29 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m29 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0m59542026B875585D40FF8933ED7C949491E7C7ABD4847AEADEC4768F86517505 [36mheight=[0m29 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0m9901136CA20778B3099262F3099EBAA2E435597BDFFE9C104D3F79B5C4DC23F2
+[90m9:27AM[0m [32mINF[0m [1mminted coins from module account[0m [36mamount=[0m308960275813406stake [36mfrom=[0mmint [36mmodule=[0mx/bank
+[90m9:27AM[0m [31mERR[0m [1mapp ids does not exist[0m [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mexecuted block[0m [36mheight=[0m29 [36mmodule=[0mstate [36mnum_invalid_txs=[0m0 [36mnum_valid_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mcommit synced[0m [36mcommit=[0m436F6D6D697449447B5B3139392038302034332031343920313832203830203132392031323420393820373820323036203530203834203531203233382031363020383020383320383620363720343320313933203133322032303620313234203139392031343720393720373020313238203231312037355D3A31447D [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mcommitted state[0m [36mapp_hash=[0mC7502B95B650817C624ECE325433EEA0505356432BC184CE7CC793614680D34B [36mheight=[0m29 [36mmodule=[0mstate [36mnum_txs=[0m0
+[90m9:27AM[0m [32mINF[0m [1mindexed block events[0m [36mheight=[0m29 [36mmodule=[0mtxindex
+[90m9:27AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:27AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m4994.396116 [36mheight=[0m30 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepNewHeight
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution before proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m30 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mmev [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mmev [36mlane_max_block_size=[0m2201925 [36mlane_max_gas_limit=[0m1844674407370955161 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mpreparing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mlane prepared[0m [36mlane=[0mdefault [36mlane_max_block_size=[0m19817328 [36mlane_max_gas_limit=[0m16602069666338596453 [36mmodule=[0mserver [36mnum_txs_added=[0m0 [36mnum_txs_removed=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprepared proposal[0m [36mheight=[0m30 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22019254 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mmempool distribution after proposal creation[0m [36mdistribution=[0m{"default":0,"mev":0} [36mheight=[0m30 [36mmodule=[0mserver
+[90m9:27AM[0m [32mINF[0m [1mreceived proposal[0m [36mmodule=[0mconsensus [36mproposal=[0m"Proposal{30/0 (DA472DF6942990D1D89FC01424B4658BA3C7768F75CE0C990AC722531F741631:1:9B1005A9FB53, -1) 19D4B807CEC1 @ 2024-07-23T09:27:34.201444762Z}" [36mproposer=[0m1142D5CE6C2C640A608A9FDDF23AF1A608D24E53
+[90m9:27AM[0m [32mINF[0m [1mreceived complete proposal block[0m [36mhash=[0mDA472DF6942990D1D89FC01424B4658BA3C7768F75CE0C990AC722531F741631 [36mheight=[0m30 [36mmodule=[0mconsensus
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mmev [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessing lane[0m [36mlane=[0mdefault [36mmodule=[0mserver [36mnum_txs_to_verify=[0m0
+[90m9:27AM[0m [32mINF[0m [1mprocessed proposal[0m [36mheight=[0m30 [36mmax_gas_limit=[0m18446744073709551615 [36mmax_tx_bytes=[0m22020096 [36mmodule=[0mserver [36mnum_txs=[0m0 [36mtotal_gas_limit=[0m0 [36mtotal_tx_bytes=[0m0
+[90m9:27AM[0m [32mINF[0m [1mfinalizing commit of block[0m [36mhash=[0mDA472DF6942990D1D89FC01424B4658BA3C7768F75CE0C990AC722531F741631 [36mheight=[0m30 [36mmodule=[0mconsensus [36mnum_txs=[0m0 [36mroot=[0mC7502B95B650817C624ECE325433EEA0505356432BC184CE7CC793614680D34B
+[90m9:27AM[0m [31mERR[0m [1mUPGRADE "v15.0.0" NEEDED at height: 30: [0m [36mmodule=[0mserver
+[90m9:27AM[0m [31mERR[0m [1mCONSENSUS FAILURE!!![0m [36merr=[0m"UPGRADE \"v15.0.0\" NEEDED at height: 30: " [36mmodule=[0mconsensus [36mstack=[0m"goroutine 71 [running]:\nruntime/debug.Stack()\n\truntime/debug/stack.go:24 +0x5e\ngithub.com/cometbft/cometbft/consensus.(*State).receiveRoutine.func2()\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:737 +0x46\npanic({0x2949e80?, 0xc002918980?})\n\truntime/panic.go:914 +0x21f\ngithub.com/cosmos/cosmos-sdk/x/upgrade.BeginBlocker(_, {{0x3b989e0, 0x5661cc0}, {0x3bb2bb0, 0xc003fce400}, {{0xb, 0x0}, {0xc0029e05c0, 0xc}, 0x1e, ...}, ...}, ...)\n\tgithub.com/cosmos/cosmos-sdk@v0.47.9/x/upgrade/abci.go:78 +0xe54\ngithub.com/cosmos/cosmos-sdk/x/upgrade.AppModule.BeginBlock(...)\n\tgithub.com/cosmos/cosmos-sdk@v0.47.9/x/upgrade/module.go:161\ngithub.com/cosmos/cosmos-sdk/types/module.(*Manager).BeginBlock(_, {{0x3b989e0, 0x5661cc0}, {0x3bb2bb0, 0xc003fce400}, {{0xb, 0x0}, {0xc0029e05c0, 0xc}, 0x1e, ...}, ...}, ...)\n\tgithub.com/cosmos/cosmos-sdk@v0.47.9/types/module/module.go:562 +0x17b\ngithub.com/comdex-official/comdex/app.(*App).BeginBlocker(...)\n\tgithub.com/comdex-official/comdex/app/app.go:1358\ngithub.com/cosmos/cosmos-sdk/baseapp.(*BaseApp).BeginBlock(_, {{0xc002d5b4c0, 0x20, 0x20}, {{0xb, 0x0}, {0xc0029e05c0, 0xc}, 0x1e, {0xaaa4dcb, ...}, ...}, ...})\n\tgithub.com/cosmos/cosmos-sdk@v0.47.9/baseapp/abci.go:196 +0x838\ngithub.com/cometbft/cometbft/abci/client.(*localClient).BeginBlockSync(_, {{0xc002d5b4c0, 0x20, 0x20}, {{0xb, 0x0}, {0xc0029e05c0, 0xc}, 0x1e, {0xaaa4dcb, ...}, ...}, ...})\n\tgithub.com/cometbft/cometbft@v0.37.5/abci/client/local_client.go:283 +0xfe\ngithub.com/cometbft/cometbft/proxy.(*appConnConsensus).BeginBlockSync(_, {{0xc002d5b4c0, 0x20, 0x20}, {{0xb, 0x0}, {0xc0029e05c0, 0xc}, 0x1e, {0xaaa4dcb, ...}, ...}, ...})\n\tgithub.com/cometbft/cometbft@v0.37.5/proxy/app_conn.go:101 +0x195\ngithub.com/cometbft/cometbft/state.execBlockOnProxyApp({0x3b98a18?, 0xc000850440}, {0x3baf160, 0xc00148c288}, 0xc0016ffe00, {0x3bb33f8, 0xc001634318}, 0x1d?)\n\tgithub.com/cometbft/cometbft@v0.37.5/state/execution.go:363 +0x53d\ngithub.com/cometbft/cometbft/state.(*BlockExecutor).ApplyBlock(_, {{{0xb, 0x0}, {0xc0012fca7a, 0x6}}, {0xc0012fca90, 0xc}, 0x1, 0x1d, {{0xc0027fd0e0, ...}, ...}, ...}, ...)\n\tgithub.com/cometbft/cometbft@v0.37.5/state/execution.go:197 +0x165\ngithub.com/cometbft/cometbft/consensus.(*State).finalizeCommit(0xc000a34700, 0x1e)\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:1711 +0xa65\ngithub.com/cometbft/cometbft/consensus.(*State).tryFinalizeCommit(0xc000a34700, 0x1e)\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:1620 +0x2f6\ngithub.com/cometbft/cometbft/consensus.(*State).enterCommit.func1()\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:1555 +0x9c\ngithub.com/cometbft/cometbft/consensus.(*State).enterCommit(0xc000a34700, 0x1e, 0x0)\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:1593 +0xc5b\ngithub.com/cometbft/cometbft/consensus.(*State).addVote(0xc000a34700, 0xc00271f180, {0x0, 0x0})\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:2233 +0x18ed\ngithub.com/cometbft/cometbft/consensus.(*State).tryAddVote(0xc000a34700, 0xc00271f180, {0x0?, 0x4daf30?})\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:2022 +0x26\ngithub.com/cometbft/cometbft/consensus.(*State).handleMsg(0xc000a34700, {{0x3b68b20, 0xc004b294a8}, {0x0, 0x0}})\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:866 +0x3ce\ngithub.com/cometbft/cometbft/consensus.(*State).receiveRoutine(0xc000a34700, 0x0)\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:793 +0x4bc\ncreated by github.com/cometbft/cometbft/consensus.(*State).OnStart in goroutine 13\n\tgithub.com/cometbft/cometbft@v0.37.5/consensus/state.go:384 +0x10c\n"
+[90m9:27AM[0m [32mINF[0m [1mservice stop[0m [36mimpl=[0mbaseWAL [36mmodule=[0mconsensus [36mmsg=[0m"Stopping baseWAL service" [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:27AM[0m [32mINF[0m [1mservice stop[0m [36mimpl=[0mGroup [36mmodule=[0mconsensus [36mmsg=[0m"Stopping Group service" [36mwal=[0m/home/vagrant/.comdex/data/cs.wal/wal
+[90m9:27AM[0m [32mINF[0m [1mTimed out[0m [36mdur=[0m3000 [36mheight=[0m30 [36mmodule=[0mconsensus [36mround=[0m0 [36mstep=[0mRoundStepPropose
+[90m9:28AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:28AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex
+[90m9:28AM[0m [32mINF[0m [1mEnsure peers[0m [36mmodule=[0mpex [36mnumDialing=[0m0 [36mnumInPeers=[0m0 [36mnumOutPeers=[0m0 [36mnumToDial=[0m10
+[90m9:28AM[0m [32mINF[0m [1mNo addresses to dial. Falling back to seeds[0m [36mmodule=[0mpex

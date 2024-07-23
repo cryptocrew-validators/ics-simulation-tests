@@ -1,11 +1,11 @@
 .provisioned
 .first_run
 .vagrant/*
-result.log
+# result.log
 
-files/downloads/*
-files/generated/*
-files/logs/*
+# files/downloads/*
+# files/generated/*
+# files/logs/*
 
 !files/downloads/.first_commit
 !files/generated/.first_commit

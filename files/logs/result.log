@@ -1,0 +1,461 @@
+--- Running prepareRelayer 
+Preparing hermes IBC relayer...
+2024-07-23T09:24:12.951727Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+SUCCESS Restored key 'default' (cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7) on chain provider-chain
+2024-07-23T09:24:14.602083Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+SUCCESS Restored key 'default' (comdex1l7hrk5smvnatux7fsutvc0zldj3z8gawszumlf) on chain comdex-test3
+--- Finished prepareRelayer 
+--- Running startProviderChain 
+Preparing provider-chain with 1 validators.
+Getting peerlists, editing configs...
+[provider-chain] persistent_peers = "d2a901a884ca8f2c7fb083058ef4df048757f6c6@192.168.33.11:26656"
+Copying gentxs to provider-chain-validator1...
+Adding genesis accounts...
+Collecting gentxs on provider-chain-validator1
+{"app_message":{"07-tendermint":null,"auth":{"accounts":[{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"cosmos12pf0y267zuhdkqsnyxqyj9zp83em0y7stk3wks","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"1","address":"cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7","pub_key":null,"sequence":"0"}],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"authz":{"authorization":[]},"bank":{"balances":[{"address":"cosmos12pf0y267zuhdkqsnyxqyj9zp83em0y7stk3wks","coins":[{"amount":"1500000000000","denom":"icsstake"}]},{"address":"cosmos1l7hrk5smvnatux7fsutvc0zldj3z8gawhd7ex7","coins":[{"amount":"1500000000000","denom":"icsstake"}]}],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"send_enabled":[],"supply":[{"amount":"3000000000000","denom":"icsstake"}]},"capability":{"index":"1","owners":[]},"consensus":null,"crisis":{"constant_fee":{"amount":"1000","denom":"icsstake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.000000000000000000","bonus_proposer_reward":"0.000000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"evidence":{"evidence":[]},"feegrant":{"allowances":[]},"feeibc":{"fee_enabled_channels":[],"forward_relayers":[],"identified_fees":[],"registered_counterparty_payees":[],"registered_payees":[]},"feemarket":{"params":{"alpha":"0.000000000000000000","beta":"1.000000000000000000","delta":"0.000000000000000000","distribute_fees":false,"enabled":true,"fee_denom":"icsstake","gamma":"0.000000000000000000","max_block_utilization":"30000000","max_learning_rate":"0.125000000000000000","min_base_gas_price":"1.000000000000000000","min_learning_rate":"0.125000000000000000","window":"1"},"state":{"base_gas_price":"1.000000000000000000","index":"0","learning_rate":"0.125000000000000000","window":["0"]}},"genutil":{"gen_txs":[{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AzVQHvsiDfzNeluBxC9/7QJCUbswUR51YGh2t4UzwUin"},"sequence":"0"}],"tip":null},"body":{"extension_options":[],"memo":"d2a901a884ca8f2c7fb083058ef4df048757f6c6@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"cosmos12pf0y267zuhdkqsnyxqyj9zp83em0y7stk3wks","description":{"details":"","identity":"","moniker":"provider-chain-validator1","security_contact":"","website":""},"min_self_delegation":"0","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"VLCTMdeA8ux/xUGVrx1STJn3ACtrkiDliMBAB6512HU="},"validator_address":"cosmosvaloper12pf0y267zuhdkqsnyxqyj9zp83em0y7swz9m6r","value":{"amount":"1000000000","denom":"icsstake"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["yHBaTfsbPO2uIGRHFvubcXS675L5Tie13vMZ56I2c8EqTl8uNhjfEJyr9K5TGVdgfCUp+h09R07nE/KgvZ2J+Q=="]}]},"gov":{"deposit_params":null,"deposits":[],"params":{"burn_proposal_deposit_prevote":false,"burn_vote_quorum":false,"burn_vote_veto":true,"expedited_min_deposit":[{"amount":"50000000","denom":"icsstake"}],"expedited_threshold":"0.667000000000000000","expedited_voting_period":"59s","max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"icsstake"}],"min_deposit_ratio":"0.010000000000000000","min_initial_deposit_ratio":"0.000000000000000000","quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000","voting_period":"60s"},"proposals":[],"starting_proposal_id":"1","tally_params":null,"votes":[],"voting_params":{"voting_period":"60s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint","09-localhost"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0","params":{"max_expected_time_per_block":"30000000000"}}},"interchainaccounts":{"controller_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"controller_enabled":true},"ports":[]},"host_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"allow_messages":["*"],"host_enabled":true},"port":"icahost"}},"metaprotocols":{},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"icsstake"}},"packetfowardmiddleware":{"in_flight_packets":{},"params":{"fee_percentage":"0.000000000000000000"}},"params":null,"provider":{"consumer_addition_proposals":[],"consumer_addrs_to_prune":[],"consumer_removal_proposals":[],"consumer_states":[],"exported_vsc_send_timestamps":[],"init_timeout_timestamps":[],"mature_unbonding_ops":null,"params":{"blocks_per_epoch":"600","ccv_timeout_period":"2419200s","consumer_reward_denom_registration_fee":{"amount":"10000000","denom":"icsstake"},"init_timeout_period":"604800s","number_of_epochs_to_start_receiving_rewards":"24","slash_meter_replenish_fraction":"0.05","slash_meter_replenish_period":"3600s","template_client":{"allow_update_after_expiry":false,"allow_update_after_misbehaviour":false,"chain_id":"","frozen_height":{"revision_height":"0","revision_number":"0"},"latest_height":{"revision_height":"0","revision_number":"0"},"max_clock_drift":"10s","proof_specs":[{"inner_spec":{"child_order":[0,1],"child_size":33,"empty_child":null,"hash":"SHA256","max_prefix_length":12,"min_prefix_length":4},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0,"prehash_key_before_comparison":false},{"inner_spec":{"child_order":[0,1],"child_size":32,"empty_child":null,"hash":"SHA256","max_prefix_length":1,"min_prefix_length":1},"leaf_spec":{"hash":"SHA256","length":"VAR_PROTO","prefix":"AA==","prehash_key":"NO_HASH","prehash_value":"SHA256"},"max_depth":0,"min_depth":0,"prehash_key_before_comparison":false}],"trust_level":{"denominator":"3","numerator":"1"},"trusting_period":"0s","unbonding_period":"0s","upgrade_path":["upgrade","upgradedIBCState"]},"trusting_period_fraction":"0.66","vsc_timeout_period":"3024000s"},"unbonding_ops":[],"validator_consumer_pubkeys":[],"validators_by_consumer_addr":[],"valset_update_id":"1","valset_update_id_to_height":[]},"ratelimit":{"blacklisted_denoms":[],"hour_epoch":{"duration":"3600s","epoch_number":"0","epoch_start_height":"0","epoch_start_time":"0001-01-01T00:00:00Z"},"params":{},"pending_send_packet_sequence_numbers":[],"rate_limits":[],"whitelisted_address_pairs":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_tokenize_share_record_id":"0","last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"icsstake","global_liquid_staking_cap":"1.000000000000000000","historical_entries":10000,"max_entries":7,"max_validators":100,"min_commission_rate":"0.000000000000000000","unbonding_time":"1814400s","validator_bond_factor":"-1.000000000000000000","validator_liquid_staking_cap":"1.000000000000000000"},"redelegations":[],"tokenize_share_locks":[],"tokenize_share_records":[],"total_liquid_staked_tokens":"0","unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer","total_escrowed":[]},"upgrade":{},"vesting":{},"wasm":{"codes":[],"contracts":[],"params":{"code_upload_access":{"addresses":[],"permission":"Everybody"},"instantiate_default_permission":"Everybody"},"sequences":[]}},"chain_id":"provider-chain","gentxs_dir":"/home/vagrant/.gaia/config/gentx","moniker":"provider-chain-validator1","node_id":"d2a901a884ca8f2c7fb083058ef4df048757f6c6"}
+Distributing provider-chain genesis file...
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+>>> STARTING PROVIDER CHAIN
+[provider-chain-validator1] started gaiad: watch output at /var/log/chain.log
+Done starting provider chain
+--- Finished startProviderChain 
+--- Running waitForProviderChain 
+Waiting for provider chain to finalize a block...
+>>> PROVIDER CHAIN successfully launched. Latest block height: 1
+--- Finished waitForProviderChain 
+--- Running startSovereignChain 
+Preparing sovereign-chain with 1 validators.
+Getting peerlists, editing configs...
+Configuring Consumer chain peers
+[consumer-chain] persistent_peers = "dab84058bccc3202af4b6aaa5254711465364070@192.168.33.21:26656"
+Copying gentxs to consumer-chain-validator1...
+Adding genesis accounts...
+Consumer relayer account: comdex1l7hrk5smvnatux7fsutvc0zldj3z8gawszumlf
+Collecting gentxs on consumer-chain-validator1
+{"app_message":{"07-tendermint":null,"assetv1":{"appData":[],"assets":[],"extendedPairVault":[],"pairs":[],"params":{"asset_regisration_fee":{"amount":"100000000","denom":"ucmdx"}}},"auctionV1":{"UserBiddingID":"0","auctionParams":[],"debtAuction":[],"dutchAuction":[],"dutchLendAuction":[],"params":{},"protocolStatistics":[],"surplusAuction":[]},"auctionmev":{"params":{"escrow_account_address":"oFs/vznlCvzv2QJJ//f9MGyZo2Q=","front_running_protection":true,"max_bundle_size":2,"min_bid_increment":{"amount":"1","denom":"stake"},"proposer_fee":"0.000000000000000000","reserve_fee":{"amount":"1","denom":"stake"}}},"auctionsV2":{"AuctionId":"0","UserBiddingID":"0","auction":[],"auctionFeesCollectionFromLimitBidTx":[],"auctionParams":{"auction_bonus":"0","auction_duration_seconds":"0","bid_factor":"0","closing_fee":"0","liquidation_penalty":"0","min_usd_value_left":"0","step":"0","withdrawal_fee":"0"},"params":{}},"auth":{"accounts":[{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"0","address":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc","pub_key":null,"sequence":"0"},{"@type":"/cosmos.auth.v1beta1.BaseAccount","account_number":"1","address":"comdex1l7hrk5smvnatux7fsutvc0zldj3z8gawszumlf","pub_key":null,"sequence":"0"}],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"authz":{"authorization":[]},"bandoracleV1":{"flag":false,"params":{},"port_id":"bandoracleV1"},"bank":{"balances":[{"address":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc","coins":[{"amount":"1500000000000","denom":"ucmdx"}]},{"address":"comdex1l7hrk5smvnatux7fsutvc0zldj3z8gawszumlf","coins":[{"amount":"15000000000000000000000","denom":"ucmdx"}]}],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"send_enabled":[],"supply":[{"amount":"15000000001500000000000","denom":"ucmdx"}]},"capability":{"index":"1","owners":[]},"collectorV1":{"appIdToAssetCollectorMapping":[],"appToDenomsMapping":[],"collectorAuctionLookupTable":[],"collectorLookup":[],"netFeeCollectedData":[],"params":{}},"consensus":null,"crisis":{"constant_fee":{"amount":"1000","denom":"stake"}},"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.000000000000000000","bonus_proposer_reward":"0.000000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"esmV1":{"currentDepositStats":[],"dataAfterCoolOff":[],"eSMStatus":[],"eSMTriggerParams":[],"killSwitchParams":[],"params":{"admin":["comdex1tadhnvwa0sqzwr3m60f7dsjw4ua77qsz3ptcyw"]},"usersDepositMapping":[]},"evidence":{"evidence":[]},"evm":{"params":{"evm_denom":"ucmdx"}},"feeibc":{"fee_enabled_channels":[],"forward_relayers":[],"identified_fees":[],"registered_counterparty_payees":[],"registered_payees":[]},"genutil":{"gen_txs":[{"auth_info":{"fee":{"amount":[],"gas_limit":"200000","granter":"","payer":""},"signer_infos":[{"mode_info":{"single":{"mode":"SIGN_MODE_DIRECT"}},"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"A1UJ7XWh+VhtOf54wINQjllAZWjp5Y6YWo7PKW1A8Y+5"},"sequence":"0"}],"tip":null},"body":{"extension_options":[],"memo":"dab84058bccc3202af4b6aaa5254711465364070@10.0.2.15:26656","messages":[{"@type":"/cosmos.staking.v1beta1.MsgCreateValidator","commission":{"max_change_rate":"0.010000000000000000","max_rate":"0.200000000000000000","rate":"0.100000000000000000"},"delegator_address":"comdex1l00pr29xvhqe5uczgdlfxfl4purlm7hhfqcacc","description":{"details":"","identity":"","moniker":"comdex-test3-validator1","security_contact":"","website":""},"min_self_delegation":"1","pubkey":{"@type":"/cosmos.crypto.ed25519.PubKey","key":"+p+oHjdCuXulr1IHWu2q5WTG1XQ3zJK0VHar0Zko1sg="},"validator_address":"comdexvaloper1l00pr29xvhqe5uczgdlfxfl4purlm7hh6hz0xe","value":{"amount":"1000000000","denom":"ucmdx"}}],"non_critical_extension_options":[],"timeout_height":"0"},"signatures":["H+6+rlJU/vaWpndQ3FT5cLIkZXEC+tSstFnqwIDbkXVF6k4vB3Gith4cEdJ378R/pxOVsWJAiZ24uFgbO4Oykw=="]}]},"gov":{"deposit_params":null,"deposits":[],"params":{"burn_proposal_deposit_prevote":false,"burn_vote_quorum":false,"burn_vote_veto":true,"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"ucmdx"}],"min_initial_deposit_ratio":"0.000000000000000000","quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000","voting_period":"60s"},"proposals":[],"starting_proposal_id":"1","tally_params":null,"votes":[],"voting_params":{"voting_period":"60s"}},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint","09-localhost"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0","params":{"max_expected_time_per_block":"30000000000"}}},"ibchooks":{},"inflation":{"params":{"mint_denom":"ucmdx"}},"interchainaccounts":{"controller_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"controller_enabled":true},"ports":[]},"host_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"allow_messages":["*"],"host_enabled":true},"port":"icahost"}},"interchainquery":{"host_port":"icqhost","params":{"allow_queries":[],"host_enabled":true}},"lendV2":{"allReserveStats":[],"assetRatesParams":[],"assetToPairMapping":[],"auctionParams":[],"borrowAsset":[],"borrowInterestTracker":[],"extended_Pair":[],"lendAsset":[],"lendRewardsTracker":[],"modBal":{"fund_module_balance":[]},"pool":[],"poolAssetLBMapping":[],"poolDepreciate":{"individual_pool_depreciate":[]},"reserveBal":{"fund_reserve_balance":[]},"reserveBuybackAssetData":[],"userAssetLendBorrowMapping":[]},"liquidationV1":{"lockedVault":[],"params":{"liquidation_batch_size":"200"},"whitelistedApps":[]},"liquidationsV2":{"appReserveFunds":[],"liquidationWhiteListing":[],"lockedVault":[],"params":{"liquidation_batch_size":"200"}},"liquidityV1":{"app_genesis_state":[],"params":{}},"lockerV1":{"lockerLookupTable":[],"lockerProductAssetMapping":[],"lockerTotalRewardsByAssetAppWise":[],"lockers":[],"params":{},"userLockerAssetMapping":[]},"marketV1":{"time_weighted_average":[]},"mint":{"minter":{"annual_provisions":"0.000000000000000000","inflation":"0.130000000000000000"},"params":{"blocks_per_year":"6311520","goal_bonded":"0.670000000000000000","inflation_max":"0.200000000000000000","inflation_min":"0.070000000000000000","inflation_rate_change":"0.130000000000000000","mint_denom":"stake"}},"packetfowardmiddleware":{"in_flight_packets":{},"params":{"fee_percentage":"0.000000000000000000"}},"params":null,"rewardsV1":{"appIDs":[],"epochInfo":[],"gauge":[],"gaugeByTriggerDuration":[],"internal_rewards":[],"lendExternalRewards":[],"locker_external_rewards":[],"locker_rewards_tracker":[],"params":{},"vault_external_rewards":[],"vault_interest_tracker":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"ucmdx","historical_entries":10000,"max_entries":7,"max_validators":100,"min_commission_rate":"0.000000000000000000","unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"tokenmint":{"params":{},"tokenMint":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer","total_escrowed":[]},"upgrade":{},"vaultV1":{"appExtendedPairVaultMapping":[],"lengthOfVaults":"0","stableMintVault":[],"userVaultAssetMapping":[],"vaults":[]},"vesting":{},"wasm":{"codes":[],"contracts":[],"params":{"code_upload_access":{"addresses":[],"permission":"Everybody"},"instantiate_default_permission":"Everybody"},"sequences":[]}},"chain_id":"comdex-test3","gentxs_dir":"/home/vagrant/.comdex/config/gentx","moniker":"comdex-test3-validator1","node_id":"dab84058bccc3202af4b6aaa5254711465364070"}
+Distributing sovereign-chain genesis file...
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+>>> STARTING SOVEREIGN CHAIN
+[consumer-chain-validator1] started comdex: watch output at /var/log/sovereign.log
+--- Finished startSovereignChain 
+--- Running waitForSovereignChain 
+Waiting for Sovereign Chain to finalize a block...
+>>> SOVEREIGN CHAIN successfully launched. Latest block height: 1
+--- Finished waitForSovereignChain 
+--- Running proposeUpgradeSovereign 
+
+ {
+ "messages": [
+  {
+   "@type": "/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
+   "authority": "comdex10d07y265gmmuvt4z0w9aw880jnsr700jad380y",
+   "plan": {
+    "name": "v15.0.0",
+    "time": "0001-01-01T00:00:00Z",
+    "height": "30",
+    "info": "",
+    "upgraded_client_state": null
+   }
+  }
+ ],
+ "metadata": "ipfs://CID",
+ "deposit": "20000000ucmdx",
+ "title": "v15.0.0",
+ "summary": "upgrading to consumer chain"
+}
+
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Submitting software upgrade proposal from consumer-chain-validator1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 73C88A07FA226E72AF7E956B25E6C4F485AE4A9285A303148423189B43428513
+Software upgrade proposal submitted
+--- Finished proposeUpgradeSovereign 
+--- Running voteSoftwareUpgradeProposal 
+Waiting for software upgrade proposal to go live...
+Voting 'yes' from consumer-chain-validator1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: 7C01604347784D4076AA313B4BB044FD571E2C911E14811337D361343F5287ED
+--- Finished voteSoftwareUpgradeProposal 
+--- Running waitForProposalUpgrade 
+Waiting for software upgrade proposal to pass on consumer-chain...
+Software upgrade proposal passed
+--- Finished waitForProposalUpgrade 
+--- Running proposeConsumerAdditionProposal 
+Quick simulation: creating PSS TOP-N consumer addition proposal from provider validator 1...
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Submitting consumer addition proposal from provider validator 1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: A910997B330D9DD8869B26586CC9A8D64571FE92B43EF6624CD881BAD9552EF6
+Consumer addition proposal submitted
+--- Finished proposeConsumerAdditionProposal 
+--- Running voteConsumerAdditionProposal 
+Waiting for consumer addition proposal to go live...
+Voting 'yes' from provider-chain-validator1...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: A100AB09834E117795D6FEF6BE75CD02029E9986C275136A5EB50DE39A053CD5
+--- Finished voteConsumerAdditionProposal 
+--- Running waitForProposalConsumer 
+Waiting for consumer addition proposal to pass on provider-chain...
+Consumer addition proposal passed
+--- Finished waitForProposalConsumer 
+--- Running switchBinaries 
+Switching out binary for new version on consumer-chain...
+Successfully switched binaries
+--- Finished switchBinaries 
+--- Running waitForSpawnTime 
+Waiting for spawn time to be reached: 2024-07-23T09:28:22Z
+ETA: 42 seconds...
+Spawn time reached!
+--- Finished waitForSpawnTime 
+--- Running fetchCCVState 
+fetchig ccv state from provider chain and saving to /home/vagrant/.gaia/config/ccv.json
+downloading ccv.json to files/generated/ccv.json
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+distributing ccv.json to consumer-chain validators /home/vagrant/.comdex/config/ccv.json
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+--- Finished fetchCCVState 
+--- Running applyCCVState 
+applying ccv state
+--- Finished applyCCVState 
+--- Running waitForUpgradeHeight 
+Waiting for sovereign chain to reach upgrade height...
+>>> Sovereign chain has reached upgrade height. Latest block height: 30
+--- Finished waitForUpgradeHeight 
+--- Running restartChain 
+[consumer-chain-validator1] started comdex: watch output at /var/log/consumer.log
+Waiting for consumer chain to finalize a block...
+>>> CONSUMER CHAIN launch was successful. Latest block height: 30
+--- Finished restartChain 
+--- Running getClientIDs 
+Fetching client IDs for both chains...
+Provider client ID: 07-tendermint-0
+Consumer client ID: 07-tendermint-0
+--- Finished getClientIDs 
+--- Running distributeProviderValidatorKeys 
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+--- Finished distributeProviderValidatorKeys 
+--- Running restartChain 
+[consumer-chain-validator1] started comdex: watch output at /var/log/consumer.log
+Waiting for consumer chain to finalize a block...
+>>> CONSUMER CHAIN launch was successful. Latest block height: 32
+--- Finished restartChain 
+--- Running createIbcPaths 
+Creating CCV IBC Paths...
+2024-07-23T09:29:17.757457Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+2024-07-23T09:29:17.778202Z  INFO ThreadId(01) Creating a new connection with pre-existing clients 07-tendermint-0 and 07-tendermint-0
+2024-07-23T09:29:17.781182Z DEBUG ThreadId(01) do_conn_open_handshake with connection end states: UNINITIALIZED, UNINITIALIZED
+2024-07-23T09:29:17.784982Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}: sending 1 messages as 1 batches to chain comdex-test3 in parallel
+2024-07-23T09:29:17.785228Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=0}: max fee, for use in tx simulation: Fee { amount: "225001ucmdx", gas_limit: 9000000 }
+2024-07-23T09:29:17.790780Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=0}:estimate_gas: tx simulation successful, gas amount used: 74722
+2024-07-23T09:29:17.790981Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=0}: send_tx: using 74722 gas, fee Fee { amount: "2803ucmdx", gas_limit: 112083 } id=comdex-test3
+2024-07-23T09:29:17.808960Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=0}: gas estimation succeeded
+2024-07-23T09:29:17.809099Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=0}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(46F78CF3C4F40CF6681E854BBD703C738154312AD42EA10D805491D67775CE1A) } account.sequence.old=0 account.sequence.new=1
+2024-07-23T09:29:17.809248Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}:wait_for_block_commits{id=comdex-test3}: waiting for commit of tx hashes(s) 46F78CF3C4F40CF6681E854BBD703C738154312AD42EA10D805491D67775CE1A
+2024-07-23T09:29:18.714190Z TRACE ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenInit}: retrieved 1 tx results after 904 ms
+2024-07-23T09:29:18.714340Z  INFO ThreadId(01) 🥂 comdex-test3 => OpenInitConnection(OpenInit { Attributes { connection_id: connection-0, client_id: 07-tendermint-0, counterparty_connection_id: None, counterparty_client_id: 07-tendermint-0 } }) at height 0-33
+2024-07-23T09:29:20.716311Z DEBUG ThreadId(01) do_conn_open_handshake with connection end states: INIT, UNINITIALIZED
+2024-07-23T09:29:20.732314Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}: light client verification trusted_height=0-47 target_height=0-57
+2024-07-23T09:29:20.736701Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}: adjusting headers with 0 supporting headers trusted=0-47 target=57
+2024-07-23T09:29:20.736726Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}: fetching header height=0-48
+2024-07-23T09:29:20.742246Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-57}: building a MsgUpdateAnyClient from trusted height 0-47 to target height 0-57
+2024-07-23T09:29:20.743021Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}: sending 1 messages as 1 batches to chain comdex-test3 in parallel
+2024-07-23T09:29:20.743040Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=1}: max fee, for use in tx simulation: Fee { amount: "225001ucmdx", gas_limit: 9000000 }
+2024-07-23T09:29:20.746573Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=1}:estimate_gas: tx simulation successful, gas amount used: 93218
+2024-07-23T09:29:20.746599Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=1}: send_tx: using 93218 gas, fee Fee { amount: "3496ucmdx", gas_limit: 139827 } id=comdex-test3
+2024-07-23T09:29:20.748545Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=1}: gas estimation succeeded
+2024-07-23T09:29:20.748559Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=1}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(F4EF99AB434AA97A8B256992DF23B6CEC747BF9240F0D295D31268FAB29A42F0) } account.sequence.old=1 account.sequence.new=2
+2024-07-23T09:29:20.748585Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}:wait_for_block_commits{id=comdex-test3}: waiting for commit of tx hashes(s) F4EF99AB434AA97A8B256992DF23B6CEC747BF9240F0D295D31268FAB29A42F0
+2024-07-23T09:29:23.768738Z TRACE ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=update client on source for ConnectionOpenTry}: retrieved 1 tx results after 3020 ms
+2024-07-23T09:29:28.662158Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: light client verification trusted_height=0-33 target_height=0-35
+2024-07-23T09:29:28.666392Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: adjusting headers with 0 supporting headers trusted=0-33 target=35
+2024-07-23T09:29:28.666417Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: fetching header height=0-34
+2024-07-23T09:29:28.672578Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: building a MsgUpdateAnyClient from trusted height 0-33 to target height 0-35
+2024-07-23T09:29:28.676421Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}: sending 2 messages as 1 batches to chain provider-chain in parallel
+2024-07-23T09:29:28.676450Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=0}: max fee, for use in tx simulation: Fee { amount: "9900001icsstake", gas_limit: 9000000 }
+2024-07-23T09:29:28.691272Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=0}:estimate_gas: tx simulation successful, gas amount used: 179131
+2024-07-23T09:29:28.691308Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=0}: send_tx: using 179131 gas, fee Fee { amount: "295566icsstake", gas_limit: 268696 } id=provider-chain
+2024-07-23T09:29:28.693405Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=0}: gas estimation succeeded
+2024-07-23T09:29:28.693417Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=0}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(48F6C3E36D36FDE90A71DBF6FEEE03CBC0D78DF253C3AA049180DFBB954D83DD) } account.sequence.old=0 account.sequence.new=1
+2024-07-23T09:29:28.693442Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}:wait_for_block_commits{id=provider-chain}: waiting for commit of tx hashes(s) 48F6C3E36D36FDE90A71DBF6FEEE03CBC0D78DF253C3AA049180DFBB954D83DD
+2024-07-23T09:29:30.750789Z TRACE ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenTry}: retrieved 1 tx results after 2057 ms
+2024-07-23T09:29:30.750993Z  INFO ThreadId(01) 🥂 provider-chain => OpenTryConnection(OpenTry { Attributes { connection_id: connection-0, client_id: 07-tendermint-0, counterparty_connection_id: connection-0, counterparty_client_id: 07-tendermint-0 } }) at height 0-59
+2024-07-23T09:29:32.760358Z DEBUG ThreadId(01) do_conn_open_handshake with connection end states: INIT, TRYOPEN
+2024-07-23T09:29:32.764409Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: consensus state already exists at height 0-35, skipping update
+2024-07-23T09:29:32.764428Z TRACE ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-35}: consensus state consensus_state=Tendermint(ConsensusState { timestamp: Time(2024-07-23 9:29:23.678145291), root: CommitmentRoot("709153384AA2BB40C902ED1169B50489545AA4C1AD1D3BAF5725797E1A80A50F"), next_validators_hash: Hash::Sha256(03C0F5AE3D1A6B0E8CE990694F1F4C49620C47B8C202D7EB34DD0D1671F78A28) })
+2024-07-23T09:29:35.537600Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}: light client verification trusted_height=0-57 target_height=0-60
+2024-07-23T09:29:35.540380Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}: adjusting headers with 0 supporting headers trusted=0-57 target=60
+2024-07-23T09:29:35.540396Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}: fetching header height=0-58
+2024-07-23T09:29:35.543428Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-60}: building a MsgUpdateAnyClient from trusted height 0-57 to target height 0-60
+2024-07-23T09:29:35.546178Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}: sending 2 messages as 1 batches to chain comdex-test3 in parallel
+2024-07-23T09:29:35.546217Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=2}: max fee, for use in tx simulation: Fee { amount: "225001ucmdx", gas_limit: 9000000 }
+2024-07-23T09:29:35.551438Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=2}:estimate_gas: tx simulation successful, gas amount used: 143777
+2024-07-23T09:29:35.551483Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=2}: send_tx: using 143777 gas, fee Fee { amount: "5392ucmdx", gas_limit: 215665 } id=comdex-test3
+2024-07-23T09:29:35.554645Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=2}: gas estimation succeeded
+2024-07-23T09:29:35.554663Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=2}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(9C5350A3237AC8EE95A72204EE3D664F235ED64A00600174598C5B24533B1F8F) } account.sequence.old=2 account.sequence.new=3
+2024-07-23T09:29:35.554690Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}:wait_for_block_commits{id=comdex-test3}: waiting for commit of tx hashes(s) 9C5350A3237AC8EE95A72204EE3D664F235ED64A00600174598C5B24533B1F8F
+2024-07-23T09:29:38.785058Z TRACE ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ConnectionOpenAck}: retrieved 1 tx results after 3230 ms
+2024-07-23T09:29:38.785213Z  INFO ThreadId(01) 🥂 comdex-test3 => OpenAckConnection(OpenAck { Attributes { connection_id: connection-0, client_id: 07-tendermint-0, counterparty_connection_id: connection-0, counterparty_client_id: 07-tendermint-0 } }) at height 0-37
+2024-07-23T09:29:40.787767Z DEBUG ThreadId(01) do_conn_open_handshake with connection end states: OPEN, TRYOPEN
+2024-07-23T09:29:43.713057Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}: light client verification trusted_height=0-35 target_height=0-38
+2024-07-23T09:29:43.716617Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}: adjusting headers with 0 supporting headers trusted=0-35 target=38
+2024-07-23T09:29:43.716634Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}: fetching header height=0-36
+2024-07-23T09:29:43.721392Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-38}: building a MsgUpdateAnyClient from trusted height 0-35 to target height 0-38
+2024-07-23T09:29:43.722295Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}: sending 2 messages as 1 batches to chain provider-chain in parallel
+2024-07-23T09:29:43.722314Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=1}: max fee, for use in tx simulation: Fee { amount: "9900001icsstake", gas_limit: 9000000 }
+2024-07-23T09:29:43.725592Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=1}:estimate_gas: tx simulation successful, gas amount used: 127756
+2024-07-23T09:29:43.725642Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=1}: send_tx: using 127756 gas, fee Fee { amount: "210798icsstake", gas_limit: 191634 } id=provider-chain
+2024-07-23T09:29:43.728625Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=1}: gas estimation succeeded
+2024-07-23T09:29:43.728662Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=1}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(AF96F063D2C61F103418FE839051DAF13F7124FD8525DBD11ECC5CD7EAB9EA64) } account.sequence.old=1 account.sequence.new=2
+2024-07-23T09:29:43.728706Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}:wait_for_block_commits{id=provider-chain}: waiting for commit of tx hashes(s) AF96F063D2C61F103418FE839051DAF13F7124FD8525DBD11ECC5CD7EAB9EA64
+2024-07-23T09:29:45.818339Z TRACE ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ConnectionOpenConfirm}: retrieved 1 tx results after 2089 ms
+2024-07-23T09:29:45.818388Z  INFO ThreadId(01) 🥂 provider-chain => OpenConfirmConnection(OpenConfirm { Attributes { connection_id: connection-0, client_id: 07-tendermint-0, counterparty_connection_id: connection-0, counterparty_client_id: 07-tendermint-0 } }) at height 0-62
+SUCCESS Connection {
+    delay_period: 0ns,
+    a_side: ConnectionSide {
+        chain: BaseChainHandle {
+            chain_id: ChainId {
+                id: "comdex-test3",
+                version: 0,
+            },
+            runtime_sender: Sender { .. },
+        },
+        client_id: ClientId(
+            "07-tendermint-0",
+        ),
+        connection_id: Some(
+            ConnectionId(
+                "connection-0",
+            ),
+        ),
+    },
+    b_side: ConnectionSide {
+        chain: BaseChainHandle {
+            chain_id: ChainId {
+                id: "provider-chain",
+                version: 0,
+            },
+            runtime_sender: Sender { .. },
+        },
+        client_id: ClientId(
+            "07-tendermint-0",
+        ),
+        connection_id: Some(
+            ConnectionId(
+                "connection-0",
+            ),
+        ),
+    },
+}
+2024-07-23T09:29:47.821127Z DEBUG ThreadId(01) do_conn_open_handshake with connection end states: OPEN, OPEN
+2024-07-23T09:29:47.821143Z  INFO ThreadId(01) connection handshake already finished for Connection { delay_period: 0ns, a_side: ConnectionSide { chain: BaseChainHandle { chain_id: comdex-test3 }, client_id: 07-tendermint-0, connection_id: connection-0 }, b_side: ConnectionSide { chain: BaseChainHandle { chain_id: provider-chain }, client_id: 07-tendermint-0, connection_id: connection-0 } }
+2024-07-23T09:29:49.753540Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+2024-07-23T09:29:49.766541Z DEBUG ThreadId(01) do_chan_open_handshake with channel end states: UNINITIALIZED, UNINITIALIZED
+2024-07-23T09:29:49.769396Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}: sending 1 messages as 1 batches to chain comdex-test3 in parallel
+2024-07-23T09:29:49.769447Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=3}: max fee, for use in tx simulation: Fee { amount: "225001ucmdx", gas_limit: 9000000 }
+2024-07-23T09:29:49.772406Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=3}:estimate_gas: tx simulation successful, gas amount used: 112757
+2024-07-23T09:29:49.772438Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=3}: send_tx: using 112757 gas, fee Fee { amount: "4229ucmdx", gas_limit: 169135 } id=comdex-test3
+2024-07-23T09:29:49.774117Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=3}: gas estimation succeeded
+2024-07-23T09:29:49.774152Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=3}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(8962DA5FBE89C33E3CF38C96E3CEF84F54056F4B1CE75244FFF01DD857F3AD5E) } account.sequence.old=3 account.sequence.new=4
+2024-07-23T09:29:49.774179Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}:wait_for_block_commits{id=comdex-test3}: waiting for commit of tx hashes(s) 8962DA5FBE89C33E3CF38C96E3CEF84F54056F4B1CE75244FFF01DD857F3AD5E
+2024-07-23T09:29:53.697519Z TRACE ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenInit}: retrieved 1 tx results after 3923 ms
+2024-07-23T09:29:53.697576Z  INFO ThreadId(01) 🎊  comdex-test3 => OpenInitChannel(OpenInit { port_id: consumer, channel_id: channel-0, connection_id: None, counterparty_port_id: provider, counterparty_channel_id: None }) at height 0-40
+2024-07-23T09:29:55.699548Z DEBUG ThreadId(01) do_chan_open_handshake with channel end states: INIT, UNINITIALIZED
+2024-07-23T09:29:58.712416Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}: light client verification trusted_height=0-38 target_height=0-41
+2024-07-23T09:29:58.718512Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}: adjusting headers with 0 supporting headers trusted=0-38 target=41
+2024-07-23T09:29:58.718544Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}: fetching header height=0-39
+2024-07-23T09:29:58.724558Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-41}: building a MsgUpdateAnyClient from trusted height 0-38 to target height 0-41
+2024-07-23T09:29:58.727371Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}: sending 2 messages as 1 batches to chain provider-chain in parallel
+2024-07-23T09:29:58.727719Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=2}: max fee, for use in tx simulation: Fee { amount: "9900001icsstake", gas_limit: 9000000 }
+2024-07-23T09:29:58.741112Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=2}:estimate_gas: tx simulation successful, gas amount used: 189494
+2024-07-23T09:29:58.741407Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=2}: send_tx: using 189494 gas, fee Fee { amount: "312666icsstake", gas_limit: 284241 } id=provider-chain
+2024-07-23T09:29:58.744355Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=2}: gas estimation succeeded
+2024-07-23T09:29:58.744475Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=2}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(D104C378B3500D72184AA7BE3CC7F220D697F5CFB059CFB517C0E9E26C5E0185) } account.sequence.old=2 account.sequence.new=3
+2024-07-23T09:29:58.744792Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}:wait_for_block_commits{id=provider-chain}: waiting for commit of tx hashes(s) D104C378B3500D72184AA7BE3CC7F220D697F5CFB059CFB517C0E9E26C5E0185
+2024-07-23T09:30:00.867688Z TRACE ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenTry}: retrieved 1 tx results after 2122 ms
+2024-07-23T09:30:00.867823Z  INFO ThreadId(01) 🎊  provider-chain => OpenTryChannel(OpenTry { port_id: provider, channel_id: channel-0, connection_id: connection-0, counterparty_port_id: consumer, counterparty_channel_id: channel-0 }) at height 0-65
+2024-07-23T09:30:02.870651Z DEBUG ThreadId(01) do_chan_open_handshake with channel end states: INIT, TRYOPEN
+2024-07-23T09:30:05.624483Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}: light client verification trusted_height=0-60 target_height=0-66
+2024-07-23T09:30:05.628689Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}: adjusting headers with 0 supporting headers trusted=0-60 target=66
+2024-07-23T09:30:05.628707Z TRACE ThreadId(07) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}: fetching header height=0-61
+2024-07-23T09:30:05.632554Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}:foreign_client.build_update_client_with_trusted{client=provider-chain->comdex-test3:07-tendermint-0 target_height=0-66}: building a MsgUpdateAnyClient from trusted height 0-60 to target height 0-66
+2024-07-23T09:30:05.633520Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}: sending 2 messages as 1 batches to chain comdex-test3 in parallel
+2024-07-23T09:30:05.633546Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=4}: max fee, for use in tx simulation: Fee { amount: "225001ucmdx", gas_limit: 9000000 }
+2024-07-23T09:30:05.637857Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=4}:estimate_gas: tx simulation successful, gas amount used: 200338
+2024-07-23T09:30:05.637903Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=4}: send_tx: using 200338 gas, fee Fee { amount: "7513ucmdx", gas_limit: 300507 } id=comdex-test3
+2024-07-23T09:30:05.640786Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=4}: gas estimation succeeded
+2024-07-23T09:30:05.640809Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:send_tx_with_account_sequence_retry{chain=comdex-test3 account.sequence=4}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(FE4E0143992C373ABA90B4D59BF3AF5453EADFD91382936ACBD53917DEA77F5E) } account.sequence.old=4 account.sequence.new=5
+2024-07-23T09:30:05.640840Z DEBUG ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}:wait_for_block_commits{id=comdex-test3}: waiting for commit of tx hashes(s) FE4E0143992C373ABA90B4D59BF3AF5453EADFD91382936ACBD53917DEA77F5E
+2024-07-23T09:30:08.962148Z TRACE ThreadId(04) send_messages_and_wait_commit{chain=comdex-test3 tracking_id=ChannelOpenAck}: retrieved 1 tx results after 3321 ms
+2024-07-23T09:30:08.962266Z  INFO ThreadId(01) 🎊  comdex-test3 => OpenAckChannel(OpenAck { port_id: consumer, channel_id: channel-0, connection_id: connection-0, counterparty_port_id: provider, counterparty_channel_id: channel-0 }) at height 0-43
+2024-07-23T09:30:10.965647Z DEBUG ThreadId(01) do_chan_open_handshake with channel end states: OPEN, TRYOPEN
+2024-07-23T09:30:13.807301Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}: light client verification trusted_height=0-41 target_height=0-44
+2024-07-23T09:30:13.811071Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}: adjusting headers with 0 supporting headers trusted=0-41 target=44
+2024-07-23T09:30:13.811085Z TRACE ThreadId(04) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}: fetching header height=0-42
+2024-07-23T09:30:13.815729Z DEBUG ThreadId(01) foreign_client.wait_and_build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}:foreign_client.build_update_client_with_trusted{client=comdex-test3->provider-chain:07-tendermint-0 target_height=0-44}: building a MsgUpdateAnyClient from trusted height 0-41 to target height 0-44
+2024-07-23T09:30:13.816747Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}: sending 2 messages as 1 batches to chain provider-chain in parallel
+2024-07-23T09:30:13.816765Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=3}: max fee, for use in tx simulation: Fee { amount: "9900001icsstake", gas_limit: 9000000 }
+2024-07-23T09:30:13.820802Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=3}:estimate_gas: tx simulation successful, gas amount used: 151175
+2024-07-23T09:30:13.820845Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=3}: send_tx: using 151175 gas, fee Fee { amount: "249439icsstake", gas_limit: 226762 } id=provider-chain
+2024-07-23T09:30:13.823998Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=3}: gas estimation succeeded
+2024-07-23T09:30:13.824151Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:send_tx_with_account_sequence_retry{chain=provider-chain account.sequence=3}: tx was successfully broadcasted, increasing account sequence number response=Response { codespace: "", code: Ok, data: b"", log: "[]", hash: Hash::Sha256(EFDE4200C39E7804D7D50C7D95C5F41F75A07EC4FA6FC4279509DE951E63FA3D) } account.sequence.old=3 account.sequence.new=4
+2024-07-23T09:30:13.824472Z DEBUG ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}:wait_for_block_commits{id=provider-chain}: waiting for commit of tx hashes(s) EFDE4200C39E7804D7D50C7D95C5F41F75A07EC4FA6FC4279509DE951E63FA3D
+2024-07-23T09:30:15.628862Z TRACE ThreadId(07) send_messages_and_wait_commit{chain=provider-chain tracking_id=ChannelOpenConfirm}: retrieved 1 tx results after 1804 ms
+2024-07-23T09:30:15.629013Z  INFO ThreadId(01) 🎊  provider-chain => OpenConfirmChannel(OpenConfirm { port_id: provider, channel_id: channel-0, connection_id: connection-0, counterparty_port_id: consumer, counterparty_channel_id: channel-0 }) at height 0-68
+SUCCESS Channel {
+    ordering: Ordered,
+    a_side: ChannelSide {
+        chain: BaseChainHandle {
+            chain_id: ChainId {
+                id: "comdex-test3",
+                version: 0,
+            },
+            runtime_sender: Sender { .. },
+        },
+        client_id: ClientId(
+            "07-tendermint-0",
+        ),
+        connection_id: ConnectionId(
+            "connection-0",
+        ),
+        port_id: PortId(
+            "consumer",
+        ),
+        channel_id: Some(
+            ChannelId(
+                "channel-0",
+            ),
+        ),
+        version: Some(
+            Version(
+                "1",
+            ),
+        ),
+    },
+    b_side: ChannelSide {
+        chain: BaseChainHandle {
+            chain_id: ChainId {
+                id: "provider-chain",
+                version: 0,
+            },
+            runtime_sender: Sender { .. },
+        },
+        client_id: ClientId(
+            "07-tendermint-0",
+        ),
+        connection_id: ConnectionId(
+            "connection-0",
+        ),
+        port_id: PortId(
+            "provider",
+        ),
+        channel_id: Some(
+            ChannelId(
+                "channel-0",
+            ),
+        ),
+        version: Some(
+            Version(
+                "1",
+            ),
+        ),
+    },
+    connection_delay: 0ns,
+}
+2024-07-23T09:30:17.633150Z DEBUG ThreadId(01) do_chan_open_handshake with channel end states: OPEN, OPEN
+2024-07-23T09:30:17.633162Z  INFO ThreadId(01) channel handshake already finished for Channel { ordering: ORDER_ORDERED, a_side: ChannelSide { chain: BaseChainHandle { chain_id: comdex-test3 }, client_id: 07-tendermint-0, connection_id: connection-0, port_id: consumer, channel_id: channel-0, version: 1 }, b_side: ChannelSide { chain: BaseChainHandle { chain_id: provider-chain }, client_id: 07-tendermint-0, connection_id: connection-0, port_id: provider, channel_id: channel-0, version: 1 }, connection_delay: 0ns }
+--- Finished createIbcPaths 
+--- Running testConnection 
+Querying IBC connection...
+2024-07-23T09:30:19.296469Z  INFO ThreadId(01) using default configuration from '/home/vagrant/.hermes/config.toml'
+2024-07-23T09:30:19.296835Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+>>> IBC Connection was successful.
+--- Finished testConnection 
+--- Running testChannel 
+Querying IBC channel...
+2024-07-23T09:30:21.013898Z  INFO ThreadId(01) using default configuration from '/home/vagrant/.hermes/config.toml'
+2024-07-23T09:30:21.014229Z  INFO ThreadId(01) running Hermes v1.10.0+fc998de
+2024-07-23T09:30:21.017320Z TRACE ThreadId(01) spawned chain runtime chain=comdex-test3
+>>> IBC Channels were successfully created.
+--- Finished testChannel 
+--- Running startRelayer 
+Starting relayer...
+[provider-chain-validator1] started hermes IBC relayer: watch output at /var/log/hermes.log
+--- Finished startRelayer 
+--- Running delegate 
+Validator Address to delegate to: cosmosvaloper12pf0y267zuhdkqsnyxqyj9zp83em0y7swz9m6r
+Running delegate transaction...
+code: 0
+codespace: ""
+data: ""
+events: []
+gas_used: "0"
+gas_wanted: "0"
+height: "0"
+info: ""
+logs: []
+raw_log: '[]'
+timestamp: ""
+tx: null
+txhash: D40669055CEA77FF3B8625DFE62C4E85F079EDC321D92B363107006360D861AD
+Delegate transaction complete.
+Waiting for transaction to validator set change to arrive on consumer chain...
+>>> Delegation has successfully arrive on consumer chain.
+Voting Power before delegation: 1000
+Voting Power after delegation: 1005
+--- Finished delegate 
+--- Running getLogs 
+Collecting logs...
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2200' (ED25519) to the list of known hosts.
+Wrote log of provider chain to: files/logs/chainlog_provider-chain-validator1.log
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+Wrote log of consumer chain to: files/logs/consumerlog_consumer-chain-validator1.log
+--- Finished getLogs 
