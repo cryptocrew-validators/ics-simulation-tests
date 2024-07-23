@@ -3,13 +3,15 @@
 # node logs piped to /var/logs/chain.log
 # relayer logs piped to /var/logs/relayer.log
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 1icsstake --keyring-backend test -y"
-CONSUMER_FLAGS="--chain-id $CONSUMER_CHAIN_ID --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} --keyring-backend test -y"
-RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
-HERMES_BIN=/home/vagrant/.hermes/bin/hermes
-HERMES_CONFIG=/home/vagrant/.hermes/config.toml
-TESTS_PASSED=0
-TESTS_FAILED=0
+function setGlobalVars {
+  PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 1icsstake --keyring-backend test -y"
+  CONSUMER_FLAGS="--chain-id $CONSUMER_CHAIN_ID --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} --keyring-backend test -y"
+  RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
+  HERMES_BIN=/home/vagrant/.hermes/bin/hermes
+  HERMES_CONFIG=/home/vagrant/.hermes/config.toml
+  TESTS_PASSED=0
+  TESTS_FAILED=0
+}
 
 set -e
 
@@ -64,6 +66,7 @@ function sourceDependencies() {
 function main() {
   # Load .env file
   loadEnv
+  setGlobalVars
 
   # Dependencies
   sourceDependencies

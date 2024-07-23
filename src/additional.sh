@@ -7,7 +7,7 @@ function delegate() {
     VOTING_POWER_POST=0
 
     echo "Running delegate transaction..."
-    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake $PROVIDER_FLAGS"
+    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake --from provider-chain-validator1 $PROVIDER_FLAGS"
     echo "Delegate transaction complete."
 
     echo "Waiting for transaction to validator set change to arrive on consumer chain..."
