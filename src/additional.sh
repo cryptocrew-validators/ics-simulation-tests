@@ -32,7 +32,7 @@ function delegate() {
     fi
 }
 
-function jailConsumer() {^
+function jailConsumer() {
     echo "Running jail on consumer chain..."
     #VALIDATOR_ADDRESS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME keys show provider-chain-validator1 --bech val --keyring-backend test -a")
     
