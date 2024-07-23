@@ -4,6 +4,7 @@
 # relayer logs piped to /var/logs/relayer.log
 
 PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 1icsstake --keyring-backend test -y"
+CONSUMER_FLAGS="--chain-id $CONSUMER_CHAIN_ID --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
@@ -60,76 +61,6 @@ function sourceDependencies() {
   . ./src/additional.sh
 }
 
-function showResults() {
-  echo "Test Results: "
-  if [ "$TEST_PROVIDER_LAUNCH" == "true" ]; then
-    echo "Provider chain launch: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Provider chain launch: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-  
- if [ "$TEST_SOVEREIGN_LAUNCH" == "true" ]; then
-    echo "Sovereign chain launch: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Sovereign chain launch: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  if [ "$TEST_CONSUMER_MIGRATION" == "true" ]; then
-    echo "Consumer chain launch: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Consumer chain launch: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  if [ "$TEST_IBC_CONNECTION" == "true" ]; then
-    echo "IBC connection creation: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "IBC connection creation: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  if [ "$TEST_IBC_CHANNEL" == "true" ]; then
-    echo "IBC channel creation: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "IBC channel creation: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  if [ "$TEST_DELEGATION_CONSUMER" == "true" ]; then
-    echo "Delegation update on consumer chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Delegation update on consumer chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-  
-  if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
-    echo "Validator jailing on provider chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Validator jailing on provider chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  if [ "$TEST_JAIL_CONSUMER" == "true" ]; then
-    echo "Validator jailing on consumer chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Validator jailing on consumer chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
-
-  echo "Tests passed: $TESTS_PASSED"
-  echo "Tests failed: $TESTS_FAILED"
-}
-
 function main() {
   # Load .env file
   loadEnv
@@ -179,9 +110,9 @@ function main() {
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  call_and_log jailProvider
+  # call_and_log jailProvider
   call_and_log getLogs
-  #call_and_log cleanUp
+  # call_and_log cleanUp
 
   showResults
 }

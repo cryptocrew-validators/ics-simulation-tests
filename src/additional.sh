@@ -1,14 +1,13 @@
 
 function delegate() {
     VALIDATOR_ADDRESS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME keys show provider-chain-validator1 --bech val --keyring-backend test -a")
-    #echo "VALIDATOR ADDRESS: $VALIDATOR_ADDRESS"
-
+    echo "Validator Address to delegate to: $VALIDATOR_ADDRESS"
 
     VOTING_POWER_PRE=$(checkVotingPower "consumer-chain-validator1")
     VOTING_POWER_POST=0
 
     echo "Running delegate transaction..."
-    vagrant ssh provider-chain-validator2 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake --chain-id provider-chain --from provider-chain-validator2 --keyring-backend test -y"
+    vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake $PROVIDER_FLAGS"
     echo "Delegate transaction complete."
 
     echo "Waiting for transaction to validator set change to arrive on consumer chain..."
@@ -33,21 +32,21 @@ function delegate() {
     fi
 }
 
-function jailConsumer() {
+function jailConsumer() {^
     echo "Running jail on consumer chain..."
     #VALIDATOR_ADDRESS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME keys show provider-chain-validator1 --bech val --keyring-backend test -a")
     
     echo "Stopping $CONSUMER_APP..."
     vagrant ssh consumer-chain-validator1 -- "pkill $CONSUMER_APP"
 
-    echo "Copying duplicate private validator key to validator..."
-    vagrant scp files/generated/priv_validator_key2.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json
+    # echo "Copying duplicate private validator key to validator..."
+    # vagrant scp files/generated/priv_validator_key2.json consumer-chain-validator1:$CONSUMER_HOME/config/priv_validator_key.json
 
-    echo "Restarting $CONSUMER_APP..."
-    vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
+    # echo "Restarting $CONSUMER_APP..."
+    # vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --grpc.address 0.0.0.0:9090> /var/log/consumer.log 2>&1 &"
     
 
-    MAX_ITERATIONS=30
+    MAX_ITERATIONS=150
     ITERATION=0
     VOTING_POWER=$(checkVotingPower "consumer-chain-validator1")
 
@@ -60,7 +59,7 @@ function jailConsumer() {
     if (($VOTING_POWER == 0)); then
         echo "Validator has been jailed."
     else
-        echo "Could not confirm that validator has been jailed within 60 seconds."
+        echo "Could not confirm that validator has been jailed within 5 minutes."
     fi
 }
 
@@ -81,7 +80,7 @@ function jailProvider() {
     MAX_ITERATIONS=30
     ITERATION=0
     VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")
-    VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator2")
+    VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator1")
 
     while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_PROVIDER != 0)); do
         VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")

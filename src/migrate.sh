@@ -33,7 +33,7 @@ EOT
 
   # Create and submit the upgrade proposal
   echo "Submitting software upgrade proposal from consumer-chain-validator1..."
-  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from $CONSUMER_CHAIN_ID-validator1 --keyring-backend test --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} -y"
+  vagrant ssh consumer-chain-validator1 -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov submit-proposal /home/vagrant/upgrade_proposal.json --from $CONSUMER_CHAIN_ID-validator1 $CONSUMER_FLAGS"
   echo "Software upgrade proposal submitted"
 }
 
@@ -45,7 +45,7 @@ function voteSoftwareUpgradeProposal() {
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     echo "Voting 'yes' from consumer-chain-validator${i}..."
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from $CONSUMER_CHAIN_ID-validator${i} --keyring-backend test --gas 400000 --gas-prices ${CONSUMER_FEE_AMOUNT}${CONSUMER_FEE_DENOM} -y"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME tx gov vote 1 yes --from $CONSUMER_CHAIN_ID-validator${i} $CONSUMER_FLAGS"
   done
 }
 
@@ -64,6 +64,7 @@ function waitForProposalUpgrade() {
 function switchBinaries() {
     echo "Switching out binary for new version on consumer-chain..."
     for i in $(seq 1 $NUM_VALIDATORS); do
+        vagrant ssh consumer-chain-validator${i} -- mv /usr/local/bin/$CONSUMER_APP /usr/local/bin/oldbin
         vagrant ssh consumer-chain-validator${i} -- mv /usr/local/bin/newbin /usr/local/bin/$CONSUMER_APP
     done
     echo "Successfully switched binaries"

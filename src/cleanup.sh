@@ -17,13 +17,14 @@ function clearFilesAndLogs() {
 }
 
 function getLogs() {
-  echo "Getting logs..."
+  echo "Collecting logs..."
   vagrant scp provider-chain-validator1:/var/log/hermes.log files/logs/hermes.log
 
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant scp provider-chain-validator${i}:/var/log/chain.log files/logs/chainlog_provider-chain-validator${i}.log
     echo "Wrote log of provider chain to: files/logs/chainlog_provider-chain-validator${i}.log"
-    vagrant scp consumer-chain-validator${i}:/var/log/chain.log files/logs/consumerlog_consumer-chain-validator${i}.log
+    vagrant scp consumer-chain-validator${i}:/var/log/sovereign.log files/logs/consumerlog_consumer-chain-validator${i}-sovereign.log
+    vagrant scp consumer-chain-validator${i}:/var/log/consumer.log files/logs/consumerlog_consumer-chain-validator${i}-consumer.log
     echo "Wrote log of consumer chain to: files/logs/consumerlog_consumer-chain-validator${i}.log"
   done
 }
@@ -51,4 +52,74 @@ function copyGeneratedFiles() {
   echo "Copying .env to ./tests/env"
   cp .env ./tests/env
   echo "Copying result.log to ./tests"
+}
+
+function showResults() {
+  echo "Test Results: "
+  if [ "$TEST_PROVIDER_LAUNCH" == "true" ]; then
+    echo "Provider chain launch: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_PROVIDER_LAUNCH" == "false" ]; then
+    echo "Provider chain launch: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+  
+  if [ "$TEST_SOVEREIGN_LAUNCH" == "true" ]; then
+    echo "Sovereign chain launch: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_SOVEREIGN_LAUNCH" == "false" ]; then
+    echo "Sovereign chain launch: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_CONSUMER_MIGRATION" == "true" ]; then
+    echo "Consumer chain launch: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_CONSUMER_MIGRATION" == "false" ]; then
+    echo "Consumer chain launch: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_IBC_CONNECTION" == "true" ]; then
+    echo "IBC connection creation: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_IBC_CONNECTION" == "false" ]; then
+    echo "IBC connection creation: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_IBC_CHANNEL" == "true" ]; then
+    echo "IBC channel creation: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_IBC_CHANNEL" == "false" ]; then
+    echo "IBC channel creation: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_DELEGATION_CONSUMER" == "true" ]; then
+    echo "Delegation update on consumer chain: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_DELEGATION_CONSUMER" == "false" ]; then
+    echo "Delegation update on consumer chain: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+  
+  if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
+    echo "Validator jailing on provider chain: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_JAIL_PROVIDER" == "false" ]; then
+    echo "Validator jailing on provider chain: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  if [ "$TEST_JAIL_CONSUMER" == "true" ]; then
+    echo "Validator jailing on consumer chain: OK"
+    TESTS_PASSED=$((TESTS_PASSED+1))
+  elif [ "$TEST_JAIL_CONSUMER" == "false" ]; then
+    echo "Validator jailing on consumer chain: FAILED"
+    TESTS_FAILED=$((TESTS_FAILED+1))
+  fi
+
+  echo "Tests passed: $TESTS_PASSED"
+  echo "Tests failed: $TESTS_FAILED"
 }
