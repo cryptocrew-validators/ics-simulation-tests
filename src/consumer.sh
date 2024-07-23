@@ -101,7 +101,7 @@ function startSovereignChain() {
   configPeersSovereign
   
   # Copy gentxs to the first validator of sovereign chain, collect gentxs
-  echo "Copying gentxs to sovereign-chain-validator1..."
+  echo "Copying gentxs to consumer-chain-validator1..."
   VAL_ACCOUNTS_SOVEREIGN=()
   for i in $(seq 2 $NUM_VALIDATORS); do
     GENTX_FILENAME=$(vagrant ssh consumer-chain-validator${i} -- "bash -c 'ls $CONSUMER_HOME/config/gentx/ | head -n 1'")
