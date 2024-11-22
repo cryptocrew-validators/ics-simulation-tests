@@ -79,7 +79,7 @@ function manipulateGenesis() {
   sed -i 's/"stake"/"icsstake"/g' $DAEMON_HOME/config/genesis.json
     jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
-    jq '.app_state.gov.voting_params.expedited_voting_period = "50s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    jq '.app_state.gov.params.expedited_voting_period = "50s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
