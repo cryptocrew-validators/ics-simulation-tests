@@ -32,7 +32,25 @@ function startProviderChain() {
     vagrant scp files/generated/gentx_provider${i}.json provider-chain-validator1:$PROVIDER_HOME/config/gentx/gentx${i}.json
     
     ACCOUNT=$(cat files/generated/gentx_provider${i}.json | jq -r '.body.messages[0].delegator_address')
+    #Check if ACCOUNT is empty
+    if [ -z "$ACCOUNT" ]; then
+        echo "account is empty"
+    
+        # Fetch the account details and save to a file
+        ACCOUNT_FILE="account_details.txt"
+        vagrant ssh provider-chain-validator${i} -- "bash -c 'gaiad keys list --keyring-backend test'" > "$ACCOUNT_FILE"
+    
+        echo "Account details saved to $ACCOUNT_FILE"
+    
+        # Extract the account address from the file
+        ACCOUNT=$(grep 'address:' "$ACCOUNT_FILE" | sed 's/- address: //')
+    
+        echo "Fetched account address"
+        echo "$ACCOUNT"
+    fi
+
     VAL_ACCOUNTS+=($ACCOUNT)
+    echo $VAL_ACCOUNTS
     echo "[provider-chain-validator${i}] ${VAL_ACCOUNTS[i-2]} (account: provider-chain-validator${i})"
   done
 

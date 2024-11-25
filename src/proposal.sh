@@ -1,5 +1,51 @@
 set -e
 
+
+function createConsumer() {
+  cat > files/generated/create_consumer.json <<EOT
+{
+  "chain_id": "consumer-chain",
+  "metadata": {
+    "name": "elys",
+    "description": "blockchain",
+    "metadata": "{}"
+  },
+  "initialization_parameters": {
+    "initial_height": {
+     "revision_number": 1,
+     "revision_height": 1
+    },
+    "genesis_hash": "",
+    "binary_hash": "",
+    "spawn_time": null,
+    "unbonding_period": 1209600000000000,
+    "ccv_timeout_period": 2419200000000000,
+    "transfer_timeout_period": 1800000000000,
+    "consumer_redistribution_fraction": "0.90",
+    "blocks_per_distribution_transmission": 1000,
+    "historical_entries": 10000,
+    "distribution_transmission_channel": ""
+  },
+  "power_shaping_parameters": {
+    "top_N": 0,
+    "validators_power_cap": 20,
+    "validator_set_cap": 0,
+    "allowlist": [],
+    "denylist": [],
+    "min_stake": 0,
+    "allow_inactive_vals": true
+  }
+}
+EOT
+
+  vagrant scp files/generated/create_consumer.json provider-chain-validator1:/home/vagrant/create_consumer.json
+
+  # Create and submit the consumer addition proposal
+  echo "Creating consumer from provider-chain-validator1... "
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx provider create-consumer /home/vagrant/create_consumer.json --from provider-chain-validator1 $PROVIDER_FLAGS"
+  echo "Consumer created."
+}
+
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
   # PROP_TITLE="Create the Consumer chain"

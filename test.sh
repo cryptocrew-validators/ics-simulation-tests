@@ -3,7 +3,7 @@
 # node logs piped to /var/logs/chain.log
 # relayer logs piped to /var/logs/relayer.log
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.0icsstake --keyring-backend test -y"
+PROVIDER_FLAGS="--chain-id provider-chain --gas 50000000 --gas-prices 1.0icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
@@ -143,7 +143,7 @@ function main() {
   call_and_log startProviderChain
   call_and_log waitForProviderChain
   call_and_log manipulateConsumerGenesis
-  call_and_log proposeConsumerAdditionProposal
+  call_and_log createConsumer
   call_and_log voteConsumerAdditionProposal
   call_and_log waitForProposal
   if $KEY_ASSIGNMENT ; then
