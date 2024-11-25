@@ -78,7 +78,7 @@ Vagrant.configure("2") do |config|
         v.cpus = 1
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
-      node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain"}
+      node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain-1"}
       
       config.vm.provision :shell, inline: <<-SHELL
         sed -ie 's/^PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config

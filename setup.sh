@@ -27,7 +27,7 @@ function setNodeVars() {
     DAEMON_REPO=$PROVIDER_REPO
     DAEMON_VERSION=$PROVIDER_VERSION
     DAEMON_GO_SOURCE=$PROVIDER_GO_SOURCE
-  elif [ "$CHAIN_ID" == "consumer-chain" ]; then
+  elif [ "$CHAIN_ID" == "consumer-chain-1" ]; then
     DAEMON_NAME=$CONSUMER_APP
     DAEMON_HOME=$CONSUMER_HOME
     DAEMON_REPO=$CONSUMER_REPO

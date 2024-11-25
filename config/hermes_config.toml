@@ -53,7 +53,7 @@ trust_threshold = { numerator = '2', denominator = '3' }
 
 
 [[chains]]
-id = 'consumer-chain'
+id = 'consumer-chain-1'
 rpc_addr = 'http://192.168.33.21:26657'
 grpc_addr = 'http://192.168.33.21:9090'
 event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }

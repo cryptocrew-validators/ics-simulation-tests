@@ -4,7 +4,7 @@ set -e
 function createConsumer() {
   cat > files/generated/create_consumer.json <<EOT
 {
-  "chain_id": "consumer-chain",
+  "chain_id": "consumer-chain-1",
   "metadata": {
     "name": "elys",
     "description": "blockchain",
