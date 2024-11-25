@@ -148,7 +148,7 @@ function main() {
   if $KEY_ASSIGNMENT ; then
     call_and_log assignConsumerKey "1-prelaunch-newkey"
   fi
-  call_and_log waitForSpawnTime
+  call_and_log waitForSpawnTimeOptIn
   call_and_log prepareConsumerChain
   call_and_log startConsumerChain
   call_and_log waitForConsumerChain

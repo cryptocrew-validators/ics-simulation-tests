@@ -80,7 +80,7 @@ function prepareConsumerChain() {
   
   # Query CCV consumer state on provider-chain-validator1
   echo "Querying CCV consumer state on provider-chain-validator1 and finalizing consumer-chain genesis.json..."
-  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis consumer-chain -o json")
+  CONSUMER_CCV_STATE=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME query provider consumer-genesis 0 -o json")
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # import module state
