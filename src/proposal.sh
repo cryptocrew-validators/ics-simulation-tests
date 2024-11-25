@@ -2,6 +2,8 @@ set -e
 
 
 function createConsumer() {
+
+  SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   cat > files/generated/create_consumer.json <<EOT
 {
   "chain_id": "consumer-chain-1",
@@ -17,7 +19,7 @@ function createConsumer() {
     },
     "genesis_hash": "",
     "binary_hash": "",
-    "spawn_time": null,
+    "spawn_time": "$SPAWN_TIME",
     "unbonding_period": 1209600000000000,
     "ccv_timeout_period": 2419200000000000,
     "transfer_timeout_period": 1800000000000,
@@ -194,6 +196,15 @@ EOT
   echo "Consumer addition proposal submitted"
 }
 
+function optIn() {
+  echo "Waiting for consumer to be created..."
+  sleep 7
+
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    echo "Opting in from provider-chain-validator${i}..."
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tx provider opt-in 0 --from provider-chain-validator${i} $PROVIDER_FLAGS"
+  done
+}
 # Vote yes on the consumer addition proposal from all provider validators
 function voteConsumerAdditionProposal() {
   echo "Waiting for consumer addition proposal to go live..."
