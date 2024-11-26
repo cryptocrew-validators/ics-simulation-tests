@@ -3,6 +3,13 @@ set -e
 
 function createConsumer() {
 
+  echo "Fetching consensus address for allowlist..."
+  CONS_ADDRS=()
+  for i in $(seq 2 $NUM_VALIDATORS); do
+    CONS_ADDR=$(vagrant ssh provider-chain-validator${i} -- "bash -c '$PROVIDER_APP tendermint show-address'")
+    CONS_ADDRS+=($CONS_ADDR)
+  done
+
   SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   cat > files/generated/create_consumer.json <<EOT
 {
@@ -32,7 +39,7 @@ function createConsumer() {
     "top_N": 0,
     "validators_power_cap": 20,
     "validator_set_cap": 0,
-    "allowlist": [],
+    "allowlist": ["$CONS_ADDR"],
     "denylist": [],
     "min_stake": 0,
     "allow_inactive_vals": true

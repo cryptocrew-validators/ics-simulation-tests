@@ -170,7 +170,7 @@ function manipulateConsumerGenesis() {
 
   # Update chain_id to consumer-chain
   echo "Setting chain_id: consumer-chain"
-  jq --arg chainid "consumer-chain" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
+  jq --arg chainid "consumer-chain-1" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
   
   # Update genesis_time to 1min in the past
   GENESIS_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))"')
