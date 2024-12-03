@@ -13,6 +13,7 @@ function createIbcPaths() {
   echo "Creating CCV IBC Paths..."
   vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create connection --a-chain consumer-chain-1 --a-client 07-tendermint-0 --b-client 07-tendermint-0"
   vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create channel --a-chain consumer-chain-1 --a-port consumer --b-port provider --order ordered --a-connection connection-0 --channel-version 1"
+  vagrant ssh provider-chain-validator1 -- "$HERMES_BIN --config $HERMES_CONFIG create channel --a-chain provider-chain --a-port transfer --b-port transfer --order unordered --a-connection connection-0 --channel-version 1"
 }
 
 # Start IBC Relayer

@@ -24,8 +24,8 @@ function createConsumer() {
     "unbonding_period": 1209600000000000,
     "ccv_timeout_period": 2419200000000000,
     "transfer_timeout_period": 1800000000000,
-    "consumer_redistribution_fraction": "0.90",
-    "blocks_per_distribution_transmission": 1000,
+    "consumer_redistribution_fraction": "0.5",
+    "blocks_per_distribution_transmission": 10,
     "historical_entries": 10000,
     "distribution_transmission_channel": ""
   },

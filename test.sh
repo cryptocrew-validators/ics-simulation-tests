@@ -3,7 +3,7 @@
 # node logs piped to /var/logs/chain.log
 # relayer logs piped to /var/logs/relayer.log
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 50000000 --gas-prices 1.0icsstake --keyring-backend test -y"
+PROVIDER_FLAGS="--chain-id provider-chain --gas 500000 --gas-prices 1.0icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
