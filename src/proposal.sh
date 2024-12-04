@@ -2,11 +2,12 @@ set -e
 
 
 function createConsumer() {
-
- 
   SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   cat > files/generated/create_consumer.json <<EOT
 {
+  "allowlisted_reward_denoms": {
+    "denoms": ["ibc/49DBEC637ABE09667C78CF6F55A7FC91A3BF505B0136D84A21A875ABD1987D0E"]
+  },
   "chain_id": "consumer-chain-1",
   "metadata": {
     "name": "elys",
@@ -25,7 +26,7 @@ function createConsumer() {
     "ccv_timeout_period": 2419200000000000,
     "transfer_timeout_period": 1800000000000,
     "consumer_redistribution_fraction": "0.5",
-    "blocks_per_distribution_transmission": 10,
+    "blocks_per_distribution_transmission": 50,
     "historical_entries": 10000,
     "distribution_transmission_channel": ""
   },
@@ -47,6 +48,37 @@ EOT
   echo "Creating consumer from provider-chain-validator1... "
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx provider create-consumer /home/vagrant/create_consumer.json --from provider-chain-validator1 $PROVIDER_FLAGS"
   echo "Consumer created."
+}
+
+function whiteListDenoms() {
+   cat > files/generated/register_denom.json <<EOT
+{
+    "messages": [
+        {
+            "@type": "/interchain_security.ccv.provider.v1.MsgChangeRewardDenoms",
+            "denoms_to_add": [
+             "ibc/49DBEC637ABE09667C78CF6F55A7FC91A3BF505B0136D84A21A875ABD1987D0E"
+            ],
+            "denoms_to_remove": [],
+            "authority": "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn"
+           }
+       ],
+    "metadata": "ipfs://CID",
+    "deposit": "10000000icsstake",
+    "title": "Change Reward Denoms",
+    "summary": "Whitelisting the consumer token denom"
+}
+EOT
+
+  vagrant scp files/generated/register_denom.json provider-chain-validator1:/home/vagrant/register_denom.json
+
+  echo "Submitting MsgChangeRewardDenom from provider-chain-validator1..."
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal /home/vagrant/register_denom.json --from provider-chain-validator1 $PROVIDER_FLAGS"
+  echo "Reward Denom Change submitted."
+
+  echo "Voting for Reward Denom Change from provider-chain-validator1..."
+  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator1 $PROVIDER_FLAGS"
+  echo "Voted for Reward Denom Change proposal"
 }
 
 # Propose consumer addition proposal from provider validator 1
