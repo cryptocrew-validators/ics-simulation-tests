@@ -145,6 +145,7 @@ function main() {
   call_and_log manipulateConsumerGenesis
   call_and_log createConsumer
   call_and_log optIn
+  call_and_log whitelistDenoms
   if $KEY_ASSIGNMENT ; then
     call_and_log assignConsumerKey "1-prelaunch-newkey"
   fi
@@ -158,7 +159,7 @@ function main() {
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  call_and_log jailProvider
+  #call_and_log jailProvider
 
   #sleep 30 # sleeps to offer more time to watch output, can be removed
 
