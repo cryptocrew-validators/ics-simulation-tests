@@ -145,7 +145,7 @@ function main() {
   call_and_log manipulateConsumerGenesis
   call_and_log createConsumer
   call_and_log optIn
-  call_and_log whitelistDenoms
+  call_and_log whiteListDenoms
   if $KEY_ASSIGNMENT ; then
     call_and_log assignConsumerKey "1-prelaunch-newkey"
   fi
