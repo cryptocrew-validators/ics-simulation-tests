@@ -77,7 +77,7 @@ EOT
   echo "Reward Denom Change submitted."
 
   echo "Voting for Reward Denom Change from provider-chain-validator1..."
-  vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator1 $PROVIDER_FLAGS"
+  vagrant ssh provider-chain-validator2 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator2 $PROVIDER_FLAGS"
   echo "Voted for Reward Denom Change proposal"
 }
 
