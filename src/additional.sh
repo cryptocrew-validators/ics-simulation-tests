@@ -1,8 +1,6 @@
 
 function delegate() {
     VALIDATOR_ADDRESS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME keys show provider-chain-validator1 --bech val --keyring-backend test -a")
-    #echo "VALIDATOR ADDRESS: $VALIDATOR_ADDRESS"
-
 
     VOTING_POWER_PRE=$(checkVotingPower "consumer-chain-validator1")
     VOTING_POWER_POST=0

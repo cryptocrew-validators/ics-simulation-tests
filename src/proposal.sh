@@ -5,9 +5,6 @@ function createConsumer() {
   SPAWN_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) + 120))"') # leave 120 sec for pre-spawtime key-assignment test
   cat > files/generated/create_consumer.json <<EOT
 {
-  "allowlisted_reward_denoms": {
-    "denoms": ["ibc/49DBEC637ABE09667C78CF6F55A7FC91A3BF505B0136D84A21A875ABD1987D0E"]
-  },
   "chain_id": "consumer-chain-1",
   "metadata": {
     "name": "elys",
@@ -26,7 +23,7 @@ function createConsumer() {
     "ccv_timeout_period": 2419200000000000,
     "transfer_timeout_period": 1800000000000,
     "consumer_redistribution_fraction": "0.5",
-    "blocks_per_distribution_transmission": 50,
+    "blocks_per_distribution_transmission": 10,
     "historical_entries": 10000,
     "distribution_transmission_channel": ""
   },
@@ -50,6 +47,19 @@ EOT
   echo "Consumer created."
 }
 
+function calculateIbcDenom() {
+  local path = "transfer/channel-1"
+  local denom = $CONSUMER_FEE_DENOM
+
+  # Combine path and base denom
+  local combined="${path}/${base_denom}"
+
+  # Compute the SHA256 hash and convert to uppercase
+  local hash=$(echo -n "$combined" | sha256sum | awk '{print $1}' | tr 'a-f' 'A-F')
+
+  CONSUMER_IBC_DENOM = "ibc/${hash}"
+}
+
 function whiteListDenoms() {
    cat > files/generated/register_denom.json <<EOT
 {
@@ -57,7 +67,7 @@ function whiteListDenoms() {
         {
             "@type": "/interchain_security.ccv.provider.v1.MsgChangeRewardDenoms",
             "denoms_to_add": [
-             "ibc/49DBEC637ABE09667C78CF6F55A7FC91A3BF505B0136D84A21A875ABD1987D0E"
+             "$CONSUMER_IBC_DENOM"
             ],
             "denoms_to_remove": [],
             "authority": "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn"
