@@ -2,27 +2,12 @@ set -e
 
 # Wait for spawn_time to be reached
 function waitForSpawnTime() {
-  PROP_SPAWN_TIME=$(cat files/generated/prop.json | jq -r '.messages[0].content.spawn_time')
-  echo "Waiting for spawn time to be reached: $PROP_SPAWN_TIME"
-  CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
-  CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)
-  SPAWN_TIME_SECONDS=$(date -d "$PROP_SPAWN_TIME" +%s)
-  REMAINING_SECONDS=$((SPAWN_TIME_SECONDS - CURRENT_TIME_SECONDS))
-  echo "ETA: $REMAINING_SECONDS seconds..."
+  if $PERMISSIONLESS ; then
+    PROP_SPAWN_TIME=$(cat files/generated/create_consumer.json | jq -r '.initialization_parameters.spawn_time')
+  else
+    PROP_SPAWN_TIME=$(cat files/generated/prop.json | jq -r '.messages[0].content.spawn_time')
+  fi
   
-  while true; do
-    CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
-    if [[ "$CURRENT_TIME" > "$PROP_SPAWN_TIME" ]]; then
-      break
-    fi
-    sleep 5
-  done
-  
-  echo "Spawn time reached!"
-}
-
-function waitForSpawnTimeOptIn() {
-  PROP_SPAWN_TIME=$(cat files/generated/create_consumer.json | jq -r '.initialization_parameters.spawn_time')
   echo "Waiting for spawn time to be reached: $PROP_SPAWN_TIME"
   CURRENT_TIME=$(vagrant ssh provider-chain-validator1 -- "date -u '+%Y-%m-%dT%H:%M:%SZ'")
   CURRENT_TIME_SECONDS=$(date -d "$CURRENT_TIME" +%s)

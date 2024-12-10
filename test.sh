@@ -101,12 +101,14 @@ function showResults() {
     TESTS_FAILED=$((TESTS_FAILED+1))
   fi
   
-  if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
-    echo "Validator jailing on provider chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Validator jailing on provider chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
+  if $JAILING ; then
+    if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
+      echo "Validator jailing on provider chain: OK"
+      TESTS_PASSED=$((TESTS_PASSED+1))
+    else
+      echo "Validator jailing on provider chain: FAILED"
+      TESTS_FAILED=$((TESTS_FAILED+1))
+    fi
   fi
 
   # if [ "$TEST_JAIL_CONSUMER" == "true" ]; then
@@ -145,17 +147,14 @@ function main() {
   call_and_log manipulateConsumerGenesis
   if $PERMISSIONLESS ; then
     call_and_log createConsumer
-    call_and_log optIn
-    call_and_log calculateIbcDenom
-    call_and_log whiteListDenoms
-  elif
+  else
     call_and_log proposeConsumerAdditionProposal
     call_and_log voteConsumerAdditionProposal
   fi
   if $KEY_ASSIGNMENT ; then
     call_and_log assignConsumerKey "1-prelaunch-newkey"
   fi
-  call_and_log waitForSpawnTimeOptIn
+  call_and_log waitForSpawnTime
   call_and_log prepareConsumerChain
   call_and_log startConsumerChain
   call_and_log waitForConsumerChain
@@ -165,7 +164,9 @@ function main() {
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  #call_and_log jailProvider
+  if $JAILING ; then
+    call_and_log jailProvider
+  fi
 
   if $KEY_ASSIGNMENT ; then
     call_and_log validateAssignedKey "1-prelaunch-newkey"

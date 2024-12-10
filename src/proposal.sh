@@ -7,8 +7,8 @@ function createConsumer() {
 {
   "chain_id": "consumer-chain-1",
   "metadata": {
-    "name": "elys",
-    "description": "blockchain",
+    "name": "consumer-chain-1",
+    "description": "",
     "metadata": "{}"
   },
   "initialization_parameters": {
@@ -45,23 +45,27 @@ EOT
   echo "Creating consumer from provider-chain-validator1... "
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx provider create-consumer /home/vagrant/create_consumer.json --from provider-chain-validator1 $PROVIDER_FLAGS"
   echo "Consumer created."
+
+  optIn
+  whiteListDenom
 }
 
 function calculateIbcDenom() {
-  local path = "transfer/channel-1"
-  local denom = $CONSUMER_FEE_DENOM
+  local path="transfer/channel-1"
+  local denom=$CONSUMER_FEE_DENOM
 
   # Combine path and base denom
-  local combined="${path}/${base_denom}"
+  local combined="${path}/${denom}"
 
   # Compute the SHA256 hash and convert to uppercase
   local hash=$(echo -n "$combined" | sha256sum | awk '{print $1}' | tr 'a-f' 'A-F')
 
-  CONSUMER_IBC_DENOM = "ibc/${hash}"
+  echo "ibc/${hash}"
 }
 
-function whiteListDenoms() {
-   cat > files/generated/register_denom.json <<EOT
+function whiteListDenom() {
+  CONSUMER_IBC_DENOM=$(calculateIbcDenom)
+  cat > files/generated/register_denom.json <<EOT
 {
     "messages": [
         {
@@ -86,10 +90,19 @@ EOT
   vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov submit-proposal /home/vagrant/register_denom.json --from provider-chain-validator1 $PROVIDER_FLAGS"
   echo "Reward Denom Change submitted."
 
-  echo "Voting for Reward Denom Change from provider-chain-validator1..."
-  vagrant ssh provider-chain-validator2 -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator2 $PROVIDER_FLAGS"
-  echo "Voted for Reward Denom Change proposal"
+  voteForDenom
 }
+
+function voteForDenom() {
+  echo "Waiting for Reward Denom Change proposal to go live..."
+  sleep 7
+
+  for i in $(seq 1 $NUM_VALIDATORS); do
+    echo "Voting 'yes' from provider-chain-validator${i}..."
+    vagrant ssh provider-chain-validator${i} -- "$PROVIDER_APP --home $PROVIDER_HOME tx gov vote 1 yes --from provider-chain-validator${i} $PROVIDER_FLAGS"
+  done
+}
+
 
 # Propose consumer addition proposal from provider validator 1
 function proposeConsumerAdditionProposal() {
