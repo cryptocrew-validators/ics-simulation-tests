@@ -8,11 +8,10 @@ refresh = true
 misbehaviour = false
 
 [mode.connections]
-enabled = false
-
+enabled = true
 
 [mode.channels]
-enabled = false
+enabled = true
 
 [mode.packets]
 enabled = true
@@ -50,27 +49,27 @@ max_tx_size = 179999
 clock_drift = '15s'
 max_block_time = '10s'
 trusting_period = '80m'
-trust_threshold = { numerator = '1', denominator = '3' }
+trust_threshold = { numerator = '2', denominator = '3' }
 
 
 [[chains]]
-id = 'consumer-chain'
+id = 'consumer-chain-1'
 rpc_addr = 'http://192.168.33.21:26657'
 grpc_addr = 'http://192.168.33.21:9090'
 event_source = { mode = 'push', url = 'ws://192.168.33.21:26657/websocket', batch_delay = '200ms' }
 rpc_timeout = '10s'
-account_prefix = 'neutron'
+account_prefix = 'consumer'
 key_name = 'default'
 address_type = { derivation = 'cosmos' }
 store_prefix = 'ibc'
 default_gas = 1800000
 max_gas = 9000000
-gas_price = { price = 0.025, denom = 'untrn' }
+gas_price = { price = 0.025, denom = 'ustake' }
 gas_multiplier = 1.5
 max_msg_num = 30
 max_tx_size = 179999
 clock_drift = '15s'
 max_block_time = '10s'
 trusting_period = '80m'
-trust_threshold = { numerator = '1', denominator = '3' }
+trust_threshold = { numerator = '2', denominator = '3' }
 ccv_consumer_chain = true

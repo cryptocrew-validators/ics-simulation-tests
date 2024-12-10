@@ -32,7 +32,7 @@ function provisionVms() {
     done
     for vm in "${vms[@]}"; do
       echo "Starting provisioning for $vm"
-      vagrant up $vm --provision --no-parallel &
+      vagrant up $vm --provision &
       pids+=($!)
     done
 

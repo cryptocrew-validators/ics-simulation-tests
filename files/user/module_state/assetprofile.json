@@ -1,0 +1,70 @@
+{  
+  "assetprofile": {
+    "entry_list": [
+      {
+        "address": "",
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "base_denom": "ueden",
+        "commit_enabled": true,
+        "decimals": "6",
+        "denom": "ueden",
+        "display_name": "EDEN",
+        "display_symbol": "",
+        "external_symbol": "",
+        "ibc_channel_id": "",
+        "ibc_counterparty_chain_id": "",
+        "ibc_counterparty_channel_id": "",
+        "ibc_counterparty_denom": "",
+        "network": "",
+        "path": "",
+        "permissions": [],
+        "transfer_limit": "",
+        "unit_denom": "",
+        "withdraw_enabled": true
+      },
+      {
+        "address": "",
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "base_denom": "uelys",
+        "commit_enabled": true,
+        "decimals": "6",
+        "denom": "uelys",
+        "display_name": "ELYS",
+        "display_symbol": "",
+        "external_symbol": "",
+        "ibc_channel_id": "",
+        "ibc_counterparty_chain_id": "",
+        "ibc_counterparty_channel_id": "",
+        "ibc_counterparty_denom": "",
+        "network": "",
+        "path": "",
+        "permissions": [],
+        "transfer_limit": "",
+        "unit_denom": "",
+        "withdraw_enabled": true
+      },
+      {
+        "address": "",
+        "authority": "elys10d07y265gmmuvt4z0w9aw880jnsr700j6z2zm3",
+        "base_denom": "uusdc",
+        "commit_enabled": true,
+        "decimals": "6",
+        "denom": "uusdc",
+        "display_name": "USDC",
+        "display_symbol": "uUSDC",
+        "external_symbol": "uUSDC",
+        "ibc_channel_id": "",
+        "ibc_counterparty_chain_id": "",
+        "ibc_counterparty_channel_id": "",
+        "ibc_counterparty_denom": "",
+        "network": "",
+        "path": "",
+        "permissions": [],
+        "transfer_limit": "",
+        "unit_denom": "",
+        "withdraw_enabled": true
+      }
+    ],
+    "params": {}
+  }
+}

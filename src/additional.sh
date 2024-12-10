@@ -1,14 +1,12 @@
 
 function delegate() {
     VALIDATOR_ADDRESS=$(vagrant ssh provider-chain-validator1 -- "$PROVIDER_APP --home $PROVIDER_HOME keys show provider-chain-validator1 --bech val --keyring-backend test -a")
-    #echo "VALIDATOR ADDRESS: $VALIDATOR_ADDRESS"
-
 
     VOTING_POWER_PRE=$(checkVotingPower "consumer-chain-validator1")
     VOTING_POWER_POST=0
 
     echo "Running delegate transaction..."
-    vagrant ssh provider-chain-validator2 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake --chain-id provider-chain --from provider-chain-validator2 --keyring-backend test -y"
+    vagrant ssh provider-chain-validator2 -- "$PROVIDER_APP --home $PROVIDER_HOME tx staking delegate $VALIDATOR_ADDRESS 5000000icsstake --gas 500000 --gas-prices 1.0icsstake --chain-id provider-chain --from provider-chain-validator2 --keyring-backend test -y"
     echo "Delegate transaction complete."
 
     echo "Waiting for transaction to validator set change to arrive on consumer chain..."
@@ -16,13 +14,14 @@ function delegate() {
     MAX_ITERATIONS=30
     ITERATION=0
 
-    while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_POST <= $VOTING_POWER_PRE)); do
-        VOTING_POWER_POST=$(checkVotingPower "consumer-chain-validator1")
-        sleep 2
-        ITERATION=$((ITERATION+1))
-    done
+    while [[ $ITERATION -lt $MAX_ITERATIONS ]] && [[ $VOTING_POWER_POST -le $VOTING_POWER_PRE ]]; do
+    VOTING_POWER_POST=$(checkVotingPower "consumer-chain-validator1")
+    sleep 2
+    ITERATION=$((ITERATION + 1))
+done
 
-    if (($ITERATION == $MAX_ITERATIONS)); then
+
+    if [[ $ITERATION == $MAX_ITERATIONS ]]; then
         echo ">>> Delegation failed, could not confirm Voting Power update on consumer chain after 60 seconds."
         TEST_DELEGATION_CONSUMER="false"
     else
@@ -51,13 +50,13 @@ function jailConsumer() {
     ITERATION=0
     VOTING_POWER=$(checkVotingPower "consumer-chain-validator1")
 
-    while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER != 0)); do
+    while [[ $ITERATION < $MAX_ITERATIONS ]] && [[ $VOTING_POWER != 0 ]]; do
         VOTING_POWER=$(checkVotingPower "consumer-chain-validator1")
         ITERATION=$((ITERATION+1))
         sleep 2
     done
 
-    if (($VOTING_POWER == 0)); then
+    if [[ $VOTING_POWER == 0 ]]; then
         echo "Validator has been jailed."
     else
         echo "Could not confirm that validator has been jailed within 60 seconds."
@@ -83,13 +82,13 @@ function jailProvider() {
     VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")
     VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator2")
 
-    while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_PROVIDER != 0)); do
+    while [[ $ITERATION < $MAX_ITERATIONS ]] && [[ $VOTING_POWER_PROVIDER != 0 ]]; do
         VOTING_POWER_PROVIDER=$(checkVotingPower "provider-chain-validator1")
         ITERATION=$((ITERATION+1))
         sleep 2
     done
 
-    if (($VOTING_POWER_PROVIDER == 0)); then
+    if [[ $VOTING_POWER_PROVIDER == 0 ]]; then
         echo ">>> Validator has been successfully jailed on provider chain."
         TEST_JAIL_PROVIDER="true"
     else
@@ -101,13 +100,13 @@ function jailProvider() {
     MAX_ITERATIONS=30
     ITERATION=0
 
-    while (($ITERATION < $MAX_ITERATIONS)) && (($VOTING_POWER_CONSUMER != 0)); do
+    while [[ $ITERATION < $MAX_ITERATIONS ]] && [[ $VOTING_POWER_CONSUMER != 0 ]]; do
         VOTING_POWER_CONSUMER=$(checkVotingPower "consumer-chain-validator2")
         ITERATION=$((ITERATION+1))
         sleep 2
     done
 
-    if (($VOTING_POWER_CONSUMER == 0)); then
+    if [[ $VOTING_POWER_CONSUMER == 0 ]]; then
         echo ">>> Validator has been successfully jailed on consumer chain."
         TEST_JAIL_CONSUMER="true"
     else

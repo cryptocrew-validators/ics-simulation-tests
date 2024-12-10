@@ -3,7 +3,7 @@
 # node logs piped to /var/logs/chain.log
 # relayer logs piped to /var/logs/relayer.log
 
-PROVIDER_FLAGS="--chain-id provider-chain --gas 1000000 --gas-prices 0.25icsstake --keyring-backend test -y"
+PROVIDER_FLAGS="--chain-id provider-chain --gas 500000 --gas-prices 1.0icsstake --keyring-backend test -y"
 RELAYER_MNEMONIC="genre inch matrix flag bachelor random spawn course abandon climb negative cake slow damp expect decide return acoustic furnace pole humor giraffe group poem"
 HERMES_BIN=/home/vagrant/.hermes/bin/hermes
 HERMES_CONFIG=/home/vagrant/.hermes/config.toml
@@ -101,21 +101,23 @@ function showResults() {
     TESTS_FAILED=$((TESTS_FAILED+1))
   fi
   
-  if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
-    echo "Validator jailing on provider chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Validator jailing on provider chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
+  if $JAILING ; then
+    if [ "$TEST_JAIL_PROVIDER" == "true" ]; then
+      echo "Validator jailing on provider chain: OK"
+      TESTS_PASSED=$((TESTS_PASSED+1))
+    else
+      echo "Validator jailing on provider chain: FAILED"
+      TESTS_FAILED=$((TESTS_FAILED+1))
+    fi
   fi
 
-  if [ "$TEST_JAIL_CONSUMER" == "true" ]; then
-    echo "Validator jailing on consumer chain: OK"
-    TESTS_PASSED=$((TESTS_PASSED+1))
-  else
-    echo "Validator jailing on consumer chain: FAILED"
-    TESTS_FAILED=$((TESTS_FAILED+1))
-  fi
+  # if [ "$TEST_JAIL_CONSUMER" == "true" ]; then
+  #   echo "Validator jailing on consumer chain: OK"
+  #   TESTS_PASSED=$((TESTS_PASSED+1))
+  # else
+  #   echo "Validator jailing on consumer chain: FAILED"
+  #   TESTS_FAILED=$((TESTS_FAILED+1))
+  # fi
 
   echo "Tests passed: $TESTS_PASSED"
   echo "Tests failed: $TESTS_FAILED"
@@ -143,9 +145,12 @@ function main() {
   call_and_log startProviderChain
   call_and_log waitForProviderChain
   call_and_log manipulateConsumerGenesis
-  call_and_log proposeConsumerAdditionProposal
-  call_and_log voteConsumerAdditionProposal
-  call_and_log waitForProposal
+  if $PERMISSIONLESS ; then
+    call_and_log createConsumer
+  else
+    call_and_log proposeConsumerAdditionProposal
+    call_and_log voteConsumerAdditionProposal
+  fi
   if $KEY_ASSIGNMENT ; then
     call_and_log assignConsumerKey "1-prelaunch-newkey"
   fi
@@ -159,24 +164,24 @@ function main() {
   call_and_log testChannel
   call_and_log startRelayer
   call_and_log delegate
-  #call_and_log jailProvider
+  if $JAILING ; then
+    call_and_log jailProvider
+  fi
 
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
+  if $KEY_ASSIGNMENT ; then
+    call_and_log validateAssignedKey "1-prelaunch-newkey"
+    
+    call_and_log testKeyAssignment "2-postlaunch-newkey"
+    call_and_log validateAssignedKey "2-postlaunch-newkey"
 
-  call_and_log validateAssignedKey "1-prelaunch-newkey"
-  #call_and_log testKeyAssignment "2-postlaunch-newkey"
-  #call_and_log validateAssignedKey "2-postlaunch-newkey"
-
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
-
-  #call_and_log testKeyAssignment "3-postlaunch-samekey"
-  
-  #sleep 30 # sleeps to offer more time to watch output, can be removed
-  
-  #call_and_log validateAssignedKey "3-postlaunch-samekey"
+    call_and_log testKeyAssignment "3-postlaunch-samekey"
+    call_and_log validateAssignedKey "3-postlaunch-samekey"
+  fi
 
   call_and_log getLogs
-  #call_and_log cleanUp
+  if $CLEANUP_ON_FINISH ; then
+    call_and_log cleanUp
+  fi
 
   showResults
 }

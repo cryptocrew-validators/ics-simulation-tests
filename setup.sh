@@ -27,7 +27,7 @@ function setNodeVars() {
     DAEMON_REPO=$PROVIDER_REPO
     DAEMON_VERSION=$PROVIDER_VERSION
     DAEMON_GO_SOURCE=$PROVIDER_GO_SOURCE
-  elif [ "$CHAIN_ID" == "consumer-chain" ]; then
+  elif [ "$CHAIN_ID" == "consumer-chain-1" ]; then
     DAEMON_NAME=$CONSUMER_APP
     DAEMON_HOME=$CONSUMER_HOME
     DAEMON_REPO=$CONSUMER_REPO
@@ -55,7 +55,7 @@ function installGo() {
 function installNode() {
     LOCAL_REPO=$DAEMON_NAME-core
     if [ -d $LOCAL_REPO ] ; then
-      rm -r $LOCAL_REPO
+      sudo rm -rf $LOCAL_REPO
     fi
     mkdir $LOCAL_REPO
     git clone $DAEMON_REPO $LOCAL_REPO
@@ -76,9 +76,11 @@ function initNode() {
 
 function manipulateGenesis() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
-  sed -i 's/stake/icsstake/g' $DAEMON_HOME/config/genesis.json
+  sed -i 's/"stake"/"icsstake"/g' $DAEMON_HOME/config/genesis.json
     jq '.app_state.staking.params.unbonding_time = "1814400s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
     jq '.app_state.gov.voting_params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    jq '.app_state.gov.params.expedited_voting_period = "50s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
+    jq '.app_state.gov.params.voting_period = "60s"' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
   
     GENESIS_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))")
     jq --arg time "$GENESIS_TIME" '.genesis_time = $time' $DAEMON_HOME/config/genesis.json | sponge $DAEMON_HOME/config/genesis.json
@@ -88,8 +90,8 @@ function manipulateGenesis() {
 function genTx() {
   if [ "$CHAIN_ID" == "provider-chain" ]; then
     $DAEMON_NAME --home $DAEMON_HOME keys add "$NODE_MONIKER" --keyring-backend test
-    $DAEMON_NAME --home $DAEMON_HOME add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
-    $DAEMON_NAME --home $DAEMON_HOME gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
+    $DAEMON_NAME --home $DAEMON_HOME genesis add-genesis-account $($DAEMON_NAME keys --home $DAEMON_HOME show "$NODE_MONIKER" -a --keyring-backend test) 1500000000000icsstake --keyring-backend test
+    $DAEMON_NAME --home $DAEMON_HOME genesis gentx "$NODE_MONIKER" 1000000000icsstake --chain-id "$CHAIN_ID" --keyring-backend test
   fi
 }
 

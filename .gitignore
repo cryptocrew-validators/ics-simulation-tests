@@ -2,3 +2,12 @@
 .first_run
 .vagrant/*
 result.log
+
+files/downloads/*
+files/generated/*
+files/logs/*
+
+!files/downloads/.first_commit
+!files/generated/.first_commit
+!files/logs/.first_commit
+!files/user/.first_commit
