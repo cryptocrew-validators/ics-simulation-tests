@@ -8,7 +8,7 @@ function createConsumer() {
   "chain_id": "consumer-chain-1",
   "metadata": {
     "name": "consumer-chain-1",
-    "description": "",
+    "description": "Adding consumer-chain-1",
     "metadata": "{}"
   },
   "initialization_parameters": {
