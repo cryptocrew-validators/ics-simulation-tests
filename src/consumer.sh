@@ -69,7 +69,7 @@ function prepareConsumerChain() {
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # import module state
-  echo "Importing Elys testnet module state"
+  echo "Importing testnet module state"
   MODULE_DIR="files/user/module_state"
   TARGET_FILE="files/generated/raw_genesis_consumer.json"
   for module_file in $MODULE_DIR/*.json; do
@@ -86,8 +86,7 @@ function prepareConsumerChain() {
   
   jq -s '.[0].app_state.ccvconsumer = .[1] | .[0]' files/generated/raw_genesis_consumer.json files/generated/ccv.json > files/generated/genesis_consumer.json
   jq '.app_state.ccvconsumer.params.enabled = true' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
-  jq '.app_state.ccvconsumer.params.reward_denoms = ["uelys"]' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
-
+  jq --arg denom "$CONSUMER_FEE_DENOM" '.app_state.ccvconsumer.params.reward_denoms = [$denom]' files/generated/genesis_consumer.json | sponge files/generated/genesis_consumer.json
 
   # Distribute consumer-chain genesis
   for i in $(seq 1 $NUM_VALIDATORS); do
