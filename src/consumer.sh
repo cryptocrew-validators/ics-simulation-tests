@@ -69,16 +69,16 @@ function prepareConsumerChain() {
   echo "$CONSUMER_CCV_STATE" | jq . > "files/generated/ccv.json"
 
   # import module state
-  echo "Importing testnet module state"
-  MODULE_DIR="files/user/module_state"
-  TARGET_FILE="files/generated/raw_genesis_consumer.json"
-  for module_file in $MODULE_DIR/*.json; do
-    module_name=$(basename "$module_file" .json)
-    module_state=$(cat "$module_file" | jq -r --arg MODULE "$module_name" '.[$MODULE]')
-    jq --argjson state "$module_state" --arg MODULE "$module_name" '.app_state[$MODULE] = $state' "$TARGET_FILE" | sponge "$TARGET_FILE"
-    echo "-> added: $module_name"
-  done
-  echo "All modules have been updated in $TARGET_FILE."
+  # echo "Importing testnet module state"
+  # MODULE_DIR="files/user/module_state"
+  # TARGET_FILE="files/generated/raw_genesis_consumer.json"
+  # for module_file in $MODULE_DIR/*.json; do
+  #   module_name=$(basename "$module_file" .json)
+  #   module_state=$(cat "$module_file" | jq -r --arg MODULE "$module_name" '.[$MODULE]')
+  #   jq --argjson state "$module_state" --arg MODULE "$module_name" '.app_state[$MODULE] = $state' "$TARGET_FILE" | sponge "$TARGET_FILE"
+  #   echo "-> added: $module_name"
+  # done
+  # echo "All modules have been updated in $TARGET_FILE."
 
   # Finalize consumer-chain genesis
   echo "Merging CCV state into raw_genesis state, enabling ccvconsumer.params"
@@ -99,7 +99,7 @@ function startConsumerChain() {
   echo ">>> STARTING CONSUMER CHAIN"
   for i in $(seq 1 $NUM_VALIDATORS); do
     vagrant ssh consumer-chain-validator${i} -- "sudo touch /var/log/chain.log && sudo chmod 666 /var/log/chain.log"
-    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --log_level trace --pruning nothing --rpc.laddr tcp://0.0.0.0:26657 --api.enable true --grpc.enable true --grpc.address 0.0.0.0:9090 --minimum-gas-prices 0$CONSUMER_FEE_DENOM > /var/log/chain.log 2>&1 &"
+    vagrant ssh consumer-chain-validator${i} -- "$CONSUMER_APP --home $CONSUMER_HOME start --rpc.laddr tcp://0.0.0.0:26657 --api.enable true --grpc.enable true --grpc.address 0.0.0.0:9090 --minimum-gas-prices 0.1$CONSUMER_FEE_DENOM > /var/log/chain.log 2>&1 &"
     echo "[consumer-chain-validator${i}] started $CONSUMER_APP: watch output at /var/log/chain.log"
   done
 }
