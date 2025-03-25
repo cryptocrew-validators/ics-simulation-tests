@@ -75,7 +75,7 @@ Vagrant.configure("2") do |config|
       node.vm.network "private_network", type: "hostonly", ip: "192.168.33.2#{i}"
       node.vm.provider "virtualbox" do |v|
         v.memory = 2048
-        v.cpus = 1
+        v.cpus = 2
       end
       node.vm.provision "file", source: ".env", destination: "/home/vagrant/.env"
       node.vm.provision "shell", path: "setup.sh", env: {"NODE_INDEX" => i, "CHAIN_ID" => "consumer-chain-1"}
