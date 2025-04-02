@@ -154,14 +154,24 @@ function manipulateConsumerGenesis() {
   echo "Setting supply to []"
   jq '.app_state.bank.supply = []' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
 
-  # Update chain_id to consumer-chain
-  echo "Setting chain_id: consumer-chain"
+  # Update chain_id to consumer-chain-1
+  echo "Setting chain_id: consumer-chain-1"
   jq --arg chainid "consumer-chain-1" '.chain_id = $chainid' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
   
   # Update genesis_time to 1min in the past
   GENESIS_TIME=$(vagrant ssh consumer-chain-validator1 -- 'date -u +"%Y-%m-%dT%H:%M:%SZ" --date="@$(($(date +%s) - 60))"')
   echo "Setting genesis time: $GENESIS_TIME" 
   jq --arg time "$GENESIS_TIME" '.genesis_time = $time' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
+
+  # Decrease max_deposit_period
+  MAX_DEPOSIT_PERIOD="100s"
+  echo "Settings max_deposit_period: $MAX_DEPOSIT_PERIOD"
+  jq --arg deposit $MAX_DEPOSIT_PERIOD '.app_state.gov.params.max_deposit_period = $deposit' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
+  
+  # Decrease voting_period
+  VOTING_PERIOD="100s"
+  echo "Settings voting_period: $VOTING_PERIOD"
+  jq --arg voting $VOTING_PERIOD '.app_state.gov.params.voting_period = $voting' files/generated/raw_genesis_consumer.json | sponge files/generated/raw_genesis_consumer.json
 
   # Add relayer account and balances
   echo "Adding relayer account & balances"
